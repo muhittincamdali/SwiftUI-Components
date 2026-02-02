@@ -1,0 +1,43 @@
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - type_body_length
+  - file_length
+  - function_body_length
+  - cyclomatic_complexity
+  - type_name
+  - identifier_name
+  - force_cast
+  - nesting
+
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+  - contains_over_first_not_nil
+  - discouraged_object_literal
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - joined_default_parameter
+  - modifier_order
+  - operator_usage_whitespace
+  - overridden_super_call
+  - private_action
+  - private_outlet
+  - redundant_nil_coalescing
+  - sorted_first_last
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+excluded:
+  - .build
+  - DerivedData
+  - Pods
+  - Carthage
+  - Package.swift
+  - Tests
+
+reporter: "xcode"
