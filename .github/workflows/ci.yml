@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 15
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Cache SPM
         uses: actions/cache@v4
@@ -37,7 +37,7 @@ jobs:
     name: SwiftLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
         continue-on-error: true
