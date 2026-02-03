@@ -1,8 +1,45 @@
-.DS_Store
-/.build
-/Packages
-xcuserdata/
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# Build
+build/
 DerivedData/
+*.moved-aside
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
 .swiftpm/
-*.xcodeproj
-*.xcworkspace
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# macOS
+.DS_Store
+*.swp
+*~.nib
+*.pbxuser
+!default.pbxuser
+
+# IDE
+*.xcuserstate
+*.xcscmblueprint
+*.idea/
