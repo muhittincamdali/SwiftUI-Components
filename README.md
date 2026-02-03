@@ -4,23 +4,105 @@
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2016%20%7C%20macOS%2013-blue.svg)](https://developer.apple.com/swift/)
 [![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
+[![Components](https://img.shields.io/badge/Components-100%2B-blueviolet.svg)](#-features)
 
-A collection of reusable, customizable SwiftUI components designed to speed up your development workflow. Built with performance and accessibility in mind.
+A comprehensive collection of **100+ production-ready** SwiftUI components designed to accelerate your iOS development. Every component features full customization, accessibility support, and beautiful animations.
 
 ---
 
 ## ✨ Features
 
-| Category | Components | Description |
-|----------|-----------|-------------|
-| **Buttons** | `PrimaryButton`, `IconButton` | Customizable buttons with loading states and icon support |
-| **Cards** | `CardView`, `ExpandableCard` | Flexible card layouts with shadow, corner radius, expand/collapse |
-| **Text** | `GradientText`, `AnimatedCounter` | Eye-catching text effects and animated number transitions |
-| **Inputs** | `SearchBar`, `TagInput` | Search with debounce, multi-tag input with removal |
-| **Loading** | `ShimmerView`, `ProgressRing` | Skeleton loading placeholders and circular progress indicators |
-| **Toast** | `ToastView`, `ToastModifier` | Non-intrusive toast notifications with multiple styles |
-| **Modifiers** | `ConditionalModifier` | Apply modifiers conditionally without breaking the chain |
-| **Extensions** | `View+Extensions` | Handy view extensions for common patterns |
+### 🔘 Buttons
+| Component | Description |
+|-----------|-------------|
+| `PrimaryButton` | Customizable CTA button with loading states |
+| `SecondaryButton` | Outline, subtle, ghost, and tinted variants |
+| `IconButton` | Compact SF Symbol buttons |
+| `LoadingButton` | Async action with success/failure states |
+| `GradientButton` | Beautiful gradient backgrounds with shimmer |
+| `FloatingActionButton` | Material Design FAB with expansion support |
+
+### 🃏 Cards
+| Component | Description |
+|-----------|-------------|
+| `CardView` | Flexible container with shadow and borders |
+| `ExpandableCard` | Animated expand/collapse functionality |
+| `FlipCard` | 3D flip animation between front/back |
+| `GlassCard` | Glassmorphism effect with blur |
+| `ActionCard` | Cards with integrated action buttons |
+
+### ✏️ Text
+| Component | Description |
+|-----------|-------------|
+| `GradientText` | Text with gradient color overlay |
+| `AnimatedCounter` | Smooth number transitions |
+| `TypewriterText` | Character-by-character typing animation |
+| `HighlightedText` | Search result highlighting |
+| `MarqueeText` | Auto-scrolling overflow text |
+
+### 📝 Inputs
+| Component | Description |
+|-----------|-------------|
+| `SearchBar` | Search with debounce support |
+| `TagInput` | Multi-tag input with chips |
+| `RatingInput` | Star ratings with half-star support |
+| `PinInput` | OTP/PIN code entry fields |
+| `PhoneInput` | International phone with country picker |
+| `CreditCardInput` | Card entry with type detection |
+
+### ⏳ Loading
+| Component | Description |
+|-----------|-------------|
+| `ShimmerView` | Skeleton loading shimmer effect |
+| `ProgressRing` | Circular progress indicators |
+| `PulseLoader` | Animated pulse effects |
+| `SkeletonView` | Pre-built skeleton templates |
+| `DotLoader` | Multiple dot animation styles |
+
+### 🔔 Toast & Notifications
+| Component | Description |
+|-----------|-------------|
+| `ToastView` | Non-intrusive toast messages |
+| `SnackBar` | Material Design snackbars |
+| `Banner` | Full-width notification banners |
+
+### 📋 Lists
+| Component | Description |
+|-----------|-------------|
+| `SwipeableRow` | iOS-style swipe actions |
+| `ExpandableList` | Collapsible sections |
+| `ReorderableList` | Drag-to-reorder functionality |
+| `InfiniteScrollList` | Automatic pagination |
+
+### 📊 Charts
+| Component | Description |
+|-----------|-------------|
+| `SparklineChart` | Compact inline line charts |
+| `MiniBarChart` | Small bar visualizations |
+| `RingChart` | Circular progress/proportion charts |
+
+### 🧭 Navigation
+| Component | Description |
+|-----------|-------------|
+| `TabBarView` | Custom tab bars with 4 styles |
+| `SegmentedControl` | Enhanced segmented controls |
+| `PageIndicator` | Page dots with 5 styles |
+| `BreadcrumbView` | Hierarchical navigation paths |
+
+### 🎭 Overlays
+| Component | Description |
+|-----------|-------------|
+| `BottomSheet` | Draggable sheets with snap points |
+| `Tooltip` | Contextual help tooltips |
+| `ModalView` | Customizable modal presentations |
+
+### 🎨 Miscellaneous
+| Component | Description |
+|-----------|-------------|
+| `Badge` | Notification badges and labels |
+| `Avatar` | User profile images/initials |
+| `Chip` | Selectable/dismissible chips |
+| `CustomDivider` | Styled dividers with labels |
 
 ---
 
@@ -28,31 +110,22 @@ A collection of reusable, customizable SwiftUI components designed to speed up y
 
 ### Swift Package Manager
 
-Add SwiftUIComponents to your project through Xcode:
+Add to your project through Xcode:
 
 1. Go to **File → Add Package Dependencies...**
 2. Enter the repository URL:
    ```
    https://github.com/muhittincamdali/SwiftUI-Components.git
    ```
-3. Select **Up to Next Major Version** starting from `1.0.0`
+3. Select **Up to Next Major Version** from `1.0.0`
 4. Click **Add Package**
 
-Or add it to your `Package.swift`:
+Or add to `Package.swift`:
 
 ```swift
 dependencies: [
     .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "1.0.0")
 ]
-```
-
-Then add `SwiftUIComponents` to your target dependencies:
-
-```swift
-.target(
-    name: "YourApp",
-    dependencies: ["SwiftUIComponents"]
-)
 ```
 
 ---
@@ -64,256 +137,151 @@ import SwiftUI
 import SwiftUIComponents
 
 struct ContentView: View {
+    @State private var rating: Double = 4.0
     @State private var isLoading = false
-
+    
     var body: some View {
-        VStack(spacing: 20) {
-            GradientText(
-                "Welcome Back",
-                colors: [.purple, .blue]
-            )
-            .font(.largeTitle)
-
-            PrimaryButton(
-                "Get Started",
-                isLoading: isLoading
-            ) {
-                isLoading = true
+        VStack(spacing: 24) {
+            GradientText("Welcome Back", colors: [.purple, .blue])
+                .font(.largeTitle)
+            
+            RatingInput(rating: $rating, precision: .half)
+            
+            GradientButton("Get Started", gradient: .sunrise) {
+                // Action
             }
         }
+        .padding()
     }
 }
 ```
 
 ---
 
-## 📖 Usage Examples
-
-### PrimaryButton
-
-A fully customizable button with built-in loading state support.
-
-```swift
-PrimaryButton(
-    "Submit",
-    backgroundColor: .blue,
-    foregroundColor: .white,
-    cornerRadius: 12,
-    isLoading: isLoading
-) {
-    performAction()
-}
-
-// Disabled state
-PrimaryButton("Disabled", isDisabled: true) { }
-```
-
-### IconButton
-
-Compact button with SF Symbol icon support.
-
-```swift
-IconButton(systemName: "heart.fill", size: 44, color: .red) {
-    toggleFavorite()
-}
-```
-
-### CardView
-
-A container with customizable shadow, corner radius, and padding.
-
-```swift
-CardView(cornerRadius: 16, shadowRadius: 8, shadowColor: .black.opacity(0.1)) {
-    VStack(alignment: .leading, spacing: 8) {
-        Text("Card Title")
-            .font(.headline)
-        Text("Card description goes here.")
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-    }
-}
-```
-
-### ExpandableCard
-
-An animated card that expands and collapses on tap.
-
-```swift
-ExpandableCard(
-    title: "More Details",
-    subtitle: "Tap to expand"
-) {
-    Text("This content is revealed when the card is expanded.")
-        .padding(.top, 8)
-}
-```
-
-### GradientText
-
-Apply gradient colors to any text.
-
-```swift
-GradientText("Hello World", colors: [.red, .orange, .yellow])
-    .font(.title)
-```
-
-### AnimatedCounter
-
-Smoothly animate between number values.
-
-```swift
-@State private var count: Double = 0
-
-AnimatedCounter(value: count, format: "%.0f")
-    .font(.system(size: 48, weight: .bold))
-
-Button("Increment") { count += 100 }
-```
-
-### SearchBar
-
-A search bar with customizable placeholder and clear button.
-
-```swift
-@State private var query = ""
-
-SearchBar(text: $query, placeholder: "Search products...")
-```
-
-### TagInput
-
-Multi-tag input field with add/remove functionality.
-
-```swift
-@State private var tags: [String] = ["Swift", "iOS"]
-
-TagInput(tags: $tags, placeholder: "Add tag...")
-```
-
-### ShimmerView
-
-Skeleton loading placeholder with animated shimmer effect.
-
-```swift
-ShimmerView()
-    .frame(height: 200)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-```
-
-### ProgressRing
-
-Circular progress indicator with customizable colors and line width.
-
-```swift
-ProgressRing(progress: 0.75, lineWidth: 8, gradient: [.blue, .purple])
-    .frame(width: 100, height: 100)
-```
-
-### Toast Notifications
-
-Display non-intrusive toast messages.
-
-```swift
-@State private var showToast = false
-
-VStack {
-    Button("Show Toast") { showToast = true }
-}
-.toast(isPresenting: $showToast, message: "Saved successfully!", style: .success)
-```
-
-### ConditionalModifier
-
-Apply modifiers conditionally.
-
-```swift
-Text("Hello")
-    .conditionalModifier(isHighlighted) { view in
-        view.foregroundStyle(.red).bold()
-    }
-```
-
-### View Extensions
-
-```swift
-// Corner radius with specific corners
-Text("Rounded")
-    .cornerRadius(12, corners: [.topLeft, .topRight])
-
-// Visible/hidden toggle
-Text("Maybe visible")
-    .visible(shouldShow)
-
-// Read geometry
-Text("Measured")
-    .readSize { size in
-        print("Size: \(size)")
-    }
-```
-
----
-
-## 📚 API Reference
+## 📖 Component Examples
 
 ### Buttons
 
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `PrimaryButton` | `title`, `backgroundColor`, `foregroundColor`, `cornerRadius`, `isLoading`, `isDisabled`, `action` | Customizable button with loading spinner |
-| `IconButton` | `systemName`, `size`, `color`, `backgroundColor`, `action` | SF Symbol icon button |
+```swift
+// Primary Button with loading state
+PrimaryButton("Submit", isLoading: isLoading) {
+    await performAction()
+}
+
+// Gradient Button with shimmer
+GradientButton("Premium", gradient: .ocean, hasShimmer: true) { }
+
+// Floating Action Button with sub-actions
+FloatingActionButton(
+    icon: Image(systemName: "plus"),
+    actions: [
+        .init(icon: Image(systemName: "camera"), label: "Camera") { },
+        .init(icon: Image(systemName: "photo"), label: "Gallery") { }
+    ]
+)
+```
 
 ### Cards
 
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `CardView` | `cornerRadius`, `shadowRadius`, `shadowColor`, `backgroundColor`, `padding`, `content` | Container card with shadow |
-| `ExpandableCard` | `title`, `subtitle`, `headerColor`, `content` | Animated expand/collapse card |
+```swift
+// Glass Card with blur effect
+GlassCard(style: .frosted) {
+    Text("Beautiful glassmorphism")
+}
 
-### Text
-
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `GradientText` | `text`, `colors`, `startPoint`, `endPoint` | Text with gradient overlay |
-| `AnimatedCounter` | `value`, `format`, `duration` | Smooth number animation |
+// Flip Card
+FlipCard(isFlipped: $isFlipped) {
+    Text("Front")
+} back: {
+    Text("Back")
+}
+```
 
 ### Inputs
 
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `SearchBar` | `text`, `placeholder`, `backgroundColor` | Search input with clear button |
-| `TagInput` | `tags`, `placeholder`, `tagColor`, `maxTags` | Multi-tag input with chips |
+```swift
+// Star Rating
+RatingInput(rating: $rating, precision: .half, symbolStyle: .heart)
 
-### Loading
+// PIN Input
+PinInput(code: $code, length: 6) { completed in
+    verifyCode(completed)
+}
 
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `ShimmerView` | `baseColor`, `highlightColor`, `speed` | Skeleton loading shimmer |
-| `ProgressRing` | `progress`, `lineWidth`, `gradient`, `backgroundColor` | Circular progress ring |
+// Credit Card
+CreditCardInput(
+    cardNumber: $number,
+    expiryDate: $expiry,
+    cvv: $cvv,
+    cardholderName: $name
+)
+```
 
-### Toast
+### Charts
 
-| Component | Parameters | Description |
-|-----------|-----------|-------------|
-| `ToastView` | `message`, `style`, `icon` | Toast notification view |
-| `.toast()` | `isPresenting`, `message`, `style`, `duration` | View modifier for toasts |
+```swift
+// Sparkline
+SparklineChart(data: [10, 25, 15, 30, 20], style: .gradient)
+    .frame(width: 100, height: 30)
+
+// Ring Chart
+RingChart(segments: [
+    .init(value: 60, color: .blue),
+    .init(value: 40, color: .green)
+]) {
+    Text("Total").font(.caption)
+}
+```
+
+### Navigation
+
+```swift
+// Custom Tab Bar
+TabBarView(selectedIndex: $tab, items: [
+    .init(icon: Image(systemName: "house"), title: "Home"),
+    .init(icon: Image(systemName: "gear"), title: "Settings")
+], style: .pill)
+
+// Segmented Control
+SegmentedControl(selectedIndex: $index, segments: ["Day", "Week", "Month"])
+```
+
+### Overlays
+
+```swift
+// Bottom Sheet
+.bottomSheet(isPresented: $showSheet, detents: [.medium, .large]) {
+    SheetContent()
+}
+
+// Tooltip
+Text("Info")
+    .tooltip("Helpful information appears here")
+```
 
 ---
 
 ## 🎨 Customization
 
-All components support extensive customization through initializer parameters. Colors, sizes, animations, and behaviors can be adjusted to match your design system.
+All components support extensive theming:
 
 ```swift
-// Example: Fully themed PrimaryButton
+// Themed button
 PrimaryButton(
-    "Custom Button",
-    backgroundColor: .init(red: 0.2, green: 0.5, blue: 0.9),
+    "Custom",
+    backgroundColor: .brand,
     foregroundColor: .white,
     cornerRadius: 24,
-    isLoading: false
-) {
-    // action
-}
+    height: 56,
+    font: .headline
+) { }
+
+// Custom glass card
+GlassCard(
+    style: .colorful(.purple),
+    cornerRadius: 24,
+    shadowRadius: 15
+) { }
 ```
 
 ---
@@ -326,28 +294,59 @@ PrimaryButton(
 
 ---
 
+## 📁 Project Structure
+
+```
+Sources/SwiftUIComponents/
+├── Buttons/          # Button components
+├── Cards/            # Card layouts
+├── Text/             # Text effects
+├── Inputs/           # Form inputs
+├── Loading/          # Loading indicators
+├── Toast/            # Notifications
+├── Lists/            # List components
+├── Charts/           # Data visualization
+├── Navigation/       # Nav components
+├── Overlays/         # Sheets & modals
+├── Misc/             # Badges, avatars, etc.
+├── Modifiers/        # View modifiers
+└── Extensions/       # SwiftUI extensions
+```
+
+---
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+swift test
+```
+
+---
+
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please:
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/new-component`)
-3. Commit your changes (`git commit -m 'feat: add new component'`)
-4. Push to the branch (`git push origin feature/new-component`)
+2. Create a feature branch (`git checkout -b feature/amazing-component`)
+3. Commit changes (`git commit -m 'feat: add amazing component'`)
+4. Push to branch (`git push origin feature/amazing-component`)
 5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Apple's SwiftUI framework and documentation
-- The Swift community for inspiration and feedback
+- Apple's SwiftUI framework
+- The Swift community
 
 ---
 
