@@ -1,48 +1,77 @@
-<div align="center">
+<p align="center">
+  <img src="Assets/logo.png" alt="SwiftUI Components" width="200"/>
+</p>
 
-# 🎯 SwiftUI-Components
+<h1 align="center">SwiftUI Components</h1>
 
-**100+ production-ready SwiftUI components for modern iOS apps**
+<p align="center">
+  <strong>🎯 100+ production-ready SwiftUI components for modern iOS apps</strong>
+</p>
 
-[![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![iOS](https://img.shields.io/badge/iOS-15.0+-000000?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com/ios/)
-[![SPM](https://img.shields.io/badge/SPM-Compatible-FA7343?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org/package-manager/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-
-</div>
-
----
-
-## ✨ Component Categories
-
-- 🎨 **Buttons** — Primary, secondary, icon, loading
-- 📝 **Inputs** — Text, password, search, OTP
-- 📊 **Data Display** — Cards, lists, tables
-- 🔔 **Feedback** — Alerts, toasts, modals
-- 🧭 **Navigation** — Tabs, drawers, headers
+<p align="center">
+  <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift"/>
+  <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS"/>
+</p>
 
 ---
 
-## 🚀 Quick Start
+## Component Categories
+
+| Category | Count |
+|----------|-------|
+| **Buttons** | 15+ |
+| **Cards** | 10+ |
+| **Lists** | 12+ |
+| **Inputs** | 20+ |
+| **Navigation** | 8+ |
+| **Feedback** | 15+ |
+| **Media** | 10+ |
+| **Layout** | 10+ |
+
+## Usage
 
 ```swift
 import SwiftUIComponents
 
-// Button
-PrimaryButton("Submit") { }
+// Buttons
+PrimaryButton("Submit", action: submit)
+GhostButton("Cancel", action: cancel)
+IconButton(.heart, action: like)
 
-// Card
-ContentCard {
-    Text("Content here")
+// Cards
+ProductCard(product: product)
+ProfileCard(user: user)
+StatCard(title: "Revenue", value: "$12,345")
+
+// Lists
+InfiniteList(items: items) { item in
+    ItemRow(item: item)
 }
 
-// Toast
-ToastView(message: "Saved!")
-    .show()
+// Inputs
+SearchBar(text: $query)
+RatingInput(value: $rating)
+TagInput(tags: $tags)
+
+// Feedback
+Toast("Saved!", type: .success)
+Skeleton()
+EmptyState(message: "No items")
 ```
 
----
+## Customization
 
-## 📄 License
+All components support:
+- Custom colors
+- Custom fonts
+- Custom spacing
+- Dark mode
+- Accessibility
 
-MIT • [@muhittincamdali](https://github.com/muhittincamdali)
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+MIT License
