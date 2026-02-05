@@ -2,14 +2,14 @@
   <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift"/>
   <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS"/>
   <img src="https://img.shields.io/badge/macOS-14.0+-purple.svg" alt="macOS"/>
-  <img src="https://img.shields.io/badge/Components-100+-green.svg" alt="Components"/>
+  <img src="https://img.shields.io/badge/Components-98-green.svg" alt="Components"/>
   <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="License"/>
 </p>
 
 <h1 align="center">🎨 SwiftUI Components</h1>
 
 <p align="center">
-  <strong>A comprehensive library of 100+ production-ready SwiftUI components</strong><br/>
+  <strong>A comprehensive library of 98 production-ready SwiftUI components</strong><br/>
   Build beautiful iOS & macOS apps faster with pre-built, customizable UI components
 </p>
 
@@ -17,7 +17,7 @@
 
 ## ✨ Features
 
-- 🎯 **100+ Real Components** - No placeholders, every component is fully functional
+- 🎯 **98 Real Components** - No placeholders, every component is fully functional
 - 🌙 **Dark Mode Support** - All components adapt to light/dark mode automatically
 - ♿️ **Accessibility Ready** - VoiceOver and Dynamic Type support built-in
 - 📱 **iOS & macOS** - Works on all Apple platforms
