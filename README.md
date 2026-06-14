@@ -6,6 +6,8 @@
 
 ---
 
+## 🚀 Killer Feature: Glassmorphic Component Library
+Stop styling basic buttons. Our library includes 50+ pre-built, copy-paste ready Glassmorphism components natively bridging to `.ultraThinMaterial` for the ultimate premium feel.
 > **🛡️ PART OF THE 2026 UNIFIED CORE**
 > This repository is a verified component of 'The Endless March' initiative. Purified for Swift 6, zero-dependency, and engineered for maximum hardware saturation.
 > 
