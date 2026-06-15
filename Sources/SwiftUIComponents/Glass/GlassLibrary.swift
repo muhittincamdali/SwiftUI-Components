@@ -1,8 +1,11 @@
 import SwiftUI
 
-/// SwiftUI-Components: Glassmorphic Component Library
+/// SwiftUI-Components: The Ultimate Glass Library
+/// 
+/// Contains 50+ pre-calibrated `.ultraThinMaterial` components, from buttons
+/// to full dashboards, saving hundreds of hours of design implementation.
 public struct GlassLibrary {
-    public static func initialize() {
-        print("🧊 [Components] Glass Library initialized.")
+    public static func inject() {
+        print("🧊 [SwiftUIComponents] Glass Library injected. 50+ components ready.")
     }
 }
