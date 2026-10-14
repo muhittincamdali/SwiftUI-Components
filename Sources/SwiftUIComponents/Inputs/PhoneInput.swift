@@ -134,7 +134,7 @@ public struct PhoneInput: View {
                 .padding(.vertical, 14)
                 .onChange(of: phoneNumber) { _, newValue in
                     if autoFormat {
-                        phoneNumber = formatPhoneNumber(newValue)
+                        phoneNumber = Self.format(newValue, pattern: selectedCountry.format)
                     }
                     validatePhone()
                 }
@@ -207,18 +207,21 @@ public struct PhoneInput: View {
     
     // MARK: - Formatting
     
-    private func formatPhoneNumber(_ number: String) -> String {
-        let digits = number.filter { $0.isNumber }
-        let format = selectedCountry.format
-        
-        guard !format.isEmpty else {
+    /// Fills `pattern` (where `#` stands for one digit) with the ASCII digits of `number`.
+    ///
+    /// Literal characters are only emitted while digits remain; digits beyond the pattern
+    /// are appended unchanged. An empty pattern returns the bare digits.
+    public nonisolated static func format(_ number: String, pattern: String) -> String {
+        let digits = digits(in: number)
+
+        guard !pattern.isEmpty else {
             return digits
         }
-        
+
         var result = ""
         var digitIndex = digits.startIndex
-        
-        for char in format {
+
+        for char in pattern {
             guard digitIndex < digits.endIndex else { break }
             
             if char == "#" {
@@ -240,9 +243,16 @@ public struct PhoneInput: View {
     // MARK: - Validation
     
     private func validatePhone() {
-        let digits = phoneNumber.filter { $0.isNumber }
-        let isValid = digits.count >= 7 && digits.count <= 15
-        onValidation?(isValid)
+        onValidation?(Self.hasValidLength(phoneNumber))
+    }
+
+    /// E.164 allows at most 15 digits; fewer than 7 is not a dialable subscriber number.
+    public nonisolated static func hasValidLength(_ number: String) -> Bool {
+        (7...15).contains(digits(in: number).count)
+    }
+
+    nonisolated static func digits(in text: String) -> String {
+        String(text.unicodeScalars.filter { ("0"..."9").contains($0) })
     }
 }
 
@@ -290,8 +300,7 @@ public struct CompactPhoneInput: View {
     }
     
     private func updateFullNumber() {
-        let digits = localNumber.filter { $0.isNumber }
-        fullNumber = selectedCountry.dialCode + digits
+        fullNumber = selectedCountry.dialCode + PhoneInput.digits(in: localNumber)
     }
 }
 
