@@ -20,10 +20,6 @@ let package = Package(
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
-        ),
-        .testTarget(
-            name: "SwiftUIComponentsTests",
-            dependencies: ["SwiftUIComponents"]
         )
     ]
 )
