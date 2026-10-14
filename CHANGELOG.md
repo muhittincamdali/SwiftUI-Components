@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-10-14
+
 The component library that was removed in June 2026 (commit `c7b3799`) is back, now building
 for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
 
@@ -82,5 +84,6 @@ First tagged version: 14 source files (buttons, cards, inputs, loading views, te
 toasts) for iOS 16 and macOS 13. Most of the components listed above were added after this
 tag: 37 source files later on 2026-02-03 (`ca55bc5`) and 49 on 2026-02-05 (`80e7649`).
 
-[Unreleased]: https://github.com/muhittincamdali/SwiftUI-Components/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/muhittincamdali/SwiftUI-Components/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/muhittincamdali/SwiftUI-Components/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/muhittincamdali/SwiftUI-Components/releases/tag/v1.0.0
