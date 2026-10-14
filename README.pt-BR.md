@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@1c867e74d41d7dd0e85e44e3b06a9c1bfcae625c status=reviewed -->
+<!-- i18n-source: README.md@81a0529e2214c577e9e6fdc13d1be417a380b8f6 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg" alt="SwiftUI Components: Views SwiftUI prontas para iOS e macOS: botões, cards, gráficos, formulários e mais."></picture></p>
@@ -52,7 +52,7 @@ usar um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não
 - **Lógica testada**: detecção do número do cartão e verificação de Luhn, datas de validade,
   formatação de telefone, validadores, esquemas JSON, fluxos em etapas, reconhecimento de deslizes e
   formas, taxas de contraste, quebra de linha do `FlowLayout`, geometria dos gráficos, paginação e
-  as filas de avisos são cobertas por 158 testes do Swift Testing que rodam no macOS e em um
+  as filas de avisos são cobertas por 163 testes do Swift Testing que rodam no macOS e em um
   simulador de iPhone.
 - **Exemplos de uso que compilam**: todo exemplo da seção “Uso” vem do
   [app de exemplo](Examples/ComponentGallery), que a CI compila para iOS e macOS.
