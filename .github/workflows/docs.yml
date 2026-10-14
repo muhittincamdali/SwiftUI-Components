@@ -1,0 +1,24 @@
+# Managed by the repository kit (muhittincamdali/.github). Pages source must be "GitHub Actions".
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  docc:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: muhittincamdali/.github/.github/workflows/docc-pages.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    with:
+      targets: SwiftUIComponents
+      deploy: ${{ github.event_name != 'pull_request' }}
+      # Each view would otherwise get a page for every View modifier it inherits (about 850),
+      # which makes the site too large for GitHub Pages.
+      skip-synthesized-members: true

@@ -1,18 +1,13 @@
 import SwiftUI
 
-/// Main entry point for the SwiftUI Components toolkit.
-public enum SwiftUIComponents {
-    public static let version = "2.0.0"
-}
-
-/// A world-class standard for rounded material surfaces.
+/// Places content on a rounded material background with a hairline border.
 public struct SurfaceModifier: ViewModifier {
     public let cornerRadius: CGFloat
-    
+
     public init(cornerRadius: CGFloat = 16) {
         self.cornerRadius = cornerRadius
     }
-    
+
     public func body(content: Content) -> some View {
         content
             .background(.regularMaterial)
@@ -25,8 +20,8 @@ public struct SurfaceModifier: ViewModifier {
 }
 
 public extension View {
-    /// Applies a world-class Surface material effect.
+    /// Applies ``SurfaceModifier`` with the given corner radius.
     func surface(cornerRadius: CGFloat = 16) -> some View {
-        self.modifier(SurfaceModifier(cornerRadius: cornerRadius))
+        modifier(SurfaceModifier(cornerRadius: cornerRadius))
     }
 }
