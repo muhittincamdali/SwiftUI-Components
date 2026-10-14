@@ -75,8 +75,12 @@ extension View {
     ///     .onSwipeSequence([.up, .up, .down, .down]) { showsDebugMenu = true }
     /// ```
     ///
-    /// - Parameter accessibilityActionName: When set, the action is also offered to VoiceOver
-    ///   under this name.
+    /// - Parameters:
+    ///   - sequence: The directions to swipe, in order.
+    ///   - timeLimit: The most seconds from the first to the last swipe of the sequence.
+    ///   - accessibilityActionName: When set, the action is also offered to VoiceOver under this
+    ///     name.
+    ///   - action: Called each time the sequence is completed.
     public func onSwipeSequence(
         _ sequence: [SwipeDirection],
         within timeLimit: TimeInterval = 3,

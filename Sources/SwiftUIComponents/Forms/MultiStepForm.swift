@@ -34,6 +34,9 @@ public struct MultiStepForm<Content: View>: View {
     ///   - flow: The step state. Its `count` should match `steps.count`.
     ///   - steps: Titles (and optional subtitles and icons) for the step indicator.
     ///   - canAdvance: Whether the user may leave the given step with Next or Finish.
+    ///   - backTitle: The title of the button that returns to the previous step.
+    ///   - nextTitle: The title of the button that moves to the next step.
+    ///   - finishTitle: The title of that button on the last step.
     ///   - onFinish: Called when the user taps Finish on the last step.
     ///   - content: The view for the given step index.
     public init(
