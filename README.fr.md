@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@81a0529e2214c577e9e6fdc13d1be417a380b8f6 status=reviewed -->
+<!-- i18n-source: README.md@9069cf84f8474e68967f33b61ce51eb4407ad285 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg" alt="SwiftUI Components: Des vues SwiftUI prêtes à l’emploi pour iOS et macOS : boutons, cartes, graphiques, formulaires et plus."></picture></p>
