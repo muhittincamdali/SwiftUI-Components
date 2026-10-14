@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@70896b24aa3368f59c03d971679f11b95e994eb8 status=reviewed -->
+<!-- i18n-source: README.md@7c4db95cae1aeeedbecb9045602e9f7824e03b43 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg" alt="SwiftUI Components: 适用于 iOS 和 macOS 的现成 SwiftUI 视图：按钮、卡片、图表、表单等。"></picture></p>
@@ -33,7 +33,7 @@
 - **一套代码同时支持 iOS 和 macOS**：仅 UIKit 提供的细节会退回到最接近的 AppKit 行为；[平台说明](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)逐项列出。
 - **Swift 6 语言模式**：软件包在严格并发检查下编译，且没有警告。
 - **经过测试的逻辑**：卡号识别与 Luhn 校验、有效期、电话号码格式化、`FlowLayout` 换行、图表几何、分页以及提示队列，由 56 个 Swift Testing 测试覆盖，在 macOS 和 iPhone 模拟器上运行。
-- **可编译的示例**：下面的每段示例代码都来自[示例应用](Examples/ComponentGallery)，CI 会为 iOS 和 macOS 构建它。
+- **可编译的用法示例**：“使用方法”一节中的每段示例代码都来自[示例应用](Examples/ComponentGallery)，CI 会为 iOS 和 macOS 构建它。
 
 ### 包含的内容
 

@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@70896b24aa3368f59c03d971679f11b95e994eb8 status=reviewed -->
+<!-- i18n-source: README.md@7c4db95cae1aeeedbecb9045602e9f7824e03b43 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg" alt="SwiftUI Components: Fertige SwiftUI-Views für iOS und macOS: Buttons, Karten, Diagramme, Formulare und mehr."></picture></p>
@@ -45,8 +45,8 @@ Abhängigkeiten.
   Telefonnummernformatierung, der Zeilenumbruch von `FlowLayout`, Diagrammgeometrie, Paginierung
   und die Toast-Warteschlangen sind durch 56 Swift-Testing-Tests abgedeckt, die auf macOS und
   einem iPhone-Simulator laufen.
-- **Beispiele, die kompilieren** – jedes Codebeispiel unten stammt aus der
-  [Beispiel-App](Examples/ComponentGallery), die die CI für iOS und macOS baut.
+- **Verwendungsbeispiele, die kompilieren** – jedes Beispiel im Abschnitt „Verwendung“
+  stammt aus der [Beispiel-App](Examples/ComponentGallery), die die CI für iOS und macOS baut.
 
 ### Was enthalten ist
 

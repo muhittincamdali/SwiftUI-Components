@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@70896b24aa3368f59c03d971679f11b95e994eb8 status=reviewed -->
+<!-- i18n-source: README.md@7c4db95cae1aeeedbecb9045602e9f7824e03b43 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-light.svg" alt="SwiftUI Components: Готовые SwiftUI-представления для iOS и macOS: кнопки, карточки, графики, формы и не только."></picture></p>
@@ -45,8 +45,8 @@ Swift-пакет с готовыми SwiftUI-представлениями дл
   форматирование телефонных номеров, перенос строк в `FlowLayout`, геометрия графиков, постраничная
   загрузка и очереди уведомлений покрыты 56 тестами Swift Testing, которые запускаются на macOS и
   в симуляторе iPhone.
-- **Примеры, которые компилируются** — каждый фрагмент кода ниже взят из
-  [примера приложения](Examples/ComponentGallery), который CI собирает для iOS и macOS.
+- **Примеры использования, которые компилируются** — каждый пример из раздела
+  «Использование» взят из [примера приложения](Examples/ComponentGallery), который CI собирает для iOS и macOS.
 
 ### Что входит в пакет
 

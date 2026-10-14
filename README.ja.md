@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@70896b24aa3368f59c03d971679f11b95e994eb8 status=reviewed -->
+<!-- i18n-source: README.md@7c4db95cae1aeeedbecb9045602e9f7824e03b43 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg" alt="SwiftUI Components: iOS と macOS 向けの既製 SwiftUI ビュー。ボタン、カード、チャート、フォームなど。"></picture></p>
@@ -33,7 +33,7 @@ iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビュー
 - **1 つのコードベースで iOS と macOS に対応**：UIKit にしかない部分は最も近い AppKit の動作に置き換わります。[プラットフォームの違い](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)に一覧があります。
 - **Swift 6 言語モード**：厳格な並行性チェックのもとで、警告なしにビルドできます。
 - **テスト済みのロジック**：カード番号の判定と Luhn チェック、有効期限、電話番号の整形、`FlowLayout` の折り返し、チャートの図形計算、ページング、トーストのキューを、macOS と iPhone シミュレータで実行する 56 個の Swift Testing テストで確認しています。
-- **コンパイルされるサンプル**：以下のコード例はすべて、CI が iOS と macOS 向けにビルドする [サンプルアプリ](Examples/ComponentGallery)から取っています。
+- **コンパイルされる使用例**：「使い方」のコード例はすべて、CI が iOS と macOS 向けにビルドする [サンプルアプリ](Examples/ComponentGallery)から取っています。
 
 ### 含まれるもの
 

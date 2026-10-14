@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@70896b24aa3368f59c03d971679f11b95e994eb8 status=reviewed -->
+<!-- i18n-source: README.md@7c4db95cae1aeeedbecb9045602e9f7824e03b43 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg" alt="SwiftUI Components: Views SwiftUI prontas para iOS e macOS: botões, cards, gráficos, formulários e mais."></picture></p>
@@ -45,7 +45,7 @@ um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não tem 
   formatação de telefone, quebra de linha do `FlowLayout`, geometria dos gráficos, paginação e as
   filas de avisos são cobertas por 56 testes do Swift Testing que rodam no macOS e em um simulador
   de iPhone.
-- **Exemplos que compilam**: todo trecho de código abaixo vem do
+- **Exemplos de uso que compilam**: todo exemplo da seção “Uso” vem do
   [app de exemplo](Examples/ComponentGallery), que a CI compila para iOS e macOS.
 
 ### O que está incluído

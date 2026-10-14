@@ -40,7 +40,7 @@ a theme system or an architecture. The package has no dependencies.
 - **Tested logic** — card-number detection and the Luhn check, expiry dates, phone formatting,
   `FlowLayout` line breaking, chart geometry, pagination and the toast queues are covered by
   56 Swift Testing tests that run on macOS and an iPhone simulator.
-- **Samples that compile** — every code sample below comes from the
+- **Usage samples that compile** — every sample in the Usage section comes from the
   [example app](Examples/ComponentGallery), which CI builds for iOS and macOS.
 
 ### What's included
