@@ -102,8 +102,5 @@
       "SwiftUIComponents"
     ]
   },
-  "socialTheme": "dark",
-  "badgeOverrides": {
-    "versionNote": "predates main"
-  }
+  "socialTheme": "dark"
 }
