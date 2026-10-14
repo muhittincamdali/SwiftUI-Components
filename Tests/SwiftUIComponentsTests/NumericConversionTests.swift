@@ -42,6 +42,14 @@ struct NumericConversionTests {
         #expect(range.sliderStep(step) == expected)
     }
 
+    @Test("pill and gradient sliders snap inside the range", arguments: [
+        (9.9, 0.0...10.0, 3.0 as Double?, 9.0), (5.4, 1.0...10.0, 2.0, 5.0), (7.3, 0.0...100.0, nil, 7.3),
+        (7.3, 0.0...100.0, 0.0, 7.3), (7.3, 0.0...100.0, .nan, 7.3), (5.0, 5.0...5.0, 0.5, 5.0),
+    ])
+    func sliderSnapping(rawValue: Double, range: ClosedRange<Double>, step: Double?, expected: Double) {
+        #expect(SliderField.snapped(rawValue, in: range, step: step) == expected)
+    }
+
     @Test("noise texture draws a bounded number of dots", arguments: [
         (CGSize(width: 100, height: 100), 1_000),
         (CGSize(width: 10_000, height: 10_000), 4_000),
