@@ -43,10 +43,10 @@ for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
 - `TextInputField(keyboardType:)` now takes a `KeyboardKind` instead of `UIKeyboardType`.
 - `FlowLayout` is a single public type in `Layout/FlowLayout.swift` (three copies existed).
 - `HighlightedText` builds an `AttributedString`, so highlight backgrounds actually render.
-- CI runs through the shared workflows in `muhittincamdali/.github`: `swift test` on macOS
-  and `xcodebuild` builds for iOS and macOS, DocC to GitHub Pages, link, wording and
-  translation checks. Repository workflows run `xcodebuild test` on an iPhone simulator and
-  build the example app. All actions are pinned to commit SHAs, with no `continue-on-error`.
+- CI runs through the shared workflows in `muhittincamdali/.github`: `swift test` on macOS,
+  `xcodebuild` builds for iOS and macOS, `xcodebuild test` on an iPhone simulator, DocC to
+  GitHub Pages, link, wording and translation checks. A repository workflow builds the example
+  app. All actions are pinned to commit SHAs, with no `continue-on-error`.
 - The code of conduct, security policy and issue forms come from `muhittincamdali/.github`
   instead of local copies.
 

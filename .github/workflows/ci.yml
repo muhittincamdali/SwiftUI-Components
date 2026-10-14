@@ -16,3 +16,5 @@ jobs:
     uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
     with:
       platforms: '["iOS","macOS"]'
+      scheme: SwiftUIComponents
+      test-on-simulator: true
