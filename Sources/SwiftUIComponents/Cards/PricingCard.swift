@@ -68,7 +68,7 @@ public struct PricingCard: View {
                         .font(.system(size: 36, weight: .bold))
                     Text(period)
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(isPopular ? .white.opacity(0.8) : .secondary)
                         .padding(.bottom, 6)
                 }
                 .foregroundColor(isPopular ? .white : .primary)
