@@ -1,295 +1,240 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Swift-6.0-FA7343?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 6.0"/>
-  <img src="https://img.shields.io/badge/Platform-iOS%20|%20macOS%20|%20visionOS-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Platform"/>
-  <img src="https://img.shields.io/badge/Standard-Unified%20Core-5856D6?style=for-the-badge" alt="Standard"/>
-</p>
+# SwiftUI Components
 
----
+[![CI](https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg)](https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml)
 
-## 🚀 Killer Feature: Glassmorphic Component Library
-Stop styling basic buttons. Our library includes 50+ pre-built, copy-paste ready Glassmorphism components natively bridging to `.ultraThinMaterial` for the ultimate premium feel.
-> **🛡️ PART OF THE 2026 UNIFIED CORE**
-> This repository is a verified component of 'The Endless March' initiative. Purified for Swift 6, zero-dependency, and engineered for maximum hardware saturation.
-> 
-> *Flagship Engines:* [SwiftNetwork](https://github.com/muhittincamdali/SwiftNetwork) | [SwiftAI](https://github.com/muhittincamdali/SwiftAI) | [LiquidGlassKit](https://github.com/muhittincamdali/LiquidGlassKit)
+A Swift package of ready-made SwiftUI views — buttons, cards, charts, form inputs, lists,
+overlays, loaders and toasts — for iOS 17+ and macOS 14+. No dependencies.
 
----
+Every component is a plain SwiftUI `View` configured through its initializer, so you can use
+one or two of them without adopting a theme system or an architecture.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift"/>
-  <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS"/>
-  <img src="https://img.shields.io/badge/macOS-14.0+-purple.svg" alt="macOS"/>
-  <img src="https://img.shields.io/badge/Components-98-green.svg" alt="Components"/>
-  <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="License"/>
-</p>
+| Light                                                  | Dark                                                 |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| ![Buttons, light](docs/images/buttons-light.png)       | ![Buttons, dark](docs/images/buttons-dark.png)       |
+| ![Cards, light](docs/images/cards-light.png)           | ![Cards, dark](docs/images/cards-dark.png)           |
+| ![Charts, light](docs/images/charts-light.png)         | ![Charts, dark](docs/images/charts-dark.png)         |
+| ![Indicators, light](docs/images/indicators-light.png) | ![Indicators, dark](docs/images/indicators-dark.png) |
 
-<h1 align="center">🎨 SwiftUI Components</h1>
+The screenshots are rendered on the iOS simulator from
+[`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
+by [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh).
 
-<p align="center">
-  <strong>A comprehensive library of 98 production-ready SwiftUI components</strong><br/>
-  Build beautiful iOS & macOS apps faster with pre-built, customizable UI components
-</p>
+## What's included
 
----
+The package has 220 public view types and 12 view modifiers (counted from the sources),
+grouped by folder:
 
-## ✨ Features
+| Category         | Examples                                                                                                                                        |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Buttons (25)     | `PrimaryButton`, `SecondaryButton`, `LoadingButton`, `GradientButton`, `PillButton`, `FloatingActionButton`, `SplitButton`, `ToggleButtonGroup` |
+| Cards (27)       | `CardView`, `StatCard`, `PricingCard`, `ProfileCard`, `ProductCard`, `FlipCard`, `ExpandableCard`, `TestimonialCarousel`                        |
+| Charts (19)      | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `GaugeChart`, `RingChart`, `SparklineChart`                                     |
+| Forms (21)       | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `MultiSelectField`, `SliderField`, `RangeSlider`, `OTPField`, `DateField`        |
+| Inputs (13)      | `CreditCardInput`, `PhoneInput`, `PinInput`, `TimedPinInput`, `RatingInput`, `SearchBar`, `TagInput`                                            |
+| Lists (18)       | `InfiniteScrollList` + `PaginatedListViewModel`, `ExpandableList`, `TreeView`, `SwipeableRow`, `ReorderableList`                                |
+| Loading (16)     | `ProgressRing`, `SkeletonView`, `ShimmerView`, `DotLoader`, `PulseLoader`, `StateView`, `AsyncContentView`                                      |
+| Navigation (19)  | `SegmentedControl`, `StepsIndicator`, `PageIndicator`, `BreadcrumbView`, `CustomTabBar`, `SideMenu`                                             |
+| Overlays (13)    | `BottomSheet`, `AlertDialog`, `ConfirmationDialog`, `ModalView`, `Tooltip`, `PopoverView`                                                       |
+| Text (17)        | `HighlightedText`, `ExpandableText`, `TypewriterText`, `MarqueeText`, `AnimatedCounter`, `GradientText`                                         |
+| Toasts (4)       | `ToastView`, `SnackBar` + `SnackBarManager`, `Banner` + `BannerManager`                                                                         |
+| Misc (27)        | `Avatar`, `Badge`, `Chip`, `Tag`, `Carousel`, `Accordion`, `CountdownTimer`, `Stopwatch`                                                        |
+| Empty states (1) | `EmptyStateView`                                                                                                                                |
 
-- 🎯 **98 Real Components** - No placeholders, every component is fully functional
-- 🌙 **Dark Mode Support** - All components adapt to light/dark mode automatically
-- ♿️ **Accessibility Ready** - VoiceOver and Dynamic Type support built-in
-- 📱 **iOS & macOS** - Works on all Apple platforms
-- 🎨 **Highly Customizable** - Every component supports extensive customization
-- 📖 **SwiftUI Previews** - Live previews for every component
-- 🧪 **Well Tested** - Comprehensive test coverage
+Layout and modifiers: `FlowLayout` (wrapping layout), `.surface()`, `.shimmer()`,
+`.toast(isPresenting:message:)`, `.snackBarHost()`, `.bannerHost()`.
 
----
+## Requirements
 
-## 📦 Component Categories
+- iOS 17 or macOS 14
+- `swift-tools-version` 6.0; the package builds in the Swift 6 language mode. Developed with
+  Xcode 27; CI uses the default Xcode of GitHub's `macos-26` runner
 
-| Category | Components | Description |
-|----------|------------|-------------|
-| **Buttons** | 17 | Primary, Secondary, Ghost, Icon, Social, Animated, Toggle, Split, Neumorphic, and more |
-| **Cards** | 15 | Profile, Product, Stat, Pricing, Feature, Testimonial, Media, Notification, Event, Dashboard |
-| **Forms** | 8 | FormField, SelectField, CheckboxGroup, RadioGroup, SliderField, DateTimeField, FileUpload, OTPField |
-| **Charts** | 7 | Area, Line, Bar, Pie, Donut, Gauge, MultiRing Progress |
-| **Navigation** | 7 | NavigationBar, TabBar, Steps, Breadcrumb, Menu, Sidebar, Pagination |
-| **Loading** | 7 | Skeleton, Shimmer, Pulse, Dot, Progress Ring, Content Loader, State View |
-| **Misc** | 9 | Avatar, Badge, Chip, Timer, Countdown, Carousel, Accordion, Quote, Tag |
-| **Lists** | 6 | Grouped, Selectable, Collapsible, Swipeable, Horizontal, Snap |
-| **Text** | 6 | Gradient, Animated Counter, Typewriter, Highlighted, Marquee, Expandable |
-| **Inputs** | 6 | Search, Rating, Tag, Phone, Credit Card, PIN |
-| **Overlays** | 5 | Bottom Sheet, Modal, Tooltip, Alert Dialog, Popover |
-| **Toast** | 4 | Toast, Snackbar, Banner, Notification |
-| **Empty States** | 1 | Comprehensive empty state with multiple styles |
+A few UIKit-only details (haptics, keyboard type, wheel pickers, paged `TabView`) fall back to
+the nearest AppKit behaviour on macOS. The DocC article _Platform Differences_ lists them.
 
----
+## Installation
 
-## 🚀 Installation
-
-### Swift Package Manager
-
-Add SwiftUI Components to your project through Xcode:
-
-1. File → Add Packages...
-2. Enter the repository URL:
-```
-https://github.com/muhittincamdali/SwiftUI-Components.git
-```
-3. Select "Up to Next Major Version" with "1.0.0"
-
-Or add it to your `Package.swift`:
+Swift Package Manager, in Xcode via **File > Add Package Dependencies…** with
+`https://github.com/muhittincamdali/SwiftUI-Components.git`, or in `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "1.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [.product(name: "SwiftUIComponents", package: "SwiftUI-Components")]
+    )
 ]
 ```
 
----
+## Usage
 
-## 📖 Usage
-
-### Import the library
-
-```swift
-import SwiftUIComponents
-```
+The samples below are copied from
+[`Tests/SwiftUIComponentsTests/ReadmeExamples.swift`](Tests/SwiftUIComponentsTests/ReadmeExamples.swift),
+so they are compiled on every test run.
 
 ### Buttons
 
 ```swift
-// Primary button with loading state
-PrimaryButton("Submit", isLoading: $isLoading) {
-    await submitForm()
+import SwiftUI
+import SwiftUIComponents
+
+struct CheckoutButtons: View {
+    @State private var payState: LoadingButton.LoadingState = .idle
+
+    var body: some View {
+        VStack(spacing: 12) {
+            PrimaryButton("Continue") {
+                print("Continue tapped")
+            }
+
+            LoadingButton("Pay $9.99", state: $payState) {
+                try? await Task.sleep(for: .seconds(1))
+                return true // false shows the failure state
+            }
+        }
+        .padding()
+    }
 }
-
-// Social login buttons
-SocialButton(.apple) { await signInWithApple() }
-SocialButton(.google) { await signInWithGoogle() }
-
-// Animated buttons
-AnimatedButton("Save", icon: "checkmark", animation: .bounce) {
-    save()
-}
-
-// Toggle button
-ToggleButton(
-    isOn: $isFollowing,
-    onLabel: "Following",
-    offLabel: "Follow"
-)
-```
-
-### Cards
-
-```swift
-// Profile card with stats
-ProfileCard(
-    name: "John Doe",
-    subtitle: "iOS Developer",
-    stats: [
-        .init(value: "1.2K", label: "Posts"),
-        .init(value: "45K", label: "Followers")
-    ],
-    style: .expanded
-)
-
-// Product card
-ProductCard(
-    title: "MacBook Pro",
-    price: "$2,499",
-    originalPrice: "$2,799",
-    rating: 4.9,
-    badge: "SALE",
-    onAddToCart: { }
-)
-
-// Stat cards for dashboards
-StatCard(
-    title: "Revenue",
-    value: "$124,500",
-    icon: "dollarsign.circle",
-    trend: .init(value: 12.5, isPositive: true)
-)
-```
-
-### Forms
-
-```swift
-// Form field with validation
-FormField(label: "Email", isRequired: true, errorMessage: emailError) {
-    TextInputField(text: $email, placeholder: "Enter email", icon: "envelope")
-}
-
-// OTP input
-OTPField(code: $otpCode, length: 6, style: .boxes) { code in
-    verifyCode(code)
-}
-
-// Multi-select
-MultiSelectField(
-    selections: $selectedTags,
-    options: [("swift", "Swift"), ("swiftui", "SwiftUI"), ("ios", "iOS")],
-    placeholder: "Select tags"
-)
 ```
 
 ### Charts
 
 ```swift
-// Area chart
-AreaChart(
-    data: [10, 25, 15, 40, 30, 55],
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    color: .blue
-)
+struct WeeklyStats: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            BarChart(data: [
+                .init(value: 32, label: "Mon"),
+                .init(value: 45, label: "Tue"),
+                .init(value: 28, label: "Wed"),
+            ])
+            .frame(height: 180)
 
-// Pie/Donut chart
-DonutChart(
-    slices: [
-        .init(value: 60, label: "Complete", color: .green),
-        .init(value: 25, label: "In Progress", color: .blue),
-        .init(value: 15, label: "Pending", color: .orange)
-    ],
-    centerValue: "85%",
-    centerLabel: "Done"
-)
-
-// Gauge
-GaugeChart(value: 72, maxValue: 100, label: "Speed")
-```
-
-### Empty States
-
-```swift
-// No results
-EmptyStateView.noResults(action: .init("Clear Search") { clearSearch() })
-
-// No connection
-EmptyStateView.noConnection(action: .init("Retry") { retry() })
-
-// Custom empty state
-EmptyStateView(
-    title: "No Messages",
-    message: "Start a conversation",
-    illustration: .messages,
-    action: .init("New Message", icon: "plus") { }
-)
-```
-
-### Loading States
-
-```swift
-// Content loader
-ContentLoader(style: .card)
-ContentLoader(style: .list)
-ContentLoader(style: .profile)
-
-// Loading overlay
-ZStack {
-    YourContent()
-    LoadingOverlay(isLoading: $isLoading, message: "Saving...")
+            SparklineChart(data: [3, 5, 4, 7, 6, 9], style: .gradient, lineColor: .purple)
+                .frame(height: 50)
+        }
+        .padding()
+    }
 }
 ```
 
----
+### Payment form
 
-## 🎨 Customization
-
-All components support extensive customization through initializer parameters:
+`CreditCardInput` formats the number as you type, detects the card network and validates the
+number (Luhn), expiry date, CVV length and cardholder name.
 
 ```swift
-// Custom colors
-PrimaryButton("Submit", color: .purple) { }
+struct PaymentForm: View {
+    @State private var number = ""
+    @State private var expiry = ""
+    @State private var cvv = ""
+    @State private var name = ""
+    @State private var canPay = false
 
-// Custom styles
-Tag("Swift", style: .outlined, color: .orange)
-
-// Custom sizes
-CircleButton(icon: "plus", size: .large, style: .filled(.blue)) { }
+    var body: some View {
+        VStack {
+            CreditCardInput(
+                cardNumber: $number,
+                expiryDate: $expiry,
+                cvv: $cvv,
+                cardholderName: $name,
+                onValidationChange: { canPay = $0 }
+            )
+            PrimaryButton("Pay", isDisabled: !canPay) {}
+        }
+        .padding()
+    }
+}
 ```
 
----
+The formatting and validation helpers are public if you need them elsewhere:
 
-## 📱 Requirements
+```swift
+let type = CreditCardInput.CardType.detect(from: "3782 822463 10005") // .amex
+let pretty = CreditCardInput.formatCardNumber("378282246310005")     // "3782 822463 10005"
+let valid = CreditCardInput.isLuhnValid("378282246310005")           // true
+```
 
-- iOS 17.0+
-- macOS 14.0+
-- Xcode 15.0+
-- Swift 6.0+
+### Snackbars
 
----
+```swift
+struct InboxScreen: View {
+    var body: some View {
+        List {
+            Button("Archive") {
+                SnackBarManager.shared.show(message: "Conversation archived", style: .success)
+            }
+        }
+        .snackBarHost()
+    }
+}
+```
 
-## 🤝 Contributing
+Snackbars are queued and shown one at a time; `BannerManager` works the same way with
+`.bannerHost()`, except that a new banner replaces the current one.
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+### Flow layout
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```swift
+struct TopicPicker: View {
+    let topics = ["SwiftUI", "Combine", "Concurrency", "Testing", "Accessibility"]
 
----
+    var body: some View {
+        FlowLayout(spacing: 8) {
+            ForEach(topics, id: \.self) { topic in
+                Tag(topic)
+            }
+        }
+    }
+}
+```
 
-## 📄 License
+## Documentation
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+API documentation is written as a DocC catalog in
+[`Sources/SwiftUIComponents/SwiftUIComponents.docc`](Sources/SwiftUIComponents/SwiftUIComponents.docc).
+Build it in Xcode with **Product > Build Documentation**, or from the command line:
 
----
+```sh
+xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=iOS'
+```
 
-## 📈 Star History
+## How it is built and tested
 
-<a href="https://star-history.com/#muhittincamdali/SwiftUI-Components&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=muhittincamdali/SwiftUI-Components&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=muhittincamdali/SwiftUI-Components&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=muhittincamdali/SwiftUI-Components&type=Date" />
- </picture>
-</a>
+- `Sources/SwiftUIComponents/<Category>/` holds one file per component family. Components keep
+  their state in `@State`/`@Binding`; the only reference types are `SnackBarManager`,
+  `BannerManager` and `PaginatedListViewModel`, all `@MainActor`.
+- Logic that can be tested without a screen — card-number detection and formatting, the Luhn
+  and expiry checks, phone formatting, rating hit-testing, highlight matching, `FlowLayout`
+  line breaking, chart geometry, pagination and the toast queues — lives in static functions
+  or the manager classes and is covered by Swift Testing suites in `Tests/`.
+- `RenderTests` renders the gallery pages with `ImageRenderer` in light and dark mode, which
+  catches views that crash or collapse to an empty size. Most individual views do not have
+  their own tests.
+- CI runs `swift test` on macOS and `xcodebuild test` on an iPhone simulator.
 
----
+Run the tests locally:
 
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/muhittincamdali">Muhittin Camdali</a>
-</p>
+```sh
+swift test                                    # macOS
+xcodebuild test -scheme SwiftUIComponents \
+  -destination 'platform=iOS Simulator,name=iPhone 17'
+```
+
+## History
+
+The components were first published in February 2026. A June 2026 cleanup replaced them with
+placeholder code; they were restored in October 2026, made to compile for iOS and macOS in the
+Swift 6 language mode, and several bugs found while adding tests were fixed. See
+[CHANGELOG.md](CHANGELOG.md).
+
+## Contributing
+
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
