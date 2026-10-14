@@ -6,14 +6,14 @@ Add the package, place a component, and wire up the shared toast managers.
 
 In Xcode choose **File > Add Package Dependencies…**, paste
 `https://github.com/muhittincamdali/SwiftUI-Components.git` into the search field at the top
-right, set **Dependency Rule** to **Branch** `main`, choose **Add Package**, and in the next
-sheet add the **SwiftUIComponents** library to your app target. The only release so far,
-1.0.0, predates the current components, so a version rule would resolve to older code. In a
-package, add it to `Package.swift` instead:
+right, leave **Dependency Rule** at **Up to Next Major Version** from `2.0.0`, choose
+**Add Package**, and in the next sheet add the **SwiftUIComponents** library to your app target.
+Use 2.0.0 or later: the earlier 1.0.0 release predates the current components. In a package,
+add it to `Package.swift` instead:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "MyApp", dependencies: [
