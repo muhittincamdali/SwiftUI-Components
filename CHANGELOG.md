@@ -46,6 +46,8 @@ changed in a breaking way.
 - `OTPField`, `SecurePINField` and `PinInput` keep only ASCII digits (or ASCII letters and
   digits for `PinInput(inputType: .alphanumeric)`) and filter pasted text before cutting it
   to length, so `"123-456"` fills all six cells.
+- `CreditCardInput`'s cardholder field prompts for "Name on card" instead of showing the sample
+  name "John Doe".
 
 ### Fixed
 
@@ -74,8 +76,15 @@ changed in a breaking way.
 - `ReadingTimeText` with a `wordsPerMinute` of 0 divided by zero; the speed is now at least 1.
 - A `step` that is zero, negative, NaN, infinite or larger than the range no longer stops the
   app in `SliderField` and `SliderRatingInput`, including `SliderRatingInput(range: 5...5)` with
-  its default step; the slider then moves without steps. The pill and gradient `SliderField`
-  styles count steps from the lower bound and stay inside the range.
+  its default step; the slider then moves without steps. The same happens for a range that is
+  not finite or holds more than 10,000 steps, such as `0...1e15` with a step of 1, which tried
+  to allocate memory for every step. The pill and gradient `SliderField` styles count steps
+  from the lower bound and stay inside the range.
+- `PageIndicator`'s `.numbers` and `.progress` styles stopped the app for a `currentPage` of
+  `Int.max`; the page number shown is now kept between 0 and the page count.
+- `StepperButton` stopped the app when a step passed `Int.max` or `Int.min`, for example a
+  VoiceOver increment on a range ending at `Int.max`; such a step now leaves the value
+  unchanged. A negative `step` no longer swaps what the two buttons do.
 - `TexturedGlassCard` drew one noise dot per ten square points without limit; it now draws at
   most 4,000.
 
