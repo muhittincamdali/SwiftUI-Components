@@ -60,6 +60,22 @@ struct CountParameterTests {
         #expect(image.height > 0)
     }
 
+    /// A step on an infinite range stopped the process, and a range of 1e15 steps tried to
+    /// allocate one entry per step. Over 10,000 steps the sliders move without steps.
+    @MainActor
+    @Test("sliders render with ranges too large for their step", arguments: [
+        (0.0...Double.infinity, 1.0), (0.0...1e15, 1.0), (0.0...1.0, 1e-300), (0.0...1_000_000.0, 0.01),
+    ])
+    func rendersWithTooManySteps(range: ClosedRange<Double>, step: Double) throws {
+        let views = VStack {
+            SliderField(value: .constant(0.5), range: range, step: step)
+            SliderRatingInput(rating: .constant(0.5), range: range, step: step)
+        }
+        let renderer = ImageRenderer(content: views.frame(width: 390))
+        let image = try #require(renderer.cgImage)
+        #expect(image.height > 0)
+    }
+
     /// A limit below what the layout needs used to slice past the array or build `1...0`.
     @MainActor
     @Test("views render with limits below their minimum", arguments: [-1, 0, 1, 2])
