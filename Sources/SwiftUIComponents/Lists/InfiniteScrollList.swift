@@ -226,6 +226,7 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
     @Published public private(set) var error: Error?
     
     private var currentPage: Int = 0
+    private var generation: Int = 0
     private let pageSize: Int
     private let fetchPage: (Int, Int) async throws -> [Item]
     
@@ -238,30 +239,39 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
     }
     
     /// Loads the next page of items.
+    ///
+    /// Does nothing while a page is loading or after a short page signalled the end.
+    /// `fetchPage` receives the zero-based page index and the page size.
     public func loadMore() async {
         guard !isLoading && hasMore else { return }
         
+        let requestGeneration = generation
         isLoading = true
         error = nil
         
         do {
             let newItems = try await fetchPage(currentPage, pageSize)
+            // A refresh started while this page was in flight; its result is stale.
+            guard requestGeneration == generation else { return }
             items.append(contentsOf: newItems)
             currentPage += 1
             hasMore = newItems.count >= pageSize
         } catch {
+            guard requestGeneration == generation else { return }
             self.error = error
         }
         
         isLoading = false
     }
     
-    /// Refreshes the list from the beginning.
+    /// Discards loaded items and loads the first page again, even if a page is in flight.
     public func refresh() async {
+        generation += 1
         items = []
         currentPage = 0
         hasMore = true
         error = nil
+        isLoading = false
         await loadMore()
     }
 }
