@@ -31,6 +31,8 @@ public struct SchemaForm: View {
     }
 
     public var body: some View {
+        // Once per render, so all patterns share one time budget.
+        let errors = schema.errors(in: values)
         VStack(alignment: .leading, spacing: 18) {
             if let title = schema.title {
                 Text(title)
@@ -38,17 +40,17 @@ public struct SchemaForm: View {
                     .accessibilityAddTraits(.isHeader)
             }
             ForEach(schema.fields) { field in
-                row(for: field)
+                row(for: field, error: visibleError(for: field, in: errors))
             }
         }
     }
 
     @ViewBuilder
-    private func row(for field: FormSchema.Field) -> some View {
+    private func row(for field: FormSchema.Field, error: String?) -> some View {
         if field.kind == .toggle {
             VStack(alignment: .leading, spacing: 6) {
                 Toggle(field.label, isOn: boolBinding(field.id))
-                if let error = visibleError(for: field) {
+                if let error {
                     Label(error, systemImage: "exclamationmark.circle.fill")
                         .font(.caption)
                         .foregroundStyle(.red)
@@ -60,7 +62,7 @@ public struct SchemaForm: View {
             FormField(
                 label: field.label,
                 helperText: field.help,
-                errorMessage: visibleError(for: field),
+                errorMessage: error,
                 isRequired: field.isRequired
             ) {
                 control(for: field)
@@ -105,9 +107,9 @@ public struct SchemaForm: View {
         }
     }
 
-    private func visibleError(for field: FormSchema.Field) -> String? {
+    private func visibleError(for field: FormSchema.Field, in errors: [String: String]) -> String? {
         guard showsAllErrors || edited.contains(field.id) else { return nil }
-        return field.error(for: values[field.id])
+        return errors[field.id]
     }
 
     private func update(_ id: String, to value: FormValue?) {

@@ -75,20 +75,35 @@ public struct FormSchema: Codable, Equatable, Sendable {
         self.fields = fields
     }
 
+    /// The largest JSON ``decode(from:)`` reads, in bytes.
+    public static let maximumSchemaSize = 1_000_000
+    /// The most fields ``check()`` accepts.
+    public static let maximumFieldCount = 200
+    /// The most fields with a `pattern` ``check()`` accepts.
+    public static let maximumPatternCount = 50
+    /// The most options a `choice` field may have.
+    public static let maximumOptionCount = 500
+    /// The total time one ``errors(in:)`` call spends matching patterns. A pattern that has not
+    /// finished when it runs out fails, so a slow schema cannot hold the main thread longer.
+    public static let patternTimeBudget: Duration = .milliseconds(100)
+
     /// Problems ``FormSchema/decode(from:)`` reports beyond malformed JSON.
     public enum SchemaError: Error, Equatable, Sendable {
         /// Two fields use the same `id`.
         case duplicateID(String)
         /// A `choice` field has no options.
         case missingOptions(String)
-        /// A field's `pattern` is not a valid regular expression.
+        /// A field's `pattern` is longer than 500 UTF-16 code units or does not compile as an
+        /// `NSRegularExpression`, the engine that runs it.
         case invalidPattern(String)
-        /// A field's `pattern` could freeze the app on some inputs: it repeats a group that can
-        /// match the same text in more than one way, such as `(a+)+` or `(a|a)+`, chains too many
-        /// open-ended repetitions, such as `\d+\d+\d+\d+x`, uses `\Q…\E`, `(?#…)` or the
-        /// `x` option, or is longer than 500 characters. Values longer than 256 characters are
-        /// never matched against a pattern; they fail it.
-        case unsafePattern(String)
+        /// A `choice` field has more than ``FormSchema/maximumOptionCount`` options.
+        case tooManyOptions(String)
+        /// The schema has more than ``FormSchema/maximumFieldCount`` fields.
+        case tooManyFields
+        /// More than ``FormSchema/maximumPatternCount`` fields have a `pattern`.
+        case tooManyPatterns
+        /// The JSON is larger than ``FormSchema/maximumSchemaSize`` bytes.
+        case schemaTooLarge
         /// A field's length or number limits are negative, not finite, or the minimum is above
         /// the maximum.
         case invalidLimits(String)
@@ -96,25 +111,31 @@ public struct FormSchema: Codable, Equatable, Sendable {
 
     /// Decodes a schema from JSON and checks that it can be rendered.
     public static func decode(from data: Data) throws -> FormSchema {
+        guard data.count <= maximumSchemaSize else { throw SchemaError.schemaTooLarge }
         let schema = try JSONDecoder().decode(FormSchema.self, from: data)
         try schema.check()
         return schema
     }
 
-    /// Throws a ``SchemaError`` for duplicate ids, choice fields without options, invalid or
-    /// unsafe patterns and impossible limits.
+    /// Throws a ``SchemaError`` for duplicate ids, choice fields without or with too many
+    /// options, invalid patterns, impossible limits, and schemas over the size limits.
     ///
     /// Run it on every schema you did not write yourself; ``decode(from:)`` does.
     public func check() throws {
+        guard fields.count <= Self.maximumFieldCount else { throw SchemaError.tooManyFields }
+        let patternCount = fields.lazy.filter { $0.pattern != nil }.count
+        guard patternCount <= Self.maximumPatternCount else { throw SchemaError.tooManyPatterns }
         var seen: Set<String> = []
         for field in fields {
             guard seen.insert(field.id).inserted else { throw SchemaError.duplicateID(field.id) }
             if field.kind == .choice, (field.options ?? []).isEmpty {
                 throw SchemaError.missingOptions(field.id)
             }
-            if let pattern = field.pattern {
-                guard (try? Regex(pattern)) != nil else { throw SchemaError.invalidPattern(field.id) }
-                guard PatternSafety.isSafe(pattern) else { throw SchemaError.unsafePattern(field.id) }
+            if (field.options?.count ?? 0) > Self.maximumOptionCount {
+                throw SchemaError.tooManyOptions(field.id)
+            }
+            if let pattern = field.pattern, !PatternMatcher.isValid(pattern) {
+                throw SchemaError.invalidPattern(field.id)
             }
             guard field.hasValidLimits else { throw SchemaError.invalidLimits(field.id) }
         }
@@ -134,10 +155,13 @@ public struct FormSchema: Codable, Equatable, Sendable {
     }
 
     /// The error message for each invalid field, keyed by field id. Empty when the form is valid.
+    ///
+    /// All pattern matches of one call share ``patternTimeBudget``.
     public func errors(in values: [String: FormValue]) -> [String: String] {
+        let deadline = ContinuousClock.now + Self.patternTimeBudget
         var errors: [String: String] = [:]
         for field in fields {
-            if let message = field.error(for: values[field.id]) {
+            if let message = field.error(for: values[field.id], patternDeadline: deadline) {
                 errors[field.id] = message
             }
         }
@@ -165,7 +189,9 @@ extension FormSchema {
         public var isRequired: Bool
         public var minLength: Int?
         public var maxLength: Int?
-        /// A regular expression the whole text must match.
+        /// A regular expression in `NSRegularExpression` (ICU) syntax that the whole text must
+        /// match. Text longer than 1,000 UTF-16 code units, and text the pattern cannot decide
+        /// within its time limit, fails it.
         public var pattern: String?
         /// The message for a `pattern` mismatch.
         public var patternMessage: String?
@@ -241,6 +267,10 @@ extension FormSchema {
 
         /// The error message for `value`, or `nil` when it is valid.
         public func error(for value: FormValue?) -> String? {
+            error(for: value, patternDeadline: .now + FormSchema.patternTimeBudget)
+        }
+
+        func error(for value: FormValue?, patternDeadline: ContinuousClock.Instant) -> String? {
             switch kind {
             case .toggle:
                 return isRequired && value?.bool != true ? "Turn this on to continue" : nil
@@ -249,8 +279,18 @@ extension FormSchema {
             case .choice:
                 return choiceError(value?.text)
             default:
-                return textValidator.validate(value?.text ?? "").message
+                return textError(value?.text ?? "", patternDeadline: patternDeadline)
             }
+        }
+
+        /// The pattern runs last, and only on text that passed every other rule.
+        private func textError(_ text: String, patternDeadline: ContinuousClock.Instant) -> String? {
+            if let message = textValidator.validate(text).message { return message }
+            guard let pattern, !text.isEmpty else { return nil }
+            // A schema can come from a server without `check()`, so the pattern may be invalid
+            // or slow; every outcome but a finished match fails the value.
+            let outcome = PatternMatcher.wholeMatch(pattern, in: text, deadline: patternDeadline)
+            return outcome == .match ? nil : patternMessage ?? "Invalid format"
         }
 
         private var textValidator: Validator<String> {
@@ -263,16 +303,6 @@ extension FormSchema {
             case .phone: validators.append(.phone())
             case .url: validators.append(.url())
             default: break
-            }
-            if let pattern {
-                let message = patternMessage ?? "Invalid format"
-                // A schema can come from a server and may not have been checked, so an unsafe
-                // pattern fails every value instead of running, and long text never reaches it.
-                let isSafe = PatternSafety.isSafe(pattern)
-                validators.append(.custom(message) {
-                    $0.isEmpty || (isSafe && $0.count <= PatternSafety.maximumInputLength)
-                })
-                validators.append(.matches(pattern, message: message))
             }
             return .all(validators)
         }

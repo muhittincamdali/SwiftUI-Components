@@ -149,16 +149,17 @@ extension Validator where Value == String {
 
     /// Fails unless the whole text matches the regular expression `pattern`.
     ///
+    /// The pattern uses `NSRegularExpression` (ICU) syntax and is compiled once, then cached.
     /// An invalid pattern makes every non-empty value fail, so a typo in the pattern shows up
     /// the first time you try the field.
     ///
-    /// Use patterns you wrote yourself. `Regex` backtracks, so a pattern such as `(a+)+$` can take
-    /// exponential time; ``FormSchema/check()`` rejects such patterns in a schema.
+    /// The engine backtracks, so a pattern such as `(a+)+$` can need exponential time. Each
+    /// match is therefore bounded: text longer than 1,000 UTF-16 code units fails without being
+    /// matched, a match that runs longer than 20 milliseconds is stopped and fails, and a
+    /// pattern stopped once fails every later value without running.
     public static func matches(_ pattern: String, message: String = "Invalid format") -> Validator {
         .custom(message) { text in
-            guard !text.isEmpty else { return true }
-            guard let regex = try? Regex(pattern) else { return false }
-            return (try? regex.wholeMatch(in: text)) != nil
+            text.isEmpty || PatternMatcher.wholeMatch(pattern, in: text) == .match
         }
     }
 
