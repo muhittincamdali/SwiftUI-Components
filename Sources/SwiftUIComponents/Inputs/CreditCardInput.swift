@@ -340,7 +340,7 @@ public struct CreditCardInput: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            TextField("John Doe", text: $cardholderName)
+            TextField("Name on card", text: $cardholderName)
                 .textContentType(.name)
                 .wordCapitalization()
                 .focused($focusedField, equals: .name)
