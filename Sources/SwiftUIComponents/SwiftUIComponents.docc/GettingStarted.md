@@ -4,8 +4,12 @@ Add the package, place a component, and wire up the shared toast managers.
 
 ## Add the package
 
-In Xcode choose **File > Add Package Dependencies…** and enter
-`https://github.com/muhittincamdali/SwiftUI-Components.git`, or add it to `Package.swift`:
+In Xcode choose **File > Add Package Dependencies…**, paste
+`https://github.com/muhittincamdali/SwiftUI-Components.git` into the search field at the top
+right, set **Dependency Rule** to **Branch** `main`, choose **Add Package**, and in the next
+sheet add the **SwiftUIComponents** library to your app target. The only release so far,
+1.0.0, predates the current components, so a version rule would resolve to older code. In a
+package, add it to `Package.swift` instead:
 
 ```swift
 dependencies: [
@@ -21,6 +25,13 @@ targets: [
 The package requires Swift 6 tools, iOS 17 or macOS 14.
 
 ## Place a component
+
+Import the module in the file where you use a component:
+
+```swift
+import SwiftUI
+import SwiftUIComponents
+```
 
 Components are configured through their initializers. Controls that change state take a
 `Binding`:
@@ -71,3 +82,10 @@ let model = PaginatedListViewModel<Article>(pageSize: 20) { page, size in
     try await api.articles(page: page, limit: size)
 }
 ```
+
+## Next steps
+
+- <doc:CollectingCardDetails> builds a payment form with validation.
+- <doc:PlatformDifferences> lists what behaves differently on macOS.
+- The `Examples/ComponentGallery` app in the repository shows every README sample on iOS and
+  macOS.
