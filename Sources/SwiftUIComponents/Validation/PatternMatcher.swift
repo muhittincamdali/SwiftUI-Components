@@ -46,19 +46,22 @@ enum PatternMatcher {
     }
 
     /// Whether the whole of `text` matches `pattern`, stopping at ``timeLimit`` or at
-    /// `deadline`, whichever comes first.
+    /// `deadline`, whichever comes first. Once `deadline` has passed the result is
+    /// ``Outcome/timedOut`` without compiling the pattern, even if it would not compile.
     static func wholeMatch(
         _ pattern: String,
         in text: String,
         deadline: ContinuousClock.Instant? = nil
     ) -> Outcome {
+        let clock = ContinuousClock()
+        // A spent budget must not pay for compiling the remaining fields' patterns.
+        if let deadline, clock.now >= deadline { return .timedOut }
         let entry = cache.entry(for: pattern)
         guard let regex = entry.regex else { return .invalidPattern }
         guard !entry.hasTimedOut else { return .timedOut }
         let length = text.utf16.count
         guard length <= maximumInputLength else { return .inputTooLong }
 
-        let clock = ContinuousClock()
         let ownDeadline = clock.now + timeLimit
         let stopAt = deadline.map { min($0, ownDeadline) } ?? ownDeadline
         guard clock.now < stopAt else { return .timedOut }

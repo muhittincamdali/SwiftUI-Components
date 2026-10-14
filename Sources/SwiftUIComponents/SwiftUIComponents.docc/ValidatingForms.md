@@ -121,8 +121,8 @@ accepts is exactly what runs. Then:
 - a match that runs longer than 20 milliseconds is stopped and fails the value, and that
   pattern fails later values without running again;
 - one `FormSchema/errors(in:)` call spends at most `FormSchema/patternTimeBudget` (100
-  milliseconds) on all its patterns; a pattern that has not finished by then fails. `SchemaForm`
-  calls it once per render.
+  milliseconds) on all its patterns; a pattern that has not finished by then fails, and the
+  patterns after it fail without being compiled. `SchemaForm` calls it once per render.
 
 These limits also hold for a schema that reaches the form without `check()`, for example
 through `JSONDecoder` directly. A legitimate pattern finishes in microseconds on such short

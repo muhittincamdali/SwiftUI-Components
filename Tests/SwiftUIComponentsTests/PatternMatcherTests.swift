@@ -56,6 +56,13 @@ struct PatternMatcherTests {
         #expect(PatternMatcher.wholeMatch(pattern, in: "123") == .match)
     }
 
+    /// `.timedOut` rather than `.invalidPattern` shows the deadline is checked before the
+    /// pattern is compiled, so fields after a spent budget cost no compile time.
+    @Test func aPassedDeadlineStopsBeforeCompiling() {
+        #expect(PatternMatcher.wholeMatch("[a(?:deadline)", in: "a", deadline: .now) == .timedOut)
+        #expect(PatternMatcher.wholeMatch("[a(?:deadline)", in: "a") == .invalidPattern)
+    }
+
     @Test("matches the whole text with the engine's own syntax", arguments: [
         ("[A-Z]{3}-[0-9]{3}", "ABC-123"), ("\\d{5}(-\\d{4})?", "12345-6789"), ("(cat|dog)+", "catdog"),
         ("(?i)[a-z0-9_]{3,16}", "Ada_99"), ("\\p{L}+", "Çağrı"), ("a|ab", "ab"), ("(ab)+", "abab"),
