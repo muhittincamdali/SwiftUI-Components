@@ -72,6 +72,10 @@ changed in a breaking way.
 - A negative `maxVisible` in `AvatarGroup` or `maxPoints` in `LiveSparklineChart` no longer
   stops the app; it is treated as 0.
 - `ReadingTimeText` with a `wordsPerMinute` of 0 divided by zero; the speed is now at least 1.
+- A `step` that is zero, negative, NaN, infinite or larger than the range no longer stops the
+  app in `SliderField` and `SliderRatingInput`, including `SliderRatingInput(range: 5...5)` with
+  its default step; the slider then moves without steps. The pill and gradient `SliderField`
+  styles count steps from the lower bound and stay inside the range.
 - `TexturedGlassCard` drew one noise dot per ten square points without limit; it now draws at
   most 4,000.
 
