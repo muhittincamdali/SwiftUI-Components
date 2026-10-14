@@ -156,7 +156,7 @@ public struct SliderField: View {
 
     /// `rawValue` moved to the nearest step counted from the lower bound, as `Slider` does, and
     /// kept inside `range`. Without a usable step the value is returned unchanged.
-    static func snapped(_ rawValue: Double, in range: ClosedRange<Double>, step: Double?) -> Double {
+    nonisolated static func snapped(_ rawValue: Double, in range: ClosedRange<Double>, step: Double?) -> Double {
         guard let step = range.sliderStep(step) else { return rawValue }
         let stepped = range.lowerBound + ((rawValue - range.lowerBound) / step).rounded() * step
         return min(max(stepped, range.lowerBound), range.upperBound)
