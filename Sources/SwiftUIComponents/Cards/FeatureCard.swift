@@ -8,7 +8,7 @@ public struct FeatureCard: View {
     let color: Color
     let style: FeatureCardStyle
     let onTap: (() -> Void)?
-    
+
     public enum FeatureCardStyle {
         case standard
         case horizontal
@@ -16,7 +16,7 @@ public struct FeatureCard: View {
         case numbered(Int)
         case gradient
     }
-    
+
     public init(
         title: String,
         description: String,
@@ -32,7 +32,7 @@ public struct FeatureCard: View {
         self.style = style
         self.onTap = onTap
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -52,7 +52,7 @@ public struct FeatureCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(description)")
     }
-    
+
     private var iconBox: some View {
         Image(systemName: icon)
             .font(.system(size: 24))
@@ -61,14 +61,14 @@ public struct FeatureCard: View {
             .background(color.opacity(0.15))
             .cornerRadius(14)
     }
-    
+
     private var standardView: some View {
         VStack(alignment: .leading, spacing: 12) {
             iconBox
-            
+
             Text(title)
                 .font(.system(size: 18, weight: .bold))
-            
+
             Text(description)
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
@@ -80,23 +80,23 @@ public struct FeatureCard: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
     }
-    
+
     private var horizontalView: some View {
         HStack(spacing: 16) {
             iconBox
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 16, weight: .bold))
-                
+
                 Text(description)
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
                     .lineLimit(2)
             }
-            
+
             Spacer()
-            
+
             if onTap != nil {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
@@ -108,7 +108,7 @@ public struct FeatureCard: View {
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 2)
     }
-    
+
     private var iconView: some View {
         VStack(spacing: 12) {
             Image(systemName: icon)
@@ -117,11 +117,11 @@ public struct FeatureCard: View {
                 .frame(width: 72, height: 72)
                 .background(color.opacity(0.1))
                 .clipShape(Circle())
-            
+
             Text(title)
                 .font(.system(size: 15, weight: .semibold))
                 .multilineTextAlignment(.center)
-            
+
             Text(description)
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
@@ -134,7 +134,7 @@ public struct FeatureCard: View {
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 2)
     }
-    
+
     private func numberedView(_ number: Int) -> some View {
         HStack(alignment: .top, spacing: 16) {
             Text("\(number)")
@@ -143,16 +143,16 @@ public struct FeatureCard: View {
                 .frame(width: 44, height: 44)
                 .background(color.opacity(0.15))
                 .cornerRadius(10)
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.system(size: 16, weight: .bold))
-                
+
                 Text(description)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
         }
         .padding(16)
@@ -160,19 +160,19 @@ public struct FeatureCard: View {
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 2)
     }
-    
+
     private var gradientView: some View {
         VStack(alignment: .leading, spacing: 12) {
             Image(systemName: icon)
                 .font(.system(size: 28))
                 .foregroundColor(.white)
-            
+
             Spacer()
-            
+
             Text(title)
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.white)
-            
+
             Text(description)
                 .font(.system(size: 13))
                 .foregroundColor(.white.opacity(0.85))
@@ -199,7 +199,7 @@ public struct ShowcaseCard: View {
     let imageName: String?
     let badge: String?
     let onLearnMore: (() -> Void)?
-    
+
     public init(
         title: String,
         description: String,
@@ -213,7 +213,7 @@ public struct ShowcaseCard: View {
         self.badge = badge
         self.onLearnMore = onLearnMore
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Image placeholder
@@ -224,7 +224,7 @@ public struct ShowcaseCard: View {
                     endPoint: .bottomTrailing
                 )
                 .frame(height: 160)
-                
+
                 if let badge = badge {
                     Text(badge)
                         .font(.system(size: 10, weight: .bold))
@@ -236,16 +236,16 @@ public struct ShowcaseCard: View {
                         .padding(12)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 10) {
                 Text(title)
                     .font(.system(size: 20, weight: .bold))
-                
+
                 Text(description)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
                     .lineLimit(3)
-                
+
                 if onLearnMore != nil {
                     Button(action: { onLearnMore?() }) {
                         HStack(spacing: 4) {
@@ -277,7 +277,7 @@ public struct ShowcaseCard: View {
                 color: .yellow,
                 style: .standard
             )
-            
+
             FeatureCard(
                 title: "Secure by Default",
                 description: "Enterprise-grade encryption for all your data.",
@@ -285,7 +285,7 @@ public struct ShowcaseCard: View {
                 color: .green,
                 style: .horizontal
             )
-            
+
             HStack(spacing: 12) {
                 FeatureCard(
                     title: "Cloud Sync",
@@ -294,7 +294,7 @@ public struct ShowcaseCard: View {
                     color: .blue,
                     style: .icon
                 )
-                
+
                 FeatureCard(
                     title: "Analytics",
                     description: "Real-time insights",
@@ -303,7 +303,7 @@ public struct ShowcaseCard: View {
                     style: .icon
                 )
             }
-            
+
             FeatureCard(
                 title: "Step One: Sign Up",
                 description: "Create your account in seconds with email or social login.",
@@ -311,7 +311,7 @@ public struct ShowcaseCard: View {
                 color: .orange,
                 style: .numbered(1)
             )
-            
+
             FeatureCard(
                 title: "Premium Features",
                 description: "Unlock all features with our premium plan.",
@@ -319,7 +319,7 @@ public struct ShowcaseCard: View {
                 color: .purple,
                 style: .gradient
             )
-            
+
             ShowcaseCard(
                 title: "New Dark Mode",
                 description: "Enjoy a beautiful dark theme that's easy on your eyes during night sessions.",

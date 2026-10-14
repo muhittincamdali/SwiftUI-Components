@@ -8,7 +8,7 @@ public struct DashboardCard: View {
     let content: AnyView
     let headerAction: (() -> Void)?
     let headerActionIcon: String?
-    
+
     public init<Content: View>(
         title: String,
         subtitle: String? = nil,
@@ -24,7 +24,7 @@ public struct DashboardCard: View {
         self.headerActionIcon = headerActionIcon
         self.content = AnyView(content())
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
@@ -34,20 +34,20 @@ public struct DashboardCard: View {
                         .font(.system(size: 16))
                         .foregroundColor(.accentColor)
                 }
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.system(size: 15, weight: .semibold))
-                    
+
                     if let subtitle = subtitle {
                         Text(subtitle)
                             .font(.system(size: 12))
                             .foregroundColor(.secondary)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 if let action = headerAction, let icon = headerActionIcon {
                     Button(action: action) {
                         Image(systemName: icon)
@@ -57,9 +57,9 @@ public struct DashboardCard: View {
                 }
             }
             .padding(16)
-            
+
             Divider()
-            
+
             // Content
             content
                 .padding(16)
@@ -76,14 +76,14 @@ public struct QuickActionCard: View {
     let icon: String
     let color: Color
     let action: () -> Void
-    
+
     public init(title: String, icon: String, color: Color = .accentColor, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
         self.color = color
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             VStack(spacing: 10) {
@@ -93,7 +93,7 @@ public struct QuickActionCard: View {
                     .frame(width: 56, height: 56)
                     .background(color.opacity(0.15))
                     .cornerRadius(14)
-                
+
                 Text(title)
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(.primary)
@@ -116,7 +116,7 @@ public struct ProgressCard: View {
     let target: String
     let current: String
     let color: Color
-    
+
     public init(
         title: String,
         progress: Double,
@@ -130,7 +130,7 @@ public struct ProgressCard: View {
         self.current = current
         self.color = color
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -142,21 +142,21 @@ public struct ProgressCard: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(color)
             }
-            
+
             // Progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(color.opacity(0.2))
                         .frame(height: 8)
-                    
+
                     RoundedRectangle(cornerRadius: 4)
                         .fill(color)
                         .frame(width: geometry.size.width * progress, height: 8)
                 }
             }
             .frame(height: 8)
-            
+
             HStack {
                 Text(current)
                     .font(.system(size: 20, weight: .bold))
@@ -175,14 +175,14 @@ public struct ProgressCard: View {
 /// Activity feed card
 public struct ActivityCard: View {
     let activities: [Activity]
-    
+
     public struct Activity: Identifiable {
         public let id = UUID()
         let icon: String
         let color: Color
         let title: String
         let time: String
-        
+
         public init(icon: String, color: Color, title: String, time: String) {
             self.icon = icon
             self.color = color
@@ -190,16 +190,16 @@ public struct ActivityCard: View {
             self.time = time
         }
     }
-    
+
     public init(activities: [Activity]) {
         self.activities = activities
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Recent Activity")
                 .font(.system(size: 15, weight: .semibold))
-            
+
             ForEach(activities) { activity in
                 HStack(spacing: 12) {
                     Image(systemName: activity.icon)
@@ -208,13 +208,13 @@ public struct ActivityCard: View {
                         .frame(width: 32, height: 32)
                         .background(activity.color.opacity(0.15))
                         .cornerRadius(8)
-                    
+
                     Text(activity.title)
                         .font(.system(size: 13))
                         .lineLimit(1)
-                    
+
                     Spacer()
-                    
+
                     Text(activity.time)
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
@@ -238,7 +238,7 @@ public struct ActivityCard: View {
                 QuickActionCard(title: "Send", icon: "paperplane.fill", color: .orange) {}
                 QuickActionCard(title: "More", icon: "ellipsis", color: .purple) {}
             }
-            
+
             // Progress cards
             ProgressCard(
                 title: "Monthly Goal",
@@ -247,7 +247,7 @@ public struct ActivityCard: View {
                 current: "$7,200",
                 color: .green
             )
-            
+
             ProgressCard(
                 title: "Storage Used",
                 progress: 0.85,
@@ -255,7 +255,7 @@ public struct ActivityCard: View {
                 current: "85 GB",
                 color: .orange
             )
-            
+
             // Dashboard card with custom content
             DashboardCard(
                 title: "Revenue",
@@ -266,7 +266,7 @@ public struct ActivityCard: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("$24,560")
                         .font(.system(size: 28, weight: .bold))
-                    
+
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.up.right")
                         Text("+12.5%")
@@ -275,7 +275,7 @@ public struct ActivityCard: View {
                     .foregroundColor(.green)
                 }
             }
-            
+
             // Activity feed
             ActivityCard(activities: [
                 .init(icon: "cart.fill", color: .blue, title: "New order #1234", time: "2m ago"),

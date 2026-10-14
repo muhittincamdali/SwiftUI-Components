@@ -11,7 +11,7 @@ import SwiftUI
 /// ```
 public struct Avatar: View {
     // MARK: - Types
-    
+
     /// The size of the avatar.
     public enum Size {
         case tiny
@@ -20,7 +20,7 @@ public struct Avatar: View {
         case large
         case extraLarge
         case custom(CGFloat)
-        
+
         var dimension: CGFloat {
             switch self {
             case .tiny: return 24
@@ -31,7 +31,7 @@ public struct Avatar: View {
             case .custom(let size): return size
             }
         }
-        
+
         var font: Font {
             switch self {
             case .tiny: return .system(size: 10, weight: .semibold)
@@ -43,16 +43,16 @@ public struct Avatar: View {
             }
         }
     }
-    
+
     /// The shape of the avatar.
     public enum Shape {
         case circle
         case rounded(CGFloat)
         case square
     }
-    
+
     // MARK: - Properties
-    
+
     private let image: Image?
     private let initials: String?
     private let systemIcon: String?
@@ -64,9 +64,9 @@ public struct Avatar: View {
     private let borderWidth: CGFloat
     private let showOnlineIndicator: Bool
     private let isOnline: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Creates an avatar with an image.
     public init(
         image: Image,
@@ -89,7 +89,7 @@ public struct Avatar: View {
         self.showOnlineIndicator = showOnlineIndicator
         self.isOnline = isOnline
     }
-    
+
     /// Creates an avatar with initials.
     public init(
         initials: String,
@@ -114,7 +114,7 @@ public struct Avatar: View {
         self.showOnlineIndicator = showOnlineIndicator
         self.isOnline = isOnline
     }
-    
+
     /// Creates an avatar with a system icon.
     public init(
         systemIcon: String = "person.fill",
@@ -137,24 +137,24 @@ public struct Avatar: View {
         self.showOnlineIndicator = false
         self.isOnline = false
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         ZStack(alignment: .bottomTrailing) {
             avatarContent
                 .frame(width: size.dimension, height: size.dimension)
                 .clipShape(avatarShape)
                 .overlay(borderOverlay)
-            
+
             if showOnlineIndicator {
                 onlineIndicator
             }
         }
     }
-    
+
     // MARK: - Avatar Content
-    
+
     @ViewBuilder
     private var avatarContent: some View {
         if let image {
@@ -177,9 +177,9 @@ public struct Avatar: View {
             }
         }
     }
-    
+
     // MARK: - Avatar Shape
-    
+
     private var avatarShape: AnyShape {
         switch shape {
         case .circle:
@@ -190,9 +190,9 @@ public struct Avatar: View {
             AnyShape(Rectangle())
         }
     }
-    
+
     // MARK: - Border Overlay
-    
+
     @ViewBuilder
     private var borderOverlay: some View {
         if let borderColor, borderWidth > 0 {
@@ -209,9 +209,9 @@ public struct Avatar: View {
             }
         }
     }
-    
+
     // MARK: - Online Indicator
-    
+
     private var onlineIndicator: some View {
         Circle()
             .fill(isOnline ? Color.green : Color.gray)
@@ -231,20 +231,20 @@ public struct AvatarGroup: View {
     private let size: Avatar.Size
     private let maxVisible: Int
     private let overlapAmount: CGFloat
-    
+
     public struct AvatarData: Identifiable {
         public let id = UUID()
         public let image: Image?
         public let initials: String?
         public let backgroundColor: Color
-        
+
         public init(image: Image? = nil, initials: String? = nil, backgroundColor: Color = .blue) {
             self.image = image
             self.initials = initials
             self.backgroundColor = backgroundColor
         }
     }
-    
+
     public init(
         avatars: [AvatarData],
         size: Avatar.Size = .small,
@@ -256,7 +256,7 @@ public struct AvatarGroup: View {
         self.maxVisible = maxVisible
         self.overlapAmount = overlapAmount
     }
-    
+
     public var body: some View {
         HStack(spacing: -size.dimension * overlapAmount) {
             ForEach(Array(displayedAvatars.enumerated()), id: \.element.id) { index, data in
@@ -268,7 +268,7 @@ public struct AvatarGroup: View {
                     Avatar(size: size, borderColor: .white, borderWidth: 2)
                 }
             }
-            
+
             if remainingCount > 0 {
                 Avatar(
                     initials: "+\(remainingCount)",
@@ -281,11 +281,11 @@ public struct AvatarGroup: View {
             }
         }
     }
-    
+
     private var displayedAvatars: [AvatarData] {
         Array(avatars.prefix(maxVisible))
     }
-    
+
     private var remainingCount: Int {
         max(0, avatars.count - maxVisible)
     }
@@ -299,7 +299,7 @@ public struct EditableAvatar: View {
     private let size: Avatar.Size
     private let initials: String
     private let onEdit: () -> Void
-    
+
     public init(
         image: Binding<Image?>,
         size: Avatar.Size = .large,
@@ -311,7 +311,7 @@ public struct EditableAvatar: View {
         self.initials = initials
         self.onEdit = onEdit
     }
-    
+
     public var body: some View {
         ZStack(alignment: .bottomTrailing) {
             if let img = image {
@@ -321,7 +321,7 @@ public struct EditableAvatar: View {
             } else {
                 Avatar(size: size)
             }
-            
+
             Button(action: onEdit) {
                 Image(systemName: "camera.fill")
                     .font(.system(size: size.dimension * 0.2))
@@ -346,13 +346,13 @@ public struct EditableAvatar: View {
             Avatar(initials: "AB", size: .medium, backgroundColor: .green)
             Avatar(initials: "XY", size: .large, backgroundColor: .purple)
         }
-        
+
         HStack(spacing: 16) {
             Avatar(size: .medium)
             Avatar(initials: "JD", size: .medium, showOnlineIndicator: true, isOnline: true)
             Avatar(initials: "AB", size: .medium, showOnlineIndicator: true, isOnline: false)
         }
-        
+
         AvatarGroup(avatars: [
             .init(initials: "A", backgroundColor: .blue),
             .init(initials: "B", backgroundColor: .green),
@@ -361,7 +361,7 @@ public struct EditableAvatar: View {
             .init(initials: "E", backgroundColor: .pink),
             .init(initials: "F", backgroundColor: .red)
         ])
-        
+
         EditableAvatar(image: .constant(nil), initials: "JD") { }
     }
     .padding()

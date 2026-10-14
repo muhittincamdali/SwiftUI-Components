@@ -10,7 +10,7 @@ public struct NotificationCard: View {
     let isRead: Bool
     let onTap: (() -> Void)?
     let onDismiss: (() -> Void)?
-    
+
     public enum NotificationType {
         case info
         case success
@@ -18,7 +18,7 @@ public struct NotificationCard: View {
         case error
         case message
         case update
-        
+
         var color: Color {
             switch self {
             case .info: return .blue
@@ -29,7 +29,7 @@ public struct NotificationCard: View {
             case .update: return .indigo
             }
         }
-        
+
         var defaultIcon: String {
             switch self {
             case .info: return "info.circle.fill"
@@ -41,7 +41,7 @@ public struct NotificationCard: View {
             }
         }
     }
-    
+
     public init(
         title: String,
         message: String,
@@ -61,7 +61,7 @@ public struct NotificationCard: View {
         self.onTap = onTap
         self.onDismiss = onDismiss
     }
-    
+
     public var body: some View {
         HStack(alignment: .top, spacing: 12) {
             // Icon
@@ -71,34 +71,34 @@ public struct NotificationCard: View {
                 .frame(width: 40, height: 40)
                 .background(type.color.opacity(0.15))
                 .cornerRadius(10)
-            
+
             // Content
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(title)
                         .font(.system(size: 14, weight: .semibold))
-                    
+
                     if !isRead {
                         Circle()
                             .fill(type.color)
                             .frame(width: 8, height: 8)
                     }
-                    
+
                     Spacer()
-                    
+
                     if let time = time {
                         Text(time)
                             .font(.system(size: 11))
                             .foregroundColor(.secondary)
                     }
                 }
-                
+
                 Text(message)
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
                     .lineLimit(2)
             }
-            
+
             // Dismiss button
             if onDismiss != nil {
                 Button(action: { onDismiss?() }) {
@@ -129,7 +129,7 @@ public struct NotificationBanner: View {
     let action: (() -> Void)?
     let actionLabel: String?
     let onDismiss: (() -> Void)?
-    
+
     public init(
         message: String,
         type: NotificationCard.NotificationType = .info,
@@ -143,19 +143,19 @@ public struct NotificationBanner: View {
         self.actionLabel = actionLabel
         self.onDismiss = onDismiss
     }
-    
+
     public var body: some View {
         HStack(spacing: 12) {
             Image(systemName: type.defaultIcon)
                 .font(.system(size: 18))
                 .foregroundColor(type.color)
-            
+
             Text(message)
                 .font(.system(size: 13, weight: .medium))
                 .foregroundColor(.primary)
-            
+
             Spacer()
-            
+
             if let action = action, let label = actionLabel {
                 Button(action: action) {
                     Text(label)
@@ -163,7 +163,7 @@ public struct NotificationBanner: View {
                         .foregroundColor(type.color)
                 }
             }
-            
+
             if onDismiss != nil {
                 Button(action: { onDismiss?() }) {
                     Image(systemName: "xmark")
@@ -184,12 +184,12 @@ public struct NotificationDot: View {
     let count: Int?
     let color: Color
     let size: DotSize
-    
+
     public enum DotSize {
         case small
         case medium
         case large
-        
+
         var dimension: CGFloat {
             switch self {
             case .small: return 8
@@ -198,13 +198,13 @@ public struct NotificationDot: View {
             }
         }
     }
-    
+
     public init(count: Int? = nil, color: Color = .red, size: DotSize = .medium) {
         self.count = count
         self.color = color
         self.size = size
     }
-    
+
     public var body: some View {
         Group {
             if let count = count, count > 0 {
@@ -235,7 +235,7 @@ public struct NotificationDot: View {
                 isRead: false,
                 onDismiss: {}
             )
-            
+
             NotificationCard(
                 title: "Payment Successful",
                 message: "Your payment of $49.99 has been processed successfully.",
@@ -243,7 +243,7 @@ public struct NotificationDot: View {
                 type: .success,
                 isRead: true
             )
-            
+
             NotificationCard(
                 title: "New Message",
                 message: "John sent you a message: Hey, how's the project going?",
@@ -251,7 +251,7 @@ public struct NotificationDot: View {
                 type: .message,
                 isRead: false
             )
-            
+
             NotificationCard(
                 title: "Warning",
                 message: "Your storage is almost full. Consider upgrading.",
@@ -260,7 +260,7 @@ public struct NotificationDot: View {
                 isRead: true,
                 onDismiss: {}
             )
-            
+
             NotificationCard(
                 title: "Error",
                 message: "Failed to sync data. Please check your connection.",
@@ -268,9 +268,9 @@ public struct NotificationDot: View {
                 type: .error,
                 isRead: false
             )
-            
+
             Divider().padding(.vertical, 8)
-            
+
             NotificationBanner(
                 message: "Your trial expires in 3 days",
                 type: .warning,
@@ -278,13 +278,13 @@ public struct NotificationDot: View {
                 actionLabel: "Upgrade",
                 onDismiss: {}
             )
-            
+
             NotificationBanner(
                 message: "Successfully saved!",
                 type: .success,
                 onDismiss: {}
             )
-            
+
             HStack(spacing: 20) {
                 NotificationDot()
                 NotificationDot(count: 5)

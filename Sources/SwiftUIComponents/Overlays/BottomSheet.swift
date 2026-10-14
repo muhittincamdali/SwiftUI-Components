@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct BottomSheet<Content: View>: View {
     // MARK: - Types
-    
+
     /// Snap points for the sheet height.
     public enum DetentHeight {
         case small
@@ -21,7 +21,7 @@ public struct BottomSheet<Content: View>: View {
         case full
         case custom(CGFloat)
         case fraction(CGFloat)
-        
+
         func height(in containerHeight: CGFloat) -> CGFloat {
             switch self {
             case .small: return containerHeight * 0.25
@@ -33,9 +33,9 @@ public struct BottomSheet<Content: View>: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var isPresented: Bool
     private let detents: [DetentHeight]
     private let showDragIndicator: Bool
@@ -44,14 +44,14 @@ public struct BottomSheet<Content: View>: View {
     private let shadowRadius: CGFloat
     private let dismissOnBackgroundTap: Bool
     private let content: () -> Content
-    
+
     @State private var currentDetent: Int = 0
     @State private var dragOffset: CGFloat = 0
     @State private var sheetHeight: CGFloat = 0
     @GestureState private var isDragging: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new bottom sheet.
     public init(
         isPresented: Binding<Bool>,
@@ -72,9 +72,9 @@ public struct BottomSheet<Content: View>: View {
         self.dismissOnBackgroundTap = dismissOnBackgroundTap
         self.content = content
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
@@ -92,7 +92,7 @@ public struct BottomSheet<Content: View>: View {
                         }
                         .transition(.opacity)
                 }
-                
+
                 // Sheet
                 if isPresented {
                     sheetContent(in: geometry)
@@ -102,18 +102,18 @@ public struct BottomSheet<Content: View>: View {
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: isPresented)
     }
-    
+
     // MARK: - Sheet Content
-    
+
     private func sheetContent(in geometry: GeometryProxy) -> some View {
         let currentHeight = detents[currentDetent].height(in: geometry.size.height)
-        
+
         return VStack(spacing: 0) {
             // Drag indicator
             if showDragIndicator {
                 dragIndicator
             }
-            
+
             // Content
             content()
                 .frame(maxWidth: .infinity)
@@ -133,9 +133,9 @@ public struct BottomSheet<Content: View>: View {
             sheetHeight = detents[newValue].height(in: geometry.size.height)
         }
     }
-    
+
     // MARK: - Drag Indicator
-    
+
     private var dragIndicator: some View {
         Capsule()
             .fill(Color.platformGray4)
@@ -143,9 +143,9 @@ public struct BottomSheet<Content: View>: View {
             .padding(.top, 8)
             .padding(.bottom, 4)
     }
-    
+
     // MARK: - Drag Gesture
-    
+
     private func dragGesture(in geometry: GeometryProxy) -> some Gesture {
         DragGesture()
             .updating($isDragging) { _, state, _ in
@@ -163,14 +163,14 @@ public struct BottomSheet<Content: View>: View {
                 )
             }
     }
-    
+
     private func handleDragEnd(translation: CGFloat, velocity: CGFloat, containerHeight: CGFloat) {
         let currentHeight = detents[currentDetent].height(in: containerHeight)
         let targetHeight = currentHeight - translation
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             dragOffset = 0
-            
+
             // Check for dismiss
             if translation > 100 || velocity > 500 {
                 if currentDetent == 0 {
@@ -178,15 +178,15 @@ public struct BottomSheet<Content: View>: View {
                     return
                 }
             }
-            
+
             // Find closest detent
             var closestDetent = currentDetent
             var closestDistance = CGFloat.infinity
-            
+
             for (index, detent) in detents.enumerated() {
                 let height = detent.height(in: containerHeight)
                 let distance = abs(height - targetHeight)
-                
+
                 // Prefer direction of gesture
                 if velocity > 200 && index < currentDetent {
                     closestDetent = index
@@ -199,7 +199,7 @@ public struct BottomSheet<Content: View>: View {
                     closestDetent = index
                 }
             }
-            
+
             currentDetent = closestDetent
         }
     }
@@ -212,11 +212,11 @@ public struct BottomSheetModifier<SheetContent: View>: ViewModifier {
     @Binding var isPresented: Bool
     let detents: [BottomSheet<SheetContent>.DetentHeight]
     let content: () -> SheetContent
-    
+
     public func body(content: Content) -> some View {
         ZStack {
             content
-            
+
             BottomSheet(
                 isPresented: $isPresented,
                 detents: detents,
@@ -244,7 +244,7 @@ public struct FixedBottomSheet<Content: View>: View {
     @Binding private var isPresented: Bool
     private let height: CGFloat
     private let content: () -> Content
-    
+
     public init(
         isPresented: Binding<Bool>,
         height: CGFloat,
@@ -254,7 +254,7 @@ public struct FixedBottomSheet<Content: View>: View {
         self.height = height
         self.content = content
     }
-    
+
     public var body: some View {
         ZStack(alignment: .bottom) {
             if isPresented {
@@ -265,7 +265,7 @@ public struct FixedBottomSheet<Content: View>: View {
                             isPresented = false
                         }
                     }
-                
+
                 VStack {
                     content()
                 }
@@ -286,33 +286,33 @@ public struct FixedBottomSheet<Content: View>: View {
 struct BottomSheetPreview: View {
     @State private var showSheet = false
     @State private var showFixedSheet = false
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
                 Button("Show Bottom Sheet") {
                     showSheet = true
                 }
-                
+
                 Button("Show Fixed Sheet") {
                     showFixedSheet = true
                 }
             }
-            
+
             BottomSheet(isPresented: $showSheet, detents: [.small, .medium, .large]) {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Bottom Sheet")
                         .font(.headline)
-                    
+
                     Text("Drag to resize or dismiss. This sheet has three detent heights.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    
+
                     Spacer()
                 }
                 .padding()
             }
-            
+
             FixedBottomSheet(isPresented: $showFixedSheet, height: 200) {
                 VStack {
                     Text("Fixed Height Sheet")

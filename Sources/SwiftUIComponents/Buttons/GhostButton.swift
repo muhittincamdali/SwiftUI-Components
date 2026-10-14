@@ -7,14 +7,14 @@ public struct GhostButton: View {
     let iconPosition: IconPosition
     let color: Color
     let action: () -> Void
-    
+
     @State private var isPressed = false
-    
+
     public enum IconPosition {
         case leading
         case trailing
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -28,17 +28,17 @@ public struct GhostButton: View {
         self.color = color
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
                 if iconPosition == .leading, let icon = icon {
                     Image(systemName: icon)
                 }
-                
+
                 Text(title)
                     .fontWeight(.medium)
-                
+
                 if iconPosition == .trailing, let icon = icon {
                     Image(systemName: icon)
                 }
@@ -66,7 +66,7 @@ public struct LinkButton: View {
     let color: Color
     let showUnderline: Bool
     let action: () -> Void
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -80,13 +80,13 @@ public struct LinkButton: View {
         self.showUnderline = showUnderline
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
                 Text(title)
                     .underline(showUnderline)
-                
+
                 if let icon = icon {
                     Image(systemName: icon)
                         .font(.system(size: 12))
@@ -104,9 +104,9 @@ public struct LinkButton: View {
         GhostButton("Ghost Button", action: {})
         GhostButton("With Icon", icon: "arrow.right", iconPosition: .trailing, action: {})
         GhostButton("Cancel", icon: "xmark", color: .red, action: {})
-        
+
         Divider()
-        
+
         LinkButton("Learn More", icon: "arrow.up.right", action: {})
         LinkButton("Terms of Service", showUnderline: true, action: {})
     }

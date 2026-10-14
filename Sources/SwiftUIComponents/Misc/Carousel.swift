@@ -8,10 +8,10 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
     let autoScroll: Bool
     let autoScrollInterval: TimeInterval
     @ViewBuilder let content: (Item) -> Content
-    
+
     @State private var currentIndex = 0
     @State private var offset: CGFloat = 0
-    
+
     public init(
         items: [Item],
         spacing: CGFloat = 16,
@@ -27,12 +27,12 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
         self.autoScrollInterval = autoScrollInterval
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             GeometryReader { geometry in
                 let cardWidth = geometry.size.width - 60
-                
+
                 HStack(spacing: spacing) {
                     ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                         content(item)
@@ -50,7 +50,7 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
                         }
                         .onEnded { value in
                             let threshold = cardWidth / 3
-                            
+
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                 if value.translation.width < -threshold && currentIndex < items.count - 1 {
                                     currentIndex += 1
@@ -62,7 +62,7 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
                         }
                 )
             }
-            
+
             // Page indicators
             if showIndicators {
                 HStack(spacing: 8) {
@@ -93,10 +93,10 @@ public struct PeekCarousel<Item: Identifiable, Content: View>: View {
     let items: [Item]
     let peekAmount: CGFloat
     @ViewBuilder let content: (Item, Bool) -> Content
-    
+
     @State private var currentIndex = 0
     @State private var dragOffset: CGFloat = 0
-    
+
     public init(
         items: [Item],
         peekAmount: CGFloat = 40,
@@ -106,11 +106,11 @@ public struct PeekCarousel<Item: Identifiable, Content: View>: View {
         self.peekAmount = peekAmount
         self.content = content
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let cardWidth = geometry.size.width - peekAmount * 2
-            
+
             HStack(spacing: 12) {
                 ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                     content(item, index == currentIndex)
@@ -126,7 +126,7 @@ public struct PeekCarousel<Item: Identifiable, Content: View>: View {
                     }
                     .onEnded { value in
                         let threshold = cardWidth / 4
-                        
+
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                             if value.translation.width < -threshold && currentIndex < items.count - 1 {
                                 currentIndex += 1
@@ -148,9 +148,9 @@ public struct SnapCarousel<Item: Identifiable, Content: View>: View {
     let items: [Item]
     let itemHeight: CGFloat
     @ViewBuilder let content: (Item, Bool) -> Content
-    
+
     @State private var currentIndex = 0
-    
+
     public init(
         items: [Item],
         itemHeight: CGFloat = 300,
@@ -160,7 +160,7 @@ public struct SnapCarousel<Item: Identifiable, Content: View>: View {
         self.itemHeight = itemHeight
         self.content = content
     }
-    
+
     public var body: some View {
         GeometryReader { viewport in
             ScrollView(.vertical, showsIndicators: false) {
@@ -198,10 +198,10 @@ public struct SnapCarousel<Item: Identifiable, Content: View>: View {
 public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
     let items: [Item]
     @ViewBuilder let content: (Item) -> Content
-    
+
     @State private var currentIndex = 0
     @State private var dragOffset: CGFloat = 0
-    
+
     public init(
         items: [Item],
         @ViewBuilder content: @escaping (Item) -> Content
@@ -209,7 +209,7 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
         self.items = items
         self.content = content
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -218,7 +218,7 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
                     let scale = 1.0 - abs(offset) * 0.15
                     let xOffset = offset * 60 + dragOffset / 3
                     let rotation = -offset * 5 - Double(dragOffset) / 50
-                    
+
                     content(item)
                         .frame(width: geometry.size.width * 0.7)
                         .scaleEffect(max(scale, 0.7))
@@ -240,7 +240,7 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
                     }
                     .onEnded { value in
                         let threshold: CGFloat = 50
-                        
+
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             if value.translation.width < -threshold && currentIndex < items.count - 1 {
                                 currentIndex += 1
@@ -261,7 +261,7 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
         let color: Color
         let title: String
     }
-    
+
     let items = [
         CarouselItem(color: .blue, title: "Card 1"),
         CarouselItem(color: .green, title: "Card 2"),
@@ -269,14 +269,14 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
         CarouselItem(color: .purple, title: "Card 4"),
         CarouselItem(color: .pink, title: "Card 5")
     ]
-    
+
     return ScrollView {
         VStack(spacing: 40) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Basic Carousel")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 Carousel(items: items, autoScroll: true) { item in
                     RoundedRectangle(cornerRadius: 16)
                         .fill(item.color)
@@ -288,12 +288,12 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
                 }
                 .frame(height: 200)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Peek Carousel")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 PeekCarousel(items: items) { item, isActive in
                     RoundedRectangle(cornerRadius: 16)
                         .fill(item.color)
@@ -306,12 +306,12 @@ public struct Card3DCarousel<Item: Identifiable, Content: View>: View {
                 }
                 .frame(height: 200)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("3D Carousel")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 Card3DCarousel(items: items) { item in
                     RoundedRectangle(cornerRadius: 16)
                         .fill(item.color)

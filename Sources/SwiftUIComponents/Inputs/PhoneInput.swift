@@ -10,7 +10,7 @@ import SwiftUI
 /// ```
 public struct PhoneInput: View {
     // MARK: - Types
-    
+
     /// Country information for phone codes.
     public struct Country: Identifiable, Hashable, Sendable {
         public let id: String
@@ -18,7 +18,7 @@ public struct PhoneInput: View {
         public let dialCode: String
         public let flag: String
         public let format: String
-        
+
         public init(id: String, name: String, dialCode: String, flag: String, format: String = "") {
             self.id = id
             self.name = name
@@ -26,7 +26,7 @@ public struct PhoneInput: View {
             self.flag = flag
             self.format = format
         }
-        
+
         public static let defaultCountries: [Country] = [
             Country(id: "US", name: "United States", dialCode: "+1", flag: "🇺🇸", format: "(###) ###-####"),
             Country(id: "GB", name: "United Kingdom", dialCode: "+44", flag: "🇬🇧", format: "#### ######"),
@@ -45,9 +45,9 @@ public struct PhoneInput: View {
             Country(id: "RU", name: "Russia", dialCode: "+7", flag: "🇷🇺", format: "### ###-##-##"),
         ]
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var phoneNumber: String
     @Binding private var selectedCountry: Country
     private let countries: [Country]
@@ -59,13 +59,13 @@ public struct PhoneInput: View {
     private let showFlag: Bool
     private let autoFormat: Bool
     private let onValidation: ((Bool) -> Void)?
-    
+
     @State private var showCountryPicker: Bool = false
     @State private var searchText: String = ""
     @FocusState private var isFocused: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new phone input.
     public init(
         phoneNumber: Binding<String>,
@@ -92,9 +92,9 @@ public struct PhoneInput: View {
         self.autoFormat = autoFormat
         self.onValidation = onValidation
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             // Country code button
@@ -106,11 +106,11 @@ public struct PhoneInput: View {
                         Text(selectedCountry.flag)
                             .font(.title3)
                     }
-                    
+
                     Text(selectedCountry.dialCode)
                         .font(.body)
                         .foregroundStyle(.primary)
-                    
+
                     Image(systemName: "chevron.down")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
@@ -120,12 +120,12 @@ public struct PhoneInput: View {
                 .background(Color.platformGray6)
             }
             .buttonStyle(.plain)
-            
+
             // Divider
             Rectangle()
                 .fill(isFocused ? focusedBorderColor : borderColor)
                 .frame(width: 1)
-            
+
             // Phone number field
             TextField(placeholder, text: $phoneNumber)
                 .keyboard(.phone)
@@ -149,9 +149,9 @@ public struct PhoneInput: View {
             countryPickerSheet
         }
     }
-    
+
     // MARK: - Country Picker Sheet
-    
+
     private var countryPickerSheet: some View {
         NavigationStack {
             List {
@@ -163,15 +163,15 @@ public struct PhoneInput: View {
                         HStack {
                             Text(country.flag)
                                 .font(.title2)
-                            
+
                             Text(country.name)
                                 .foregroundStyle(.primary)
-                            
+
                             Spacer()
-                            
+
                             Text(country.dialCode)
                                 .foregroundStyle(.secondary)
-                            
+
                             if country.id == selectedCountry.id {
                                 Image(systemName: "checkmark")
                                     .foregroundStyle(.blue)
@@ -192,9 +192,9 @@ public struct PhoneInput: View {
             }
         }
     }
-    
+
     // MARK: - Filtering
-    
+
     private var filteredCountries: [Country] {
         if searchText.isEmpty {
             return countries
@@ -204,9 +204,9 @@ public struct PhoneInput: View {
             $0.dialCode.contains(searchText)
         }
     }
-    
+
     // MARK: - Formatting
-    
+
     /// Fills `pattern` (where `#` stands for one digit) with the ASCII digits of `number`.
     ///
     /// Literal characters are only emitted while digits remain; digits beyond the pattern
@@ -223,7 +223,7 @@ public struct PhoneInput: View {
 
         for char in pattern {
             guard digitIndex < digits.endIndex else { break }
-            
+
             if char == "#" {
                 result.append(digits[digitIndex])
                 digitIndex = digits.index(after: digitIndex)
@@ -231,17 +231,17 @@ public struct PhoneInput: View {
                 result.append(char)
             }
         }
-        
+
         // Append remaining digits if format is exhausted
         if digitIndex < digits.endIndex {
             result.append(contentsOf: digits[digitIndex...])
         }
-        
+
         return result
     }
-    
+
     // MARK: - Validation
-    
+
     private func validatePhone() {
         onValidation?(Self.hasValidLength(phoneNumber))
     }
@@ -262,15 +262,15 @@ public struct PhoneInput: View {
 public struct CompactPhoneInput: View {
     @Binding var fullNumber: String
     let placeholder: String
-    
+
     @State private var selectedCountry: PhoneInput.Country = .defaultCountries[0]
     @State private var localNumber: String = ""
-    
+
     public init(fullNumber: Binding<String>, placeholder: String = "Phone") {
         self._fullNumber = fullNumber
         self.placeholder = placeholder
     }
-    
+
     public var body: some View {
         HStack(spacing: 8) {
             Menu {
@@ -290,7 +290,7 @@ public struct CompactPhoneInput: View {
                     .background(Color.platformGray6)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             }
-            
+
             TextField(placeholder, text: $localNumber)
                 .keyboard(.phone)
                 .onChange(of: localNumber) { _, _ in
@@ -298,7 +298,7 @@ public struct CompactPhoneInput: View {
                 }
         }
     }
-    
+
     private func updateFullNumber() {
         fullNumber = selectedCountry.dialCode + PhoneInput.digits(in: localNumber)
     }
@@ -311,7 +311,7 @@ public struct PhoneDisplay: View {
     let phoneNumber: String
     let showCallButton: Bool
     let onCall: (() -> Void)?
-    
+
     public init(
         phoneNumber: String,
         showCallButton: Bool = true,
@@ -321,15 +321,15 @@ public struct PhoneDisplay: View {
         self.showCallButton = showCallButton
         self.onCall = onCall
     }
-    
+
     public var body: some View {
         HStack {
             Text(phoneNumber)
                 .font(.body.monospacedDigit())
-            
+
             if showCallButton {
                 Spacer()
-                
+
                 Button {
                     onCall?()
                 } label: {
@@ -350,7 +350,7 @@ struct PhoneInputPreview: View {
     @State private var country1 = PhoneInput.Country.defaultCountries[0]
     @State private var phone2 = ""
     @State private var isValid = false
-    
+
     var body: some View {
         VStack(spacing: 30) {
             VStack(alignment: .leading) {
@@ -365,13 +365,13 @@ struct PhoneInputPreview: View {
                     .font(.caption)
                     .foregroundStyle(isValid ? .green : .secondary)
             }
-            
+
             VStack(alignment: .leading) {
                 Text("Compact Input")
                     .font(.caption)
                 CompactPhoneInput(fullNumber: $phone2)
             }
-            
+
             VStack(alignment: .leading) {
                 Text("Phone Display")
                     .font(.caption)

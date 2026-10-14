@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct LoadingButton: View {
     // MARK: - Types
-    
+
     /// The current state of the loading button.
     public enum LoadingState: Equatable {
         case idle
@@ -20,7 +20,7 @@ public struct LoadingButton: View {
         case success
         case failure
     }
-    
+
     /// The animation style for the loading indicator.
     public enum LoadingStyle {
         case spinner
@@ -28,9 +28,9 @@ public struct LoadingButton: View {
         case pulse
         case progress(Double)
     }
-    
+
     // MARK: - Properties
-    
+
     private let title: String
     private let loadingTitle: String?
     private let successTitle: String?
@@ -44,13 +44,13 @@ public struct LoadingButton: View {
     private let height: CGFloat
     private let resetDelay: Double
     private let action: () async -> Bool
-    
+
     @Binding private var state: LoadingState
     @State private var dotPhase: Int = 0
     @State private var pulseScale: CGFloat = 1.0
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new loading button.
     /// - Parameters:
     ///   - title: The default button title.
@@ -98,9 +98,9 @@ public struct LoadingButton: View {
         self.resetDelay = resetDelay
         self.action = action
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Button {
             guard state == .idle else { return }
@@ -131,9 +131,9 @@ public struct LoadingButton: View {
         .disabled(state != .idle)
         .animation(.spring(response: 0.4), value: state)
     }
-    
+
     // MARK: - Computed Properties
-    
+
     private var currentTitle: String {
         switch state {
         case .idle:
@@ -146,7 +146,7 @@ public struct LoadingButton: View {
             return failureTitle ?? "Failed"
         }
     }
-    
+
     private var currentBackgroundColor: Color {
         switch state {
         case .idle, .loading:
@@ -157,7 +157,7 @@ public struct LoadingButton: View {
             return failureColor
         }
     }
-    
+
     @ViewBuilder
     private var stateIcon: some View {
         switch state {
@@ -173,7 +173,7 @@ public struct LoadingButton: View {
                 .transition(.scale.combined(with: .opacity))
         }
     }
-    
+
     @ViewBuilder
     private var loadingIndicator: some View {
         switch style {
@@ -197,7 +197,7 @@ public struct LoadingButton: View {
 private struct DotsLoadingView: View {
     let color: Color
     @Binding var phase: Int
-    
+
     var body: some View {
         HStack(spacing: 4) {
             ForEach(0..<3, id: \.self) { index in
@@ -225,7 +225,7 @@ private struct DotsLoadingView: View {
 private struct PulseLoadingView: View {
     let color: Color
     @Binding var scale: CGFloat
-    
+
     var body: some View {
         Circle()
             .fill(color)
@@ -247,7 +247,7 @@ private struct PulseLoadingView: View {
 private struct CircularProgressView: View {
     let progress: Double
     let color: Color
-    
+
     var body: some View {
         Circle()
             .trim(from: 0, to: progress)
@@ -262,14 +262,14 @@ struct LoadingButtonPreview: View {
     @State private var state1: LoadingButton.LoadingState = .idle
     @State private var state2: LoadingButton.LoadingState = .idle
     @State private var state3: LoadingButton.LoadingState = .idle
-    
+
     var body: some View {
         VStack(spacing: 20) {
             LoadingButton("Submit", state: $state1) {
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
                 return true
             }
-            
+
             LoadingButton(
                 "Process Payment",
                 state: $state2,
@@ -280,7 +280,7 @@ struct LoadingButtonPreview: View {
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
                 return true
             }
-            
+
             LoadingButton(
                 "Upload",
                 state: $state3,

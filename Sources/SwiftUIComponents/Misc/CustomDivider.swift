@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct CustomDivider: View {
     // MARK: - Types
-    
+
     /// The visual style of the divider.
     public enum Style {
         case solid
@@ -20,15 +20,15 @@ public struct CustomDivider: View {
         case dotted
         case gradient(colors: [Color])
     }
-    
+
     /// The orientation of the divider.
     public enum Orientation {
         case horizontal
         case vertical
     }
-    
+
     // MARK: - Properties
-    
+
     private let style: Style
     private let orientation: Orientation
     private let color: Color
@@ -37,9 +37,9 @@ public struct CustomDivider: View {
     private let labelFont: Font
     private let labelColor: Color
     private let padding: CGFloat
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new custom divider.
     public init(
         style: Style = .solid,
@@ -60,9 +60,9 @@ public struct CustomDivider: View {
         self.labelColor = labelColor
         self.padding = padding
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             if let label {
@@ -72,9 +72,9 @@ public struct CustomDivider: View {
             }
         }
     }
-    
+
     // MARK: - Simple Divider
-    
+
     @ViewBuilder
     private var simpleDivider: some View {
         switch orientation {
@@ -86,23 +86,23 @@ public struct CustomDivider: View {
                 .frame(width: thickness)
         }
     }
-    
+
     // MARK: - Labeled Divider
-    
+
     private func labeledDivider(_ text: String) -> some View {
         HStack(spacing: padding) {
             horizontalLine
-            
+
             Text(text)
                 .font(labelFont)
                 .foregroundStyle(labelColor)
-            
+
             horizontalLine
         }
     }
-    
+
     // MARK: - Lines
-    
+
     @ViewBuilder
     private var horizontalLine: some View {
         switch style {
@@ -110,23 +110,23 @@ public struct CustomDivider: View {
             Rectangle()
                 .fill(color)
                 .frame(height: thickness)
-        
+
         case .dashed:
             Line()
                 .stroke(color, style: StrokeStyle(lineWidth: thickness, dash: [5, 3]))
                 .frame(height: thickness)
-        
+
         case .dotted:
             Line()
                 .stroke(color, style: StrokeStyle(lineWidth: thickness, lineCap: .round, dash: [1, 4]))
                 .frame(height: thickness)
-        
+
         case .gradient(let colors):
             LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing)
                 .frame(height: thickness)
         }
     }
-    
+
     @ViewBuilder
     private var verticalLine: some View {
         switch style {
@@ -134,17 +134,17 @@ public struct CustomDivider: View {
             Rectangle()
                 .fill(color)
                 .frame(width: thickness)
-        
+
         case .dashed:
             VerticalLine()
                 .stroke(color, style: StrokeStyle(lineWidth: thickness, dash: [5, 3]))
                 .frame(width: thickness)
-        
+
         case .dotted:
             VerticalLine()
                 .stroke(color, style: StrokeStyle(lineWidth: thickness, lineCap: .round, dash: [1, 4]))
                 .frame(width: thickness)
-        
+
         case .gradient(let colors):
             LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom)
                 .frame(width: thickness)
@@ -178,21 +178,21 @@ private struct VerticalLine: Shape {
 public struct SpacerDivider: View {
     private let spacing: CGFloat
     private let color: Color
-    
+
     public init(spacing: CGFloat = 20, color: Color = Color.platformSeparator) {
         self.spacing = spacing
         self.color = color
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             Spacer()
                 .frame(height: spacing)
-            
+
             Rectangle()
                 .fill(color)
                 .frame(height: 1)
-            
+
             Spacer()
                 .frame(height: spacing)
         }
@@ -206,7 +206,7 @@ public struct SectionDivider: View {
     private let title: String?
     private let backgroundColor: Color
     private let height: CGFloat
-    
+
     public init(
         title: String? = nil,
         backgroundColor: Color = Color.platformGroupedBackground,
@@ -216,13 +216,13 @@ public struct SectionDivider: View {
         self.backgroundColor = backgroundColor
         self.height = height
     }
-    
+
     public var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
                 .fill(backgroundColor)
                 .frame(height: height)
-            
+
             if let title {
                 Text(title.uppercased())
                     .font(.caption)
@@ -241,7 +241,7 @@ public struct DecorativeDivider: View {
     private let icon: Image
     private let color: Color
     private let lineColor: Color
-    
+
     public init(
         icon: Image = Image(systemName: "star.fill"),
         color: Color = .yellow,
@@ -251,16 +251,16 @@ public struct DecorativeDivider: View {
         self.color = color
         self.lineColor = lineColor
     }
-    
+
     public var body: some View {
         HStack(spacing: 16) {
             Rectangle()
                 .fill(lineColor)
                 .frame(height: 1)
-            
+
             icon
                 .foregroundStyle(color)
-            
+
             Rectangle()
                 .fill(lineColor)
                 .frame(height: 1)
@@ -277,15 +277,15 @@ public struct DecorativeDivider: View {
             CustomDivider(style: .dotted)
             CustomDivider(style: .gradient(colors: [.blue, .purple]))
         }
-        
+
         CustomDivider(label: "OR")
-        
+
         SpacerDivider()
-        
+
         SectionDivider(title: "Settings")
-        
+
         DecorativeDivider()
-        
+
         HStack(spacing: 20) {
             Text("Left")
             CustomDivider(orientation: .vertical)

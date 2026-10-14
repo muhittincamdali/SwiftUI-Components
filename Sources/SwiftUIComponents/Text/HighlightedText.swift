@@ -14,7 +14,7 @@ import SwiftUI
 /// ```
 public struct HighlightedText: View {
     // MARK: - Types
-    
+
     /// A highlight range with styling.
     public struct Highlight: Identifiable {
         public let id = UUID()
@@ -23,7 +23,7 @@ public struct HighlightedText: View {
         public let foregroundColor: Color?
         public let font: Font?
         public let underline: Bool
-        
+
         public init(
             text: String,
             backgroundColor: Color = .yellow.opacity(0.4),
@@ -38,17 +38,17 @@ public struct HighlightedText: View {
             self.underline = underline
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let text: String
     private let highlights: [Highlight]
     private let caseSensitive: Bool
     private let baseFont: Font
     private let baseColor: Color
-    
+
     // MARK: - Initialization
-    
+
     /// Creates highlighted text with custom highlight definitions.
     public init(
         _ text: String,
@@ -63,7 +63,7 @@ public struct HighlightedText: View {
         self.baseFont = baseFont
         self.baseColor = baseColor
     }
-    
+
     /// Convenience initializer for simple string highlights.
     public init(
         _ text: String,
@@ -78,17 +78,17 @@ public struct HighlightedText: View {
         self.baseFont = baseFont
         self.baseColor = .primary
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         buildAttributedText()
             .font(baseFont)
             .foregroundStyle(baseColor)
     }
-    
+
     // MARK: - Text Building
-    
+
     private func buildAttributedText() -> Text {
         guard !highlights.isEmpty else {
             return Text(text)
@@ -167,7 +167,7 @@ public struct SearchHighlightedText: View {
     private let searchQuery: String
     private let highlightColor: Color
     private let font: Font
-    
+
     public init(
         _ text: String,
         searchQuery: String,
@@ -179,7 +179,7 @@ public struct SearchHighlightedText: View {
         self.highlightColor = highlightColor
         self.font = font
     }
-    
+
     public var body: some View {
         if searchQuery.isEmpty {
             Text(text)
@@ -207,7 +207,7 @@ public struct MentionText: View {
     private let font: Font
     private let onMentionTap: ((String) -> Void)?
     private let onHashtagTap: ((String) -> Void)?
-    
+
     public init(
         _ text: String,
         mentionColor: Color = .blue,
@@ -225,19 +225,19 @@ public struct MentionText: View {
         self.onMentionTap = onMentionTap
         self.onHashtagTap = onHashtagTap
     }
-    
+
     public var body: some View {
         buildText()
             .font(font)
     }
-    
+
     private func buildText() -> Text {
         var result = Text("")
         let words = text.components(separatedBy: " ")
-        
+
         for (index, word) in words.enumerated() {
             let separator = index > 0 ? Text(" ") : Text("")
-            
+
             if word.hasPrefix("@") && word.count > 1 {
                 result = result + separator + Text(word).foregroundColor(mentionColor).fontWeight(.medium)
             } else if word.hasPrefix("#") && word.count > 1 {
@@ -246,7 +246,7 @@ public struct MentionText: View {
                 result = result + separator + Text(word)
             }
         }
-        
+
         return result
     }
 }
@@ -257,12 +257,12 @@ public struct MentionText: View {
 public struct SimpleMarkdownText: View {
     private let text: String
     private let font: Font
-    
+
     public init(_ text: String, font: Font = .body) {
         self.text = text
         self.font = font
     }
-    
+
     public var body: some View {
         if #available(iOS 15.0, *) {
             Text(try! AttributedString(markdown: text))
@@ -282,7 +282,7 @@ public struct SimpleMarkdownText: View {
             highlights: ["quick", "fox", "dog"],
             highlightColor: .yellow.opacity(0.5)
         )
-        
+
         HighlightedText(
             "SwiftUI is amazing!",
             highlights: [
@@ -290,19 +290,19 @@ public struct SimpleMarkdownText: View {
                 .init(text: "amazing", backgroundColor: .green.opacity(0.3), underline: true)
             ]
         )
-        
+
         SearchHighlightedText(
             "Search results for: SwiftUI components library",
             searchQuery: "swiftui",
             highlightColor: .orange.opacity(0.4)
         )
-        
+
         MentionText(
             "Hey @johndoe check out #SwiftUI #iOS",
             mentionColor: .blue,
             hashtagColor: .purple
         )
-        
+
         SimpleMarkdownText("This is **bold** and *italic* text")
     }
     .padding()

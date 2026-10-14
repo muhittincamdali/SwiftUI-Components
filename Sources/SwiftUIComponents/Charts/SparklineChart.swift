@@ -11,7 +11,7 @@ import SwiftUI
 /// ```
 public struct SparklineChart: View {
     // MARK: - Types
-    
+
     /// The visual style of the sparkline.
     public enum Style {
         case line
@@ -19,9 +19,9 @@ public struct SparklineChart: View {
         case gradient
         case dashed
     }
-    
+
     // MARK: - Properties
-    
+
     private let data: [Double]
     private let style: Style
     private let lineColor: Color
@@ -29,11 +29,11 @@ public struct SparklineChart: View {
     private let lineWidth: CGFloat
     private let showEndDot: Bool
     private let animated: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new sparkline chart.
     /// - Parameters:
     ///   - data: The data points to display.
@@ -60,9 +60,9 @@ public struct SparklineChart: View {
         self.showEndDot = showEndDot
         self.animated = animated
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -71,15 +71,15 @@ public struct SparklineChart: View {
                     linePath(in: geometry.size)
                         .trim(from: 0, to: animated ? animationProgress : 1)
                         .stroke(lineColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-                
+
                 case .filled:
                     filledPath(in: geometry.size)
                         .fill(lineColor.opacity(0.2))
-                    
+
                     linePath(in: geometry.size)
                         .trim(from: 0, to: animated ? animationProgress : 1)
                         .stroke(lineColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-                
+
                 case .gradient:
                     filledPath(in: geometry.size)
                         .fill(
@@ -89,17 +89,17 @@ public struct SparklineChart: View {
                                 endPoint: .bottom
                             )
                         )
-                    
+
                     linePath(in: geometry.size)
                         .trim(from: 0, to: animated ? animationProgress : 1)
                         .stroke(lineColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-                
+
                 case .dashed:
                     linePath(in: geometry.size)
                         .trim(from: 0, to: animated ? animationProgress : 1)
                         .stroke(lineColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, dash: [5, 3]))
                 }
-                
+
                 if showEndDot, let lastPoint = data.last {
                     endDot(in: geometry.size, value: lastPoint)
                         .opacity(animated ? (animationProgress >= 1 ? 1 : 0) : 1)
@@ -114,47 +114,47 @@ public struct SparklineChart: View {
             }
         }
     }
-    
+
     // MARK: - Path Building
-    
+
     private func linePath(in size: CGSize) -> Path {
         guard data.count > 1 else {
             return Path()
         }
-        
+
         var path = Path()
         let points = normalizedPoints(in: size)
-        
+
         path.move(to: points[0])
-        
+
         for i in 1..<points.count {
             path.addLine(to: points[i])
         }
-        
+
         return path
     }
-    
+
     private func filledPath(in size: CGSize) -> Path {
         guard data.count > 1 else {
             return Path()
         }
-        
+
         var path = Path()
         let points = normalizedPoints(in: size)
-        
+
         path.move(to: CGPoint(x: points[0].x, y: size.height))
         path.addLine(to: points[0])
-        
+
         for i in 1..<points.count {
             path.addLine(to: points[i])
         }
-        
+
         path.addLine(to: CGPoint(x: points.last!.x, y: size.height))
         path.closeSubpath()
-        
+
         return path
     }
-    
+
     private func normalizedPoints(in size: CGSize) -> [CGPoint] {
         Self.normalizedPoints(data, in: size)
     }
@@ -177,13 +177,13 @@ public struct SparklineChart: View {
             CGPoint(x: CGFloat(index) * step, y: (1 - (value - minValue) / range) * size.height)
         }
     }
-    
+
     private func endDot(in size: CGSize, value: Double) -> some View {
         let points = normalizedPoints(in: size)
         guard let lastPoint = points.last else {
             return AnyView(EmptyView())
         }
-        
+
         return AnyView(
             Circle()
                 .fill(lineColor)
@@ -201,7 +201,7 @@ public struct LiveSparklineChart: View {
     private let maxPoints: Int
     private let lineColor: Color
     private let lineWidth: CGFloat
-    
+
     public init(
         data: Binding<[Double]>,
         maxPoints: Int = 50,
@@ -213,7 +213,7 @@ public struct LiveSparklineChart: View {
         self.lineColor = lineColor
         self.lineWidth = lineWidth
     }
-    
+
     public var body: some View {
         SparklineChart(
             data: Array(data.suffix(maxPoints)),
@@ -235,7 +235,7 @@ public struct ComparisonSparklineChart: View {
     private let primaryColor: Color
     private let secondaryColor: Color
     private let lineWidth: CGFloat
-    
+
     public init(
         primaryData: [Double],
         secondaryData: [Double],
@@ -249,7 +249,7 @@ public struct ComparisonSparklineChart: View {
         self.secondaryColor = secondaryColor
         self.lineWidth = lineWidth
     }
-    
+
     public var body: some View {
         ZStack {
             SparklineChart(
@@ -260,7 +260,7 @@ public struct ComparisonSparklineChart: View {
                 showEndDot: false,
                 animated: false
             )
-            
+
             SparklineChart(
                 data: primaryData,
                 lineColor: primaryColor,
@@ -280,21 +280,21 @@ public struct ComparisonSparklineChart: View {
             SparklineChart(data: [10, 25, 15, 30, 20, 35, 28])
                 .frame(width: 150, height: 40)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Filled")
                 .font(.caption)
             SparklineChart(data: [10, 25, 15, 30, 20, 35, 28], style: .filled, lineColor: .green)
                 .frame(width: 150, height: 40)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Gradient")
                 .font(.caption)
             SparklineChart(data: [10, 25, 15, 30, 20, 35, 28], style: .gradient, lineColor: .purple)
                 .frame(width: 150, height: 40)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Comparison")
                 .font(.caption)

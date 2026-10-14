@@ -5,16 +5,16 @@ public struct Accordion<Content: View>: View {
     let items: [AccordionItem<Content>]
     let allowMultiple: Bool
     let style: AccordionStyle
-    
+
     @State private var expandedItems: Set<UUID> = []
-    
+
     public struct AccordionItem<ItemContent: View>: Identifiable {
         public let id = UUID()
         let title: String
         let subtitle: String?
         let icon: String?
         @ViewBuilder let content: () -> ItemContent
-        
+
         public init(
             title: String,
             subtitle: String? = nil,
@@ -27,13 +27,13 @@ public struct Accordion<Content: View>: View {
             self.content = content
         }
     }
-    
+
     public enum AccordionStyle {
         case standard
         case separated
         case bordered
     }
-    
+
     public init(
         items: [AccordionItem<Content>],
         allowMultiple: Bool = false,
@@ -43,7 +43,7 @@ public struct Accordion<Content: View>: View {
         self.allowMultiple = allowMultiple
         self.style = style
     }
-    
+
     public var body: some View {
         VStack(spacing: style == .separated ? 12 : 0) {
             ForEach(items) { item in
@@ -51,10 +51,10 @@ public struct Accordion<Content: View>: View {
             }
         }
     }
-    
+
     private func accordionRow(_ item: AccordionItem<Content>) -> some View {
         let isExpanded = expandedItems.contains(item.id)
-        
+
         return VStack(spacing: 0) {
             // Header
             Button {
@@ -76,21 +76,21 @@ public struct Accordion<Content: View>: View {
                             .foregroundColor(.accentColor)
                             .frame(width: 28)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.primary)
-                        
+
                         if let subtitle = item.subtitle {
                             Text(subtitle)
                                 .font(.system(size: 13))
                                 .foregroundColor(.secondary)
                         }
                     }
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
@@ -100,7 +100,7 @@ public struct Accordion<Content: View>: View {
                 .background(headerBackground(for: style, isExpanded: isExpanded))
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             // Content
             if isExpanded {
                 item.content()
@@ -108,7 +108,7 @@ public struct Accordion<Content: View>: View {
                     .background(Color.platformBackground)
                     .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            
+
             // Divider for standard style
             if style == .standard {
                 Divider()
@@ -123,7 +123,7 @@ public struct Accordion<Content: View>: View {
             : nil
         )
     }
-    
+
     @ViewBuilder
     private func headerBackground(for style: AccordionStyle, isExpanded: Bool) -> some View {
         switch style {
@@ -135,7 +135,7 @@ public struct Accordion<Content: View>: View {
             Color.platformBackground
         }
     }
-    
+
     @ViewBuilder
     private func rowBackground(for style: AccordionStyle) -> some View {
         switch style {
@@ -152,29 +152,29 @@ public struct Accordion<Content: View>: View {
 /// FAQ style accordion
 public struct FAQAccordion: View {
     let items: [FAQItem]
-    
+
     @State private var expandedIndex: Int? = nil
-    
+
     public struct FAQItem: Identifiable {
         public let id = UUID()
         let question: String
         let answer: String
-        
+
         public init(question: String, answer: String) {
             self.question = question
             self.answer = answer
         }
     }
-    
+
     public init(items: [FAQItem]) {
         self.items = items
     }
-    
+
     public var body: some View {
         VStack(spacing: 8) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                 let isExpanded = expandedIndex == index
-                
+
                 VStack(spacing: 0) {
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -186,9 +186,9 @@ public struct FAQAccordion: View {
                                 .font(.system(size: 15, weight: .medium))
                                 .foregroundColor(.primary)
                                 .multilineTextAlignment(.leading)
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: isExpanded ? "minus" : "plus")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(.accentColor)
@@ -196,7 +196,7 @@ public struct FAQAccordion: View {
                         .padding(16)
                     }
                     .buttonStyle(PlainButtonStyle())
-                    
+
                     if isExpanded {
                         Text(item.answer)
                             .font(.system(size: 14))
@@ -221,7 +221,7 @@ public struct FAQAccordion: View {
                 Text("Standard Accordion")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 Accordion(
                     items: [
                         .init(title: "Section 1", subtitle: "Description", icon: "star.fill") {
@@ -241,12 +241,12 @@ public struct FAQAccordion: View {
                 )
                 .padding(.horizontal)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Separated Accordion")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 Accordion(
                     items: [
                         .init(title: "Account", icon: "person.fill") {
@@ -267,12 +267,12 @@ public struct FAQAccordion: View {
                 )
                 .padding(.horizontal)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("FAQ Accordion")
                     .font(.headline)
                     .padding(.horizontal)
-                
+
                 FAQAccordion(items: [
                     .init(
                         question: "What is SwiftUI Components?",

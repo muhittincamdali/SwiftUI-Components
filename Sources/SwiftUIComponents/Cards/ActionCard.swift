@@ -16,7 +16,7 @@ import SwiftUI
 /// ```
 public struct ActionCard: View {
     // MARK: - Types
-    
+
     /// An action button configuration.
     public struct Action {
         public let title: String
@@ -24,13 +24,13 @@ public struct ActionCard: View {
         public let style: Style
         public let isDestructive: Bool
         public let action: () -> Void
-        
+
         public enum Style {
             case filled
             case outlined
             case text
         }
-        
+
         public init(
             title: String,
             icon: Image? = nil,
@@ -45,14 +45,14 @@ public struct ActionCard: View {
             self.action = action
         }
     }
-    
+
     /// The layout direction for action buttons.
     public enum ActionLayout {
         case horizontal
         case vertical
         case stacked
     }
-    
+
     /// Visual style variants.
     public enum CardStyle {
         case standard
@@ -60,9 +60,9 @@ public struct ActionCard: View {
         case outlined
         case filled(Color)
     }
-    
+
     // MARK: - Properties
-    
+
     private let title: String
     private let subtitle: String?
     private let description: String?
@@ -77,11 +77,11 @@ public struct ActionCard: View {
     private let cardStyle: CardStyle
     private let cornerRadius: CGFloat
     private let onTap: (() -> Void)?
-    
+
     @State private var isPressed: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new action card.
     public init(
         title: String,
@@ -114,20 +114,20 @@ public struct ActionCard: View {
         self.cornerRadius = cornerRadius
         self.onTap = onTap
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             headerSection
-            
+
             if let description {
                 Text(description)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
             }
-            
+
             if primaryAction != nil || secondaryAction != nil {
                 actionsSection
             }
@@ -148,43 +148,43 @@ public struct ActionCard: View {
                 .onEnded { _ in isPressed = false }
         )
     }
-    
+
     // MARK: - Header Section
-    
+
     private var headerSection: some View {
         HStack(alignment: .top, spacing: 12) {
             if let icon {
                 iconView(icon)
             }
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(title)
                         .font(.headline)
                         .fontWeight(.semibold)
-                    
+
                     if let badge {
                         badgeView(badge)
                     }
                 }
-                
+
                 if let subtitle {
                     Text(subtitle)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
             }
-            
+
             Spacer()
-            
+
             if !menuActions.isEmpty {
                 menuButton
             }
         }
     }
-    
+
     // MARK: - Icon View
-    
+
     private func iconView(_ icon: Image) -> some View {
         icon
             .font(.title2)
@@ -193,9 +193,9 @@ public struct ActionCard: View {
             .background(iconColor.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
-    
+
     // MARK: - Badge View
-    
+
     private func badgeView(_ text: String) -> some View {
         Text(text)
             .font(.caption2)
@@ -206,9 +206,9 @@ public struct ActionCard: View {
             .background(badgeColor)
             .clipShape(Capsule())
     }
-    
+
     // MARK: - Menu Button
-    
+
     private var menuButton: some View {
         Menu {
             ForEach(Array(menuActions.enumerated()), id: \.offset) { _, action in
@@ -230,9 +230,9 @@ public struct ActionCard: View {
                 .contentShape(Rectangle())
         }
     }
-    
+
     // MARK: - Actions Section
-    
+
     @ViewBuilder
     private var actionsSection: some View {
         switch actionLayout {
@@ -267,9 +267,9 @@ public struct ActionCard: View {
             }
         }
     }
-    
+
     // MARK: - Action Button
-    
+
     private func actionButton(_ action: Action, isSecondary: Bool) -> some View {
         Button(action: action.action) {
             HStack(spacing: 6) {
@@ -289,7 +289,7 @@ public struct ActionCard: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private func buttonForeground(_ action: Action, isSecondary: Bool) -> Color {
         let color = action.isDestructive ? Color.red : iconColor
         switch action.style {
@@ -299,7 +299,7 @@ public struct ActionCard: View {
             return color
         }
     }
-    
+
     private func buttonBackground(_ action: Action, isSecondary: Bool) -> Color {
         let color = action.isDestructive ? Color.red : iconColor
         switch action.style {
@@ -309,7 +309,7 @@ public struct ActionCard: View {
             return .clear
         }
     }
-    
+
     @ViewBuilder
     private func buttonOverlay(_ action: Action, isSecondary: Bool) -> some View {
         if action.style == .outlined {
@@ -318,9 +318,9 @@ public struct ActionCard: View {
                 .stroke(color.opacity(0.5), lineWidth: 1.5)
         }
     }
-    
+
     // MARK: - Card Styling
-    
+
     @ViewBuilder
     private var cardBackground: some View {
         switch cardStyle {
@@ -330,7 +330,7 @@ public struct ActionCard: View {
             color
         }
     }
-    
+
     @ViewBuilder
     private var cardOverlay: some View {
         switch cardStyle {
@@ -341,7 +341,7 @@ public struct ActionCard: View {
             EmptyView()
         }
     }
-    
+
     private var shadowColor: Color {
         switch cardStyle {
         case .elevated:
@@ -350,7 +350,7 @@ public struct ActionCard: View {
             return .clear
         }
     }
-    
+
     private var shadowRadius: CGFloat {
         switch cardStyle {
         case .elevated:
@@ -359,7 +359,7 @@ public struct ActionCard: View {
             return 0
         }
     }
-    
+
     private var shadowY: CGFloat {
         switch cardStyle {
         case .elevated:
@@ -383,7 +383,7 @@ public struct ActionCard: View {
                 primaryAction: .init(title: "Pay Now") { },
                 secondaryAction: .init(title: "Later", style: .outlined) { }
             )
-            
+
             ActionCard(
                 title: "Upload Complete",
                 subtitle: "15 files uploaded",
@@ -395,7 +395,7 @@ public struct ActionCard: View {
                     .init(title: "Delete", icon: Image(systemName: "trash"), isDestructive: true) { }
                 ]
             )
-            
+
             ActionCard(
                 title: "Sync Error",
                 subtitle: "Failed to sync 3 items",

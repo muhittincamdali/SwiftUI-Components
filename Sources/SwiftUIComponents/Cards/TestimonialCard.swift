@@ -8,14 +8,14 @@ public struct TestimonialCard: View {
     let rating: Int?
     let avatarInitials: String?
     let style: TestimonialStyle
-    
+
     public enum TestimonialStyle {
         case standard
         case minimal
         case featured
         case bubble
     }
-    
+
     public init(
         quote: String,
         authorName: String,
@@ -31,7 +31,7 @@ public struct TestimonialCard: View {
         self.avatarInitials = avatarInitials ?? String(authorName.prefix(2)).uppercased()
         self.style = style
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -48,7 +48,7 @@ public struct TestimonialCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Testimonial from \(authorName): \(quote)")
     }
-    
+
     private var avatar: some View {
         ZStack {
             Circle()
@@ -57,14 +57,14 @@ public struct TestimonialCard: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 ))
-            
+
             Text(avatarInitials ?? "")
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.white)
         }
         .frame(width: 48, height: 48)
     }
-    
+
     @ViewBuilder
     private var ratingStars: some View {
         if let rating = rating {
@@ -77,23 +77,23 @@ public struct TestimonialCard: View {
             }
         }
     }
-    
+
     private var standardView: some View {
         VStack(alignment: .leading, spacing: 16) {
             ratingStars
-            
+
             Text("\"\(quote)\"")
                 .font(.system(size: 15))
                 .italic()
                 .foregroundColor(.primary.opacity(0.9))
-            
+
             HStack(spacing: 12) {
                 avatar
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(authorName)
                         .font(.system(size: 14, weight: .semibold))
-                    
+
                     if let title = authorTitle {
                         Text(title)
                             .font(.system(size: 12))
@@ -107,7 +107,7 @@ public struct TestimonialCard: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
     }
-    
+
     private var minimalView: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -116,16 +116,16 @@ public struct TestimonialCard: View {
                     .foregroundColor(.accentColor.opacity(0.5))
                 Spacer()
             }
-            
+
             Text(quote)
                 .font(.system(size: 14))
                 .foregroundColor(.primary.opacity(0.85))
-            
+
             HStack(spacing: 8) {
                 Text("—")
                 Text(authorName)
                     .font(.system(size: 13, weight: .medium))
-                
+
                 if let title = authorTitle {
                     Text("·")
                     Text(title)
@@ -138,24 +138,24 @@ public struct TestimonialCard: View {
         .background(Color.platformGray6)
         .cornerRadius(12)
     }
-    
+
     private var featuredView: some View {
         VStack(spacing: 20) {
             avatar
                 .scaleEffect(1.2)
-            
+
             ratingStars
-            
+
             Text("\"\(quote)\"")
                 .font(.system(size: 17))
                 .italic()
                 .multilineTextAlignment(.center)
                 .foregroundColor(.primary.opacity(0.9))
-            
+
             VStack(spacing: 4) {
                 Text(authorName)
                     .font(.system(size: 16, weight: .bold))
-                
+
                 if let title = authorTitle {
                     Text(title)
                         .font(.system(size: 13))
@@ -169,13 +169,13 @@ public struct TestimonialCard: View {
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.08), radius: 15, x: 0, y: 5)
     }
-    
+
     private var bubbleView: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Speech bubble
             VStack(alignment: .leading, spacing: 8) {
                 ratingStars
-                
+
                 Text(quote)
                     .font(.system(size: 14))
             }
@@ -189,16 +189,16 @@ public struct TestimonialCard: View {
                     .offset(x: 20, y: 5),
                 alignment: .bottomLeading
             )
-            
+
             // Author
             HStack(spacing: 10) {
                 avatar
                     .scaleEffect(0.8)
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(authorName)
                         .font(.system(size: 13, weight: .semibold))
-                    
+
                     if let title = authorTitle {
                         Text(title)
                             .font(.system(size: 11))
@@ -227,11 +227,11 @@ struct Triangle: Shape {
 public struct TestimonialCarousel: View {
     let testimonials: [TestimonialCard]
     @State private var currentIndex = 0
-    
+
     public init(testimonials: [TestimonialCard]) {
         self.testimonials = testimonials
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             #if os(iOS)
@@ -252,7 +252,7 @@ public struct TestimonialCarousel: View {
                     .frame(height: 280)
             }
             #endif
-            
+
             // Custom page indicator
             HStack(spacing: 8) {
                 ForEach(0..<testimonials.count, id: \.self) { index in
@@ -278,14 +278,14 @@ public struct TestimonialCarousel: View {
                 rating: 5,
                 style: .standard
             )
-            
+
             TestimonialCard(
                 quote: "Simple, elegant, and powerful. Highly recommend!",
                 authorName: "Mike Chen",
                 authorTitle: "Designer",
                 style: .minimal
             )
-            
+
             TestimonialCard(
                 quote: "The best investment I've made for my productivity. Worth every penny.",
                 authorName: "Emily Davis",
@@ -293,7 +293,7 @@ public struct TestimonialCarousel: View {
                 rating: 5,
                 style: .featured
             )
-            
+
             TestimonialCard(
                 quote: "Love the dark mode and the smooth animations. Great attention to detail!",
                 authorName: "Alex Kim",

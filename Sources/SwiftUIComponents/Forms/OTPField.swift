@@ -6,15 +6,15 @@ public struct OTPField: View {
     let length: Int
     let style: OTPStyle
     let onComplete: ((String) -> Void)?
-    
+
     @FocusState private var isFocused: Bool
-    
+
     public enum OTPStyle {
         case boxes
         case underlined
         case rounded
     }
-    
+
     public init(
         code: Binding<String>,
         length: Int = 6,
@@ -26,7 +26,7 @@ public struct OTPField: View {
         self.style = style
         self.onComplete = onComplete
     }
-    
+
     public var body: some View {
         ZStack {
             // Hidden text field
@@ -47,7 +47,7 @@ public struct OTPField: View {
                         onComplete?(code)
                     }
                 }
-            
+
             // Visual boxes
             HStack(spacing: style == .underlined ? 16 : 10) {
                 ForEach(0..<length, id: \.self) { index in
@@ -60,11 +60,11 @@ public struct OTPField: View {
         }
         .animation(.easeInOut(duration: 0.15), value: code)
     }
-    
+
     private func digitBox(at index: Int) -> some View {
         let digit = getDigit(at: index)
         let isCurrentIndex = code.count == index && isFocused
-        
+
         return Group {
             switch style {
             case .boxes:
@@ -76,12 +76,12 @@ public struct OTPField: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(Color.platformBackground)
                         )
-                    
+
                     if let digit = digit {
                         Text(String(digit))
                             .font(.system(size: 24, weight: .semibold))
                     }
-                    
+
                     if isCurrentIndex {
                         Rectangle()
                             .fill(Color.accentColor)
@@ -89,7 +89,7 @@ public struct OTPField: View {
                             .opacity(1)
                     }
                 }
-                
+
             case .underlined:
                 VStack(spacing: 8) {
                     if let digit = digit {
@@ -99,12 +99,12 @@ public struct OTPField: View {
                         Text(" ")
                             .font(.system(size: 28, weight: .semibold))
                     }
-                    
+
                     Rectangle()
                         .fill(isCurrentIndex ? Color.accentColor : (digit != nil ? Color.accentColor.opacity(0.5) : Color.platformGray4))
                         .frame(width: 40, height: isCurrentIndex ? 3 : 2)
                 }
-                
+
             case .rounded:
                 ZStack {
                     Circle()
@@ -114,7 +114,7 @@ public struct OTPField: View {
                             Circle()
                                 .fill(Color.platformBackground)
                         )
-                    
+
                     if let digit = digit {
                         Text(String(digit))
                             .font(.system(size: 22, weight: .semibold))
@@ -123,7 +123,7 @@ public struct OTPField: View {
             }
         }
     }
-    
+
     private func getDigit(at index: Int) -> Character? {
         guard index < code.count else { return nil }
         return code[code.index(code.startIndex, offsetBy: index)]
@@ -135,9 +135,9 @@ public struct SecurePINField: View {
     @Binding var pin: String
     let length: Int
     let onComplete: ((String) -> Void)?
-    
+
     @FocusState private var isFocused: Bool
-    
+
     public init(
         pin: Binding<String>,
         length: Int = 4,
@@ -147,7 +147,7 @@ public struct SecurePINField: View {
         self.length = length
         self.onComplete = onComplete
     }
-    
+
     public var body: some View {
         ZStack {
             // Hidden text field
@@ -164,7 +164,7 @@ public struct SecurePINField: View {
                         onComplete?(pin)
                     }
                 }
-            
+
             // Visual dots
             HStack(spacing: 20) {
                 ForEach(0..<length, id: \.self) { index in
@@ -188,7 +188,7 @@ public struct NumberPad: View {
     let maxLength: Int
     let showBiometric: Bool
     let onBiometric: (() -> Void)?
-    
+
     public init(
         value: Binding<String>,
         maxLength: Int = 6,
@@ -200,14 +200,14 @@ public struct NumberPad: View {
         self.showBiometric = showBiometric
         self.onBiometric = onBiometric
     }
-    
+
     private let numbers = [
         ["1", "2", "3"],
         ["4", "5", "6"],
         ["7", "8", "9"],
         ["", "0", "⌫"]
     ]
-    
+
     public var body: some View {
         VStack(spacing: 12) {
             ForEach(numbers, id: \.self) { row in
@@ -264,7 +264,7 @@ public struct NumberPad: View {
         @State private var otp3 = ""
         @State private var pin = ""
         @State private var numPadValue = ""
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 32) {
@@ -273,35 +273,35 @@ public struct NumberPad: View {
                             .font(.headline)
                         OTPField(code: $otp1, length: 6, style: .boxes)
                     }
-                    
+
                     VStack(spacing: 8) {
                         Text("Underlined Style")
                             .font(.headline)
                         OTPField(code: $otp2, length: 4, style: .underlined)
                     }
-                    
+
                     VStack(spacing: 8) {
                         Text("Rounded Style")
                             .font(.headline)
                         OTPField(code: $otp3, length: 5, style: .rounded)
                     }
-                    
+
                     Divider()
-                    
+
                     VStack(spacing: 16) {
                         Text("Secure PIN")
                             .font(.headline)
                         SecurePINField(pin: $pin, length: 4)
                     }
-                    
+
                     Divider()
-                    
+
                     VStack(spacing: 16) {
                         Text("Number Pad")
                             .font(.headline)
-                        
+
                         SecurePINField(pin: $numPadValue, length: 6)
-                        
+
                         NumberPad(value: $numPadValue, maxLength: 6, showBiometric: true) {
                             // Biometric action
                         }

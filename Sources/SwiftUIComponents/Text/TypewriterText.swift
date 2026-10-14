@@ -10,7 +10,7 @@ import SwiftUI
 /// ```
 public struct TypewriterText: View {
     // MARK: - Properties
-    
+
     private let text: String
     private let typingSpeed: Double
     private let cursorBlinkSpeed: Double
@@ -20,14 +20,14 @@ public struct TypewriterText: View {
     private let textColor: Color
     private let cursorColor: Color
     private let onComplete: (() -> Void)?
-    
+
     @State private var displayedText: String = ""
     @State private var cursorVisible: Bool = true
     @State private var isTyping: Bool = false
     @State private var currentIndex: Int = 0
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new typewriter text view.
     /// - Parameters:
     ///   - text: The full text to animate.
@@ -60,15 +60,15 @@ public struct TypewriterText: View {
         self.cursorColor = cursorColor
         self.onComplete = onComplete
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             Text(displayedText)
                 .font(font)
                 .foregroundStyle(textColor)
-            
+
             if showCursor {
                 Text(cursorCharacter)
                     .font(font)
@@ -86,29 +86,29 @@ public struct TypewriterText: View {
             }
         }
     }
-    
+
     // MARK: - Animation
-    
+
     private func startTyping() {
         guard !isTyping else { return }
         isTyping = true
         displayedText = ""
         currentIndex = 0
-        
+
         typeNextCharacter()
     }
-    
+
     private func typeNextCharacter() {
         guard currentIndex < text.count else {
             isTyping = false
             onComplete?()
             return
         }
-        
+
         let index = text.index(text.startIndex, offsetBy: currentIndex)
         displayedText.append(text[index])
         currentIndex += 1
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + typingSpeed) {
             typeNextCharacter()
         }
@@ -121,7 +121,7 @@ public struct TypewriterText: View {
 /// A more feature-rich typewriter with backspace and multi-text support.
 public struct AdvancedTypewriterText: View {
     // MARK: - Types
-    
+
     /// Configuration for text sequence animation.
     public struct TextSequence: Identifiable {
         public let id = UUID()
@@ -130,7 +130,7 @@ public struct AdvancedTypewriterText: View {
         public let pauseDuration: Double
         public let deleteAfter: Bool
         public let deleteSpeed: Double
-        
+
         public init(
             text: String,
             typingSpeed: Double = 0.05,
@@ -145,21 +145,21 @@ public struct AdvancedTypewriterText: View {
             self.deleteSpeed = deleteSpeed
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let sequences: [TextSequence]
     private let loop: Bool
     private let font: Font
     private let textColor: Color
     private let cursorColor: Color
-    
+
     @State private var displayedText: String = ""
     @State private var currentSequenceIndex: Int = 0
     @State private var isAnimating: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates an advanced typewriter with multiple text sequences.
     public init(
         sequences: [TextSequence],
@@ -174,7 +174,7 @@ public struct AdvancedTypewriterText: View {
         self.textColor = textColor
         self.cursorColor = cursorColor
     }
-    
+
     /// Convenience initializer for simple looping text.
     public init(
         texts: [String],
@@ -189,15 +189,15 @@ public struct AdvancedTypewriterText: View {
         self.textColor = .primary
         self.cursorColor = .blue
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             Text(displayedText)
                 .font(font)
                 .foregroundStyle(textColor)
-            
+
             Text("|")
                 .font(font)
                 .foregroundStyle(cursorColor)
@@ -207,23 +207,23 @@ public struct AdvancedTypewriterText: View {
             startAnimation()
         }
     }
-    
+
     @State private var cursorOpacity: Double = 1.0
-    
+
     // MARK: - Animation Logic
-    
+
     private func startAnimation() {
         guard !isAnimating && !sequences.isEmpty else { return }
         isAnimating = true
-        
+
         // Start cursor blink
         withAnimation(.easeInOut(duration: 0.5).repeatForever()) {
             cursorOpacity = 0.0
         }
-        
+
         animateSequence(at: 0)
     }
-    
+
     private func animateSequence(at index: Int) {
         guard index < sequences.count else {
             if loop {
@@ -233,10 +233,10 @@ public struct AdvancedTypewriterText: View {
             }
             return
         }
-        
+
         let sequence = sequences[index]
         currentSequenceIndex = index
-        
+
         // Type the text
         typeText(sequence.text, speed: sequence.typingSpeed) {
             // Pause
@@ -253,42 +253,42 @@ public struct AdvancedTypewriterText: View {
             }
         }
     }
-    
+
     private func typeText(_ text: String, speed: Double, completion: @escaping () -> Void) {
         var charIndex = 0
-        
+
         func typeNext() {
             guard charIndex < text.count else {
                 completion()
                 return
             }
-            
+
             let index = text.index(text.startIndex, offsetBy: charIndex)
             displayedText.append(text[index])
             charIndex += 1
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + speed) {
                 typeNext()
             }
         }
-        
+
         typeNext()
     }
-    
+
     private func deleteText(speed: Double, completion: @escaping () -> Void) {
         func deleteNext() {
             guard !displayedText.isEmpty else {
                 completion()
                 return
             }
-            
+
             displayedText.removeLast()
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + speed) {
                 deleteNext()
             }
         }
-        
+
         deleteNext()
     }
 }
@@ -301,9 +301,9 @@ public struct CodeTypewriterText: View {
     private let language: CodeLanguage
     private let typingSpeed: Double
     private let fontSize: CGFloat
-    
+
     @State private var displayedCode: String = ""
-    
+
     /// Supported code languages for highlighting.
     public enum CodeLanguage {
         case swift
@@ -311,7 +311,7 @@ public struct CodeTypewriterText: View {
         case python
         case plain
     }
-    
+
     public init(
         code: String,
         language: CodeLanguage = .swift,
@@ -323,7 +323,7 @@ public struct CodeTypewriterText: View {
         self.typingSpeed = typingSpeed
         self.fontSize = fontSize
     }
-    
+
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             Text(displayedCode)
@@ -337,22 +337,22 @@ public struct CodeTypewriterText: View {
             startTyping()
         }
     }
-    
+
     private func startTyping() {
         var index = 0
-        
+
         func typeNext() {
             guard index < code.count else { return }
-            
+
             let charIndex = code.index(code.startIndex, offsetBy: index)
             displayedCode.append(code[charIndex])
             index += 1
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + typingSpeed) {
                 typeNext()
             }
         }
-        
+
         typeNext()
     }
 }
@@ -365,7 +365,7 @@ public struct CodeTypewriterText: View {
             typingSpeed: 0.08,
             font: .title2
         )
-        
+
         AdvancedTypewriterText(
             texts: [
                 "Developer",
@@ -376,7 +376,7 @@ public struct CodeTypewriterText: View {
             pauseDuration: 1.5,
             font: .largeTitle.bold()
         )
-        
+
         CodeTypewriterText(
             code: "struct Hello: View {\n    var body: some View {\n        Text(\"Hello\")\n    }\n}",
             language: .swift

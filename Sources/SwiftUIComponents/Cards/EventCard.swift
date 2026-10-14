@@ -12,14 +12,14 @@ public struct EventCard: View {
     let color: Color
     let style: EventCardStyle
     let onTap: (() -> Void)?
-    
+
     public enum EventCardStyle {
         case standard
         case compact
         case timeline
         case calendar
     }
-    
+
     public init(
         title: String,
         description: String? = nil,
@@ -43,37 +43,37 @@ public struct EventCard: View {
         self.style = style
         self.onTap = onTap
     }
-    
+
     private var timeFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         return formatter
     }
-    
+
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d"
         return formatter
     }
-    
+
     private var dayFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "d"
         return formatter
     }
-    
+
     private var monthFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM"
         return formatter
     }
-    
+
     private var weekdayFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"
         return formatter
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -91,7 +91,7 @@ public struct EventCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title) on \(dateFormatter.string(from: date))")
     }
-    
+
     private var standardView: some View {
         HStack(spacing: 12) {
             // Color indicator
@@ -99,7 +99,7 @@ public struct EventCard: View {
                 .fill(color)
                 .frame(width: 4)
                 .cornerRadius(2)
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     if let category = category {
@@ -112,17 +112,17 @@ public struct EventCard: View {
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.secondary)
                 }
-                
+
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
-                
+
                 if let description = description {
                     Text(description)
                         .font(.system(size: 13))
                         .foregroundColor(.secondary)
                         .lineLimit(2)
                 }
-                
+
                 HStack(spacing: 16) {
                     HStack(spacing: 4) {
                         Image(systemName: "clock")
@@ -135,7 +135,7 @@ public struct EventCard: View {
                         }
                     }
                     .foregroundColor(.secondary)
-                    
+
                     if let location = location {
                         HStack(spacing: 4) {
                             Image(systemName: "location")
@@ -146,9 +146,9 @@ public struct EventCard: View {
                         }
                         .foregroundColor(.secondary)
                     }
-                    
+
                     Spacer()
-                    
+
                     if let attendees = attendees {
                         HStack(spacing: 4) {
                             Image(systemName: "person.2")
@@ -166,7 +166,7 @@ public struct EventCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
     }
-    
+
     private var compactView: some View {
         HStack(spacing: 12) {
             // Date box
@@ -180,19 +180,19 @@ public struct EventCard: View {
             .frame(width: 50, height: 50)
             .background(color.opacity(0.15))
             .cornerRadius(10)
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 14, weight: .semibold))
                     .lineLimit(1)
-                
+
                 Text(timeFormatter.string(from: date))
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
-            
+
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(.secondary)
@@ -201,7 +201,7 @@ public struct EventCard: View {
         .background(Color.platformBackground)
         .cornerRadius(10)
     }
-    
+
     private var timelineView: some View {
         HStack(alignment: .top, spacing: 16) {
             // Timeline
@@ -209,26 +209,26 @@ public struct EventCard: View {
                 Circle()
                     .fill(color)
                     .frame(width: 12, height: 12)
-                
+
                 Rectangle()
                     .fill(color.opacity(0.3))
                     .frame(width: 2)
             }
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text(timeFormatter.string(from: date))
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(color)
-                
+
                 Text(title)
                     .font(.system(size: 15, weight: .semibold))
-                
+
                 if let description = description {
                     Text(description)
                         .font(.system(size: 13))
                         .foregroundColor(.secondary)
                 }
-                
+
                 if let location = location {
                     HStack(spacing: 4) {
                         Image(systemName: "location")
@@ -243,7 +243,7 @@ public struct EventCard: View {
             .padding(.bottom, 20)
         }
     }
-    
+
     private var calendarView: some View {
         VStack(spacing: 0) {
             // Header
@@ -260,12 +260,12 @@ public struct EventCard: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(color)
-            
+
             // Content
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.system(size: 14, weight: .semibold))
-                
+
                 if let location = location {
                     HStack(spacing: 4) {
                         Image(systemName: "location")
@@ -299,7 +299,7 @@ public struct EventCard: View {
                 color: .blue,
                 style: .standard
             )
-            
+
             EventCard(
                 title: "Dentist Appointment",
                 date: Date().addingTimeInterval(86400),
@@ -307,12 +307,12 @@ public struct EventCard: View {
                 color: .red,
                 style: .compact
             )
-            
+
             VStack(alignment: .leading, spacing: 0) {
                 Text("Today's Schedule")
                     .font(.system(size: 18, weight: .bold))
                     .padding(.bottom, 16)
-                
+
                 EventCard(
                     title: "Morning Standup",
                     description: "Quick sync with the team",
@@ -321,7 +321,7 @@ public struct EventCard: View {
                     color: .green,
                     style: .timeline
                 )
-                
+
                 EventCard(
                     title: "Lunch with Client",
                     date: Date().addingTimeInterval(7200),
@@ -329,7 +329,7 @@ public struct EventCard: View {
                     color: .orange,
                     style: .timeline
                 )
-                
+
                 EventCard(
                     title: "Code Review",
                     date: Date().addingTimeInterval(14400),
@@ -340,7 +340,7 @@ public struct EventCard: View {
             .padding()
             .background(Color.platformBackground)
             .cornerRadius(16)
-            
+
             HStack(spacing: 12) {
                 EventCard(
                     title: "Yoga Class",
@@ -349,7 +349,7 @@ public struct EventCard: View {
                     color: .mint,
                     style: .calendar
                 )
-                
+
                 EventCard(
                     title: "Team Dinner",
                     date: Date().addingTimeInterval(86400 * 2),

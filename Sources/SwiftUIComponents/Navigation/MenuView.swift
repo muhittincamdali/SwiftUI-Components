@@ -6,7 +6,7 @@ public struct SideMenu<Content: View>: View {
     let width: CGFloat
     let edge: HorizontalEdge
     @ViewBuilder let content: () -> Content
-    
+
     public init(
         isOpen: Binding<Bool>,
         width: CGFloat = 280,
@@ -18,7 +18,7 @@ public struct SideMenu<Content: View>: View {
         self.edge = edge
         self.content = content
     }
-    
+
     public var body: some View {
         ZStack(alignment: edge == .leading ? .leading : .trailing) {
             // Overlay
@@ -31,7 +31,7 @@ public struct SideMenu<Content: View>: View {
                         }
                     }
             }
-            
+
             // Menu content
             content()
                 .frame(width: width)
@@ -50,7 +50,7 @@ public struct MenuItem: View {
     let badge: Int?
     let isSelected: Bool
     let action: () -> Void
-    
+
     public init(
         title: String,
         icon: String,
@@ -64,7 +64,7 @@ public struct MenuItem: View {
         self.isSelected = isSelected
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
@@ -72,13 +72,13 @@ public struct MenuItem: View {
                     .font(.system(size: 20))
                     .frame(width: 28)
                     .foregroundColor(isSelected ? .accentColor : .secondary)
-                
+
                 Text(title)
                     .font(.system(size: 16, weight: isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? .primary : .primary.opacity(0.8))
-                
+
                 Spacer()
-                
+
                 if let badge = badge, badge > 0 {
                     Text("\(min(badge, 99))")
                         .font(.system(size: 12, weight: .medium))
@@ -88,7 +88,7 @@ public struct MenuItem: View {
                         .background(Color.red)
                         .cornerRadius(10)
                 }
-                
+
                 if isSelected {
                     Circle()
                         .fill(Color.accentColor)
@@ -111,7 +111,7 @@ public struct DropdownMenu<Label: View, Content: View>: View {
     @Binding var isExpanded: Bool
     @ViewBuilder let label: () -> Label
     @ViewBuilder let content: () -> Content
-    
+
     public init(
         isExpanded: Binding<Bool>,
         @ViewBuilder label: @escaping () -> Label,
@@ -121,7 +121,7 @@ public struct DropdownMenu<Label: View, Content: View>: View {
         self.label = label
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             Button {
@@ -142,7 +142,7 @@ public struct DropdownMenu<Label: View, Content: View>: View {
                 .cornerRadius(10)
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             if isExpanded {
                 content()
                     .padding(.top, 8)
@@ -155,14 +155,14 @@ public struct DropdownMenu<Label: View, Content: View>: View {
 /// Context menu items container
 public struct ContextMenuItems: View {
     let items: [ContextItem]
-    
+
     public struct ContextItem: Identifiable {
         public let id = UUID()
         let title: String
         let icon: String
         let isDestructive: Bool
         let action: () -> Void
-        
+
         public init(_ title: String, icon: String, isDestructive: Bool = false, action: @escaping () -> Void) {
             self.title = title
             self.icon = icon
@@ -170,11 +170,11 @@ public struct ContextMenuItems: View {
             self.action = action
         }
     }
-    
+
     public init(items: [ContextItem]) {
         self.items = items
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             ForEach(items) { item in
@@ -183,10 +183,10 @@ public struct ContextMenuItems: View {
                         Image(systemName: item.icon)
                             .font(.system(size: 16))
                             .frame(width: 24)
-                        
+
                         Text(item.title)
                             .font(.system(size: 15))
-                        
+
                         Spacer()
                     }
                     .foregroundColor(item.isDestructive ? .red : .primary)
@@ -194,7 +194,7 @@ public struct ContextMenuItems: View {
                     .padding(.vertical, 12)
                 }
                 .buttonStyle(PlainButtonStyle())
-                
+
                 if item.id != items.last?.id {
                     Divider()
                         .padding(.leading, 50)
@@ -212,7 +212,7 @@ public struct ContextMenuItems: View {
         @State private var isMenuOpen = false
         @State private var selectedItem = "Home"
         @State private var isDropdownOpen = false
-        
+
         var body: some View {
             ZStack {
                 // Main content
@@ -226,37 +226,37 @@ public struct ContextMenuItems: View {
                             Image(systemName: "line.3.horizontal")
                                 .font(.system(size: 20))
                         }
-                        
+
                         Spacer()
-                        
+
                         Text("Menu Demo")
                             .font(.headline)
-                        
+
                         Spacer()
                     }
                     .padding()
-                    
+
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Menu Items")
                             .font(.headline)
-                        
+
                         MenuItem(title: "Home", icon: "house.fill", isSelected: selectedItem == "Home") {
                             selectedItem = "Home"
                         }
-                        
+
                         MenuItem(title: "Messages", icon: "message.fill", badge: 5, isSelected: selectedItem == "Messages") {
                             selectedItem = "Messages"
                         }
-                        
+
                         MenuItem(title: "Settings", icon: "gear", isSelected: selectedItem == "Settings") {
                             selectedItem = "Settings"
                         }
-                        
+
                         Divider()
-                        
+
                         Text("Dropdown Menu")
                             .font(.headline)
-                        
+
                         DropdownMenu(isExpanded: $isDropdownOpen) {
                             Text("Select Category")
                                 .foregroundColor(.primary)
@@ -277,12 +277,12 @@ public struct ContextMenuItems: View {
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.1), radius: 5)
                         }
-                        
+
                         Divider()
-                        
+
                         Text("Context Menu")
                             .font(.headline)
-                        
+
                         ContextMenuItems(items: [
                             .init("Edit", icon: "pencil") {},
                             .init("Share", icon: "square.and.arrow.up") {},
@@ -292,32 +292,32 @@ public struct ContextMenuItems: View {
                         .frame(width: 200)
                     }
                     .padding()
-                    
+
                     Spacer()
                 }
-                
+
                 // Side menu
                 SideMenu(isOpen: $isMenuOpen, width: 280) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Menu")
                             .font(.title2.bold())
                             .padding(20)
-                        
+
                         Divider()
-                        
+
                         VStack(spacing: 4) {
                             MenuItem(title: "Home", icon: "house.fill", isSelected: true) {}
                             MenuItem(title: "Profile", icon: "person.fill") {}
                             MenuItem(title: "Settings", icon: "gear") {}
                         }
                         .padding(12)
-                        
+
                         Spacer()
                     }
                 }
             }
         }
     }
-    
+
     return PreviewWrapper()
 }

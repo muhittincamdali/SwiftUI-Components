@@ -14,14 +14,14 @@ import SwiftUI
 /// ```
 public struct ExpandableList<Section: Identifiable, Item: Identifiable, Header: View, Row: View>: View {
     // MARK: - Types
-    
+
     /// A section with items.
     public struct ListSection: Identifiable {
         public let id: Section.ID
         public let section: Section
         public var items: [Item]
         public var isExpanded: Bool
-        
+
         public init(section: Section, items: [Item], isExpanded: Bool = true) {
             self.id = section.id
             self.section = section
@@ -29,18 +29,18 @@ public struct ExpandableList<Section: Identifiable, Item: Identifiable, Header: 
             self.isExpanded = isExpanded
         }
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var sections: [ListSection]
     private let headerContent: (Section, Bool) -> Header
     private let rowContent: (Item) -> Row
     private let headerHeight: CGFloat
     private let rowHeight: CGFloat
     private let animationDuration: Double
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new expandable list.
     public init(
         sections: Binding<[ListSection]>,
@@ -57,9 +57,9 @@ public struct ExpandableList<Section: Identifiable, Item: Identifiable, Header: 
         self.headerContent = header
         self.rowContent = content
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
@@ -75,7 +75,7 @@ public struct ExpandableList<Section: Identifiable, Item: Identifiable, Header: 
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.plain)
-                    
+
                     // Items
                     if section.isExpanded {
                         ForEach(section.items) { item in
@@ -101,7 +101,7 @@ public struct ExpandableSection<Header: View, Content: View>: View {
     private let header: () -> Header
     private let content: () -> Content
     private let animation: Animation
-    
+
     public init(
         isExpanded: Binding<Bool>,
         animation: Animation = .easeInOut(duration: 0.3),
@@ -113,7 +113,7 @@ public struct ExpandableSection<Header: View, Content: View>: View {
         self.header = header
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             Button {
@@ -124,7 +124,7 @@ public struct ExpandableSection<Header: View, Content: View>: View {
                 header()
             }
             .buttonStyle(.plain)
-            
+
             if isExpanded {
                 content()
                     .transition(.opacity.combined(with: .move(edge: .top)))
@@ -141,9 +141,9 @@ public struct AccordionList<Section: Identifiable, Header: View, Content: View>:
     private let sections: [Section]
     private let headerContent: (Section, Bool) -> Header
     private let sectionContent: (Section) -> Content
-    
+
     @State private var expandedSection: Section.ID?
-    
+
     public init(
         sections: [Section],
         @ViewBuilder header: @escaping (Section, Bool) -> Header,
@@ -153,12 +153,12 @@ public struct AccordionList<Section: Identifiable, Header: View, Content: View>:
         self.headerContent = header
         self.sectionContent = content
     }
-    
+
     public var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(sections) { section in
                 let isExpanded = expandedSection == section.id
-                
+
                 VStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
@@ -172,7 +172,7 @@ public struct AccordionList<Section: Identifiable, Header: View, Content: View>:
                         headerContent(section, isExpanded)
                     }
                     .buttonStyle(.plain)
-                    
+
                     if isExpanded {
                         sectionContent(section)
                             .transition(.opacity.combined(with: .move(edge: .top)))
@@ -191,19 +191,19 @@ public struct FAQList: View {
         public let id = UUID()
         public let question: String
         public let answer: String
-        
+
         public init(question: String, answer: String) {
             self.question = question
             self.answer = answer
         }
     }
-    
+
     private let items: [FAQItem]
     private let questionFont: Font
     private let answerFont: Font
-    
+
     @State private var expandedItem: UUID?
-    
+
     public init(
         items: [FAQItem],
         questionFont: Font = .headline,
@@ -213,7 +213,7 @@ public struct FAQList: View {
         self.questionFont = questionFont
         self.answerFont = answerFont
     }
-    
+
     public var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(items) { item in
@@ -232,9 +232,9 @@ public struct FAQList: View {
                                 .font(questionFont)
                                 .foregroundStyle(.primary)
                                 .multilineTextAlignment(.leading)
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: "chevron.down")
                                 .font(.subheadline.bold())
                                 .foregroundStyle(.secondary)
@@ -244,7 +244,7 @@ public struct FAQList: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    
+
                     if expandedItem == item.id {
                         Text(item.answer)
                             .font(answerFont)
@@ -253,7 +253,7 @@ public struct FAQList: View {
                             .padding(.bottom, 16)
                             .transition(.opacity.combined(with: .move(edge: .top)))
                     }
-                    
+
                     Divider()
                 }
             }
@@ -269,21 +269,21 @@ public struct TreeView<Node: Identifiable, Label: View>: View where Node: Hashab
         public var id: Node.ID { node.id }
         public let node: Node
         public var children: [TreeNode]
-        
+
         public init(node: Node, children: [TreeNode] = []) {
             self.node = node
             self.children = children
         }
-        
+
         var hasChildren: Bool { !children.isEmpty }
     }
-    
+
     private let roots: [TreeNode]
     private let label: (Node, Bool, Int) -> Label
     private let indentation: CGFloat
-    
+
     @State private var expandedNodes: Set<Node.ID> = []
-    
+
     public init(
         roots: [TreeNode],
         indentation: CGFloat = 20,
@@ -293,7 +293,7 @@ public struct TreeView<Node: Identifiable, Label: View>: View where Node: Hashab
         self.indentation = indentation
         self.label = label
     }
-    
+
     public var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(roots) { root in
@@ -301,11 +301,11 @@ public struct TreeView<Node: Identifiable, Label: View>: View where Node: Hashab
             }
         }
     }
-    
+
     // Recursive views need a concrete return type; AnyView breaks the opaque-type cycle.
     private func nodeView(_ treeNode: TreeNode, level: Int) -> AnyView {
         let isExpanded = expandedNodes.contains(treeNode.id)
-        
+
         return AnyView(VStack(spacing: 0) {
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
@@ -324,7 +324,7 @@ public struct TreeView<Node: Identifiable, Label: View>: View where Node: Hashab
             }
             .buttonStyle(.plain)
             .disabled(!treeNode.hasChildren)
-            
+
             if isExpanded {
                 ForEach(treeNode.children) { child in
                     nodeView(child, level: level + 1)
@@ -342,7 +342,7 @@ struct ExpandableListPreview: View {
         .init(question: "How do I get started?", answer: "Start by importing SwiftUI and creating your first View."),
         .init(question: "Is SwiftUI production ready?", answer: "Yes, SwiftUI is mature and used in many production apps.")
     ]
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -366,9 +366,9 @@ struct ExpandableListPreview: View {
                         }
                     }
                 }
-                
+
                 Divider()
-                
+
                 FAQList(items: faqItems)
                     .padding(.horizontal)
             }

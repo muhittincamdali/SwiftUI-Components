@@ -7,15 +7,15 @@ public struct CircleButton: View {
     let size: CircleSize
     let style: CircleStyle
     let badge: Int?
-    
+
     @State private var isPressed = false
-    
+
     public enum CircleSize {
         case small
         case medium
         case large
         case extraLarge
-        
+
         var dimension: CGFloat {
             switch self {
             case .small: return 32
@@ -24,7 +24,7 @@ public struct CircleButton: View {
             case .extraLarge: return 72
             }
         }
-        
+
         var iconSize: CGFloat {
             switch self {
             case .small: return 14
@@ -34,14 +34,14 @@ public struct CircleButton: View {
             }
         }
     }
-    
+
     public enum CircleStyle {
         case filled(Color)
         case outlined(Color)
         case soft(Color)
         case glass
     }
-    
+
     public init(
         icon: String,
         size: CircleSize = .medium,
@@ -55,7 +55,7 @@ public struct CircleButton: View {
         self.badge = badge
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             ZStack(alignment: .topTrailing) {
@@ -65,7 +65,7 @@ public struct CircleButton: View {
                     .frame(width: size.dimension, height: size.dimension)
                     .background(background)
                     .clipShape(Circle())
-                
+
                 if let badge = badge, badge > 0 {
                     Text(badge > 99 ? "99+" : "\(badge)")
                         .font(.system(size: 10, weight: .bold))
@@ -83,7 +83,7 @@ public struct CircleButton: View {
         .accessibilityLabel(icon)
         .accessibilityAddTraits(.isButton)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
@@ -92,7 +92,7 @@ public struct CircleButton: View {
         case .glass: return .white
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -114,18 +114,18 @@ public struct CircleButton: View {
 public struct BackButton: View {
     let action: () -> Void
     let style: BackButtonStyle
-    
+
     public enum BackButtonStyle {
         case arrow
         case chevron
         case close
     }
-    
+
     public init(style: BackButtonStyle = .chevron, action: @escaping () -> Void) {
         self.style = style
         self.action = action
     }
-    
+
     private var icon: String {
         switch style {
         case .arrow: return "arrow.left"
@@ -133,7 +133,7 @@ public struct BackButton: View {
         case .close: return "xmark"
         }
     }
-    
+
     public var body: some View {
         CircleButton(icon: icon, size: .medium, style: .soft(.primary), action: action)
             .accessibilityLabel("Go back")
@@ -145,7 +145,7 @@ public struct CloseButton: View {
     let action: () -> Void
     let size: CircleButton.CircleSize
     let style: CircleButton.CircleStyle
-    
+
     public init(
         size: CircleButton.CircleSize = .medium,
         style: CircleButton.CircleStyle = .soft(.primary),
@@ -155,7 +155,7 @@ public struct CloseButton: View {
         self.style = style
         self.action = action
     }
-    
+
     public var body: some View {
         CircleButton(icon: "xmark", size: size, style: style, action: action)
             .accessibilityLabel("Close")
@@ -171,7 +171,7 @@ public struct CloseButton: View {
             CircleButton(icon: "plus", size: .large, style: .filled(.blue)) {}
             CircleButton(icon: "plus", size: .extraLarge, style: .filled(.blue)) {}
         }
-        
+
         // Styles
         HStack(spacing: 16) {
             CircleButton(icon: "heart.fill", style: .filled(.pink)) {}
@@ -179,14 +179,14 @@ public struct CloseButton: View {
             CircleButton(icon: "heart.fill", style: .soft(.pink)) {}
             CircleButton(icon: "heart.fill", style: .glass) {}
         }
-        
+
         // With badge
         HStack(spacing: 16) {
             CircleButton(icon: "bell.fill", style: .filled(.orange), badge: 3) {}
             CircleButton(icon: "message.fill", style: .filled(.green), badge: 99) {}
             CircleButton(icon: "cart.fill", style: .filled(.purple), badge: 150) {}
         }
-        
+
         // Common buttons
         HStack(spacing: 16) {
             BackButton {}

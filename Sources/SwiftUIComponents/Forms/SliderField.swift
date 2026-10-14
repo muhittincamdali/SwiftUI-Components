@@ -9,13 +9,13 @@ public struct SliderField: View {
     let showValue: Bool
     let valueFormat: String
     let style: SliderStyle
-    
+
     public enum SliderStyle {
         case standard
         case pill
         case gradient(colors: [Color])
     }
-    
+
     public init(
         value: Binding<Double>,
         range: ClosedRange<Double> = 0...100,
@@ -33,7 +33,7 @@ public struct SliderField: View {
         self.valueFormat = valueFormat
         self.style = style
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if label != nil || showValue {
@@ -42,9 +42,9 @@ public struct SliderField: View {
                         Text(label)
                             .font(.system(size: 14, weight: .medium))
                     }
-                    
+
                     Spacer()
-                    
+
                     if showValue {
                         Text(String(format: valueFormat, value))
                             .font(.system(size: 14, weight: .semibold))
@@ -52,7 +52,7 @@ public struct SliderField: View {
                     }
                 }
             }
-            
+
             Group {
                 switch style {
                 case .standard:
@@ -61,17 +61,17 @@ public struct SliderField: View {
                     } else {
                         Slider(value: $value, in: range)
                     }
-                    
+
                 case .pill:
                     pillSlider
-                    
+
                 case .gradient(let colors):
                     gradientSlider(colors: colors)
                 }
             }
         }
     }
-    
+
     private var pillSlider: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -79,12 +79,12 @@ public struct SliderField: View {
                 Capsule()
                     .fill(Color.platformGray5)
                     .frame(height: 8)
-                
+
                 // Filled track
                 Capsule()
                     .fill(Color.accentColor)
                     .frame(width: max(0, geometry.size.width * progress), height: 8)
-                
+
                 // Thumb
                 Circle()
                     .fill(Color.white)
@@ -97,7 +97,7 @@ public struct SliderField: View {
                                 let newProgress = gesture.location.x / geometry.size.width
                                 let clampedProgress = min(max(newProgress, 0), 1)
                                 value = range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress
-                                
+
                                 if let step = step {
                                     value = (value / step).rounded() * step
                                 }
@@ -107,7 +107,7 @@ public struct SliderField: View {
         }
         .frame(height: 24)
     }
-    
+
     private func gradientSlider(colors: [Color]) -> some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -116,12 +116,12 @@ public struct SliderField: View {
                     .fill(LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing))
                     .frame(height: 8)
                     .opacity(0.3)
-                
+
                 // Filled track with gradient
                 Capsule()
                     .fill(LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing))
                     .frame(width: max(0, geometry.size.width * progress), height: 8)
-                
+
                 // Thumb
                 Circle()
                     .fill(Color.white)
@@ -139,7 +139,7 @@ public struct SliderField: View {
                                 let newProgress = gesture.location.x / geometry.size.width
                                 let clampedProgress = min(max(newProgress, 0), 1)
                                 value = range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress
-                                
+
                                 if let step = step {
                                     value = (value / step).rounded() * step
                                 }
@@ -149,7 +149,7 @@ public struct SliderField: View {
         }
         .frame(height: 24)
     }
-    
+
     private var progress: Double {
         (value - range.lowerBound) / (range.upperBound - range.lowerBound)
     }
@@ -162,7 +162,7 @@ public struct RangeSlider: View {
     let range: ClosedRange<Double>
     let label: String?
     let valueFormat: String
-    
+
     public init(
         lowerValue: Binding<Double>,
         upperValue: Binding<Double>,
@@ -176,7 +176,7 @@ public struct RangeSlider: View {
         self.label = label
         self.valueFormat = valueFormat
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if label != nil {
@@ -185,28 +185,28 @@ public struct RangeSlider: View {
                         Text(label)
                             .font(.system(size: 14, weight: .medium))
                     }
-                    
+
                     Spacer()
-                    
+
                     Text("\(String(format: valueFormat, lowerValue)) - \(String(format: valueFormat, upperValue))")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.accentColor)
                 }
             }
-            
+
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     // Track
                     Capsule()
                         .fill(Color.platformGray5)
                         .frame(height: 8)
-                    
+
                     // Selected range
                     Capsule()
                         .fill(Color.accentColor)
                         .frame(width: (upperProgress - lowerProgress) * geometry.size.width, height: 8)
                         .offset(x: lowerProgress * geometry.size.width)
-                    
+
                     // Lower thumb
                     Circle()
                         .fill(Color.white)
@@ -221,7 +221,7 @@ public struct RangeSlider: View {
                                     lowerValue = range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress
                                 }
                         )
-                    
+
                     // Upper thumb
                     Circle()
                         .fill(Color.white)
@@ -241,11 +241,11 @@ public struct RangeSlider: View {
             .frame(height: 24)
         }
     }
-    
+
     private var lowerProgress: Double {
         (lowerValue - range.lowerBound) / (range.upperBound - range.lowerBound)
     }
-    
+
     private var upperProgress: Double {
         (upperValue - range.lowerBound) / (range.upperBound - range.lowerBound)
     }
@@ -258,7 +258,7 @@ public struct RangeSlider: View {
         @State private var value3: Double = 70
         @State private var lowerValue: Double = 20
         @State private var upperValue: Double = 80
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 32) {
@@ -267,19 +267,19 @@ public struct RangeSlider: View {
                         label: "Standard Slider",
                         style: .standard
                     )
-                    
+
                     SliderField(
                         value: $value2,
                         label: "Pill Slider",
                         style: .pill
                     )
-                    
+
                     SliderField(
                         value: $value3,
                         label: "Gradient Slider",
                         style: .gradient(colors: [.purple, .pink, .orange])
                     )
-                    
+
                     SliderField(
                         value: $value1,
                         range: 0...10,
@@ -287,9 +287,9 @@ public struct RangeSlider: View {
                         label: "Stepped Slider (0-10)",
                         style: .pill
                     )
-                    
+
                     Divider()
-                    
+
                     RangeSlider(
                         lowerValue: $lowerValue,
                         upperValue: $upperValue,

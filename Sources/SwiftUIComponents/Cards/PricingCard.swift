@@ -11,18 +11,18 @@ public struct PricingCard: View {
     let buttonTitle: String
     let color: Color
     let onSelect: () -> Void
-    
+
     public struct Feature: Identifiable {
         public let id = UUID()
         let text: String
         let isIncluded: Bool
-        
+
         public init(_ text: String, included: Bool = true) {
             self.text = text
             self.isIncluded = included
         }
     }
-    
+
     public init(
         name: String,
         price: String,
@@ -44,7 +44,7 @@ public struct PricingCard: View {
         self.color = color
         self.onSelect = onSelect
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -58,11 +58,11 @@ public struct PricingCard: View {
                         .background(color)
                         .cornerRadius(4)
                 }
-                
+
                 Text(name)
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(isPopular ? .white : .primary)
-                
+
                 HStack(alignment: .bottom, spacing: 2) {
                     Text(price)
                         .font(.system(size: 36, weight: .bold))
@@ -72,7 +72,7 @@ public struct PricingCard: View {
                         .padding(.bottom, 6)
                 }
                 .foregroundColor(isPopular ? .white : .primary)
-                
+
                 if let description = description {
                     Text(description)
                         .font(.system(size: 13))
@@ -83,7 +83,7 @@ public struct PricingCard: View {
             .padding(20)
             .frame(maxWidth: .infinity)
             .background(isPopular ? color : Color.platformGray6)
-            
+
             // Features
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(features) { feature in
@@ -91,7 +91,7 @@ public struct PricingCard: View {
                         Image(systemName: feature.isIncluded ? "checkmark.circle.fill" : "xmark.circle")
                             .foregroundColor(feature.isIncluded ? .green : .gray)
                             .font(.system(size: 18))
-                        
+
                         Text(feature.text)
                             .font(.system(size: 14))
                             .foregroundColor(feature.isIncluded ? .primary : .secondary)
@@ -99,7 +99,7 @@ public struct PricingCard: View {
                 }
             }
             .padding(20)
-            
+
             // Button
             Button(action: onSelect) {
                 Text(buttonTitle)
@@ -129,7 +129,7 @@ public struct PricingToggle: View {
     let monthlyLabel: String
     let annualLabel: String
     let discount: String?
-    
+
     public init(
         isAnnual: Binding<Bool>,
         monthlyLabel: String = "Monthly",
@@ -141,22 +141,22 @@ public struct PricingToggle: View {
         self.annualLabel = annualLabel
         self.discount = discount
     }
-    
+
     public var body: some View {
         HStack(spacing: 12) {
             Text(monthlyLabel)
                 .font(.system(size: 14, weight: isAnnual ? .regular : .semibold))
                 .foregroundColor(isAnnual ? .secondary : .primary)
-            
+
             Toggle("", isOn: $isAnnual)
                 .labelsHidden()
                 .tint(.accentColor)
-            
+
             HStack(spacing: 6) {
                 Text(annualLabel)
                     .font(.system(size: 14, weight: isAnnual ? .semibold : .regular))
                     .foregroundColor(isAnnual ? .primary : .secondary)
-                
+
                 if let discount = discount, isAnnual {
                     Text(discount)
                         .font(.system(size: 10, weight: .bold))
@@ -188,7 +188,7 @@ public struct PricingToggle: View {
                 onSelect: {}
             )
             .frame(width: 280)
-            
+
             PricingCard(
                 name: "Pro",
                 price: "$29",
@@ -205,7 +205,7 @@ public struct PricingToggle: View {
                 onSelect: {}
             )
             .frame(width: 280)
-            
+
             PricingCard(
                 name: "Enterprise",
                 price: "$99",

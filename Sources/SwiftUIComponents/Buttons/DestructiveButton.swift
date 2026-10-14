@@ -6,15 +6,15 @@ public struct DestructiveButton: View {
     let icon: String?
     let action: () -> Void
     let style: DestructiveStyle
-    
+
     @State private var isPressed = false
-    
+
     public enum DestructiveStyle {
         case filled
         case outlined
         case text
     }
-    
+
     public init(
         _ title: String,
         icon: String? = "trash",
@@ -26,7 +26,7 @@ public struct DestructiveButton: View {
         self.style = style
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
@@ -47,14 +47,14 @@ public struct DestructiveButton: View {
         .accessibilityLabel("\(title), destructive action")
         .accessibilityAddTraits(.isButton)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
         case .outlined, .text: return .red
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {

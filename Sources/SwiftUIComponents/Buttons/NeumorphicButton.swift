@@ -6,16 +6,16 @@ public struct NeumorphicButton: View {
     let icon: String?
     let action: () -> Void
     let style: NeumorphicStyle
-    
+
     @State private var isPressed = false
     @Environment(\.colorScheme) private var colorScheme
-    
+
     public enum NeumorphicStyle {
         case convex
         case concave
         case flat
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -27,19 +27,19 @@ public struct NeumorphicButton: View {
         self.style = style
         self.action = action
     }
-    
+
     private var baseColor: Color {
         colorScheme == .dark ? Color(white: 0.2) : Color(white: 0.92)
     }
-    
+
     private var lightShadow: Color {
         colorScheme == .dark ? Color(white: 0.25) : Color.white
     }
-    
+
     private var darkShadow: Color {
         colorScheme == .dark ? Color.black : Color(white: 0.75)
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 10) {
@@ -67,7 +67,7 @@ public struct NeumorphicButton: View {
                             )
                             .shadow(color: lightShadow.opacity(0.7), radius: isPressed ? 2 : 8, x: isPressed ? -2 : -8, y: isPressed ? -2 : -8)
                             .shadow(color: darkShadow.opacity(0.5), radius: isPressed ? 2 : 8, x: isPressed ? 2 : 8, y: isPressed ? 2 : 8)
-                        
+
                     case .concave:
                         RoundedRectangle(cornerRadius: 15)
                             .fill(baseColor)
@@ -85,7 +85,7 @@ public struct NeumorphicButton: View {
                                     .offset(x: -2, y: -2)
                                     .mask(RoundedRectangle(cornerRadius: 15).fill(LinearGradient(colors: [.clear, .black], startPoint: .topLeading, endPoint: .bottomTrailing)))
                             )
-                        
+
                     case .flat:
                         RoundedRectangle(cornerRadius: 15)
                             .fill(baseColor)
@@ -110,7 +110,7 @@ public struct NeumorphicButton: View {
     ZStack {
         Color(white: 0.92)
             .ignoresSafeArea()
-        
+
         VStack(spacing: 30) {
             NeumorphicButton("Convex", icon: "star.fill", style: .convex) {}
             NeumorphicButton("Concave", icon: "heart.fill", style: .concave) {}

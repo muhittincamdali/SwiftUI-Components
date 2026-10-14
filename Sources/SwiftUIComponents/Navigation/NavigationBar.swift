@@ -7,14 +7,14 @@ public struct CustomNavigationBar: View {
     let leadingItems: [NavBarItem]
     let trailingItems: [NavBarItem]
     let style: NavBarStyle
-    
+
     public struct NavBarItem: Identifiable {
         public let id = UUID()
         let icon: String?
         let title: String?
         let badge: Int?
         let action: () -> Void
-        
+
         public init(icon: String? = nil, title: String? = nil, badge: Int? = nil, action: @escaping () -> Void) {
             self.icon = icon
             self.title = title
@@ -22,14 +22,14 @@ public struct CustomNavigationBar: View {
             self.action = action
         }
     }
-    
+
     public enum NavBarStyle {
         case standard
         case large
         case transparent
         case colored(Color)
     }
-    
+
     public init(
         title: String,
         subtitle: String? = nil,
@@ -43,7 +43,7 @@ public struct CustomNavigationBar: View {
         self.trailingItems = trailingItems
         self.style = style
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .colored: return .white
@@ -51,7 +51,7 @@ public struct CustomNavigationBar: View {
         default: return .primary
         }
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             switch style {
@@ -63,7 +63,7 @@ public struct CustomNavigationBar: View {
         }
         .background(backgroundColor)
     }
-    
+
     private var backgroundColor: some View {
         Group {
             switch style {
@@ -78,7 +78,7 @@ public struct CustomNavigationBar: View {
             }
         }
     }
-    
+
     private var standardNavBar: some View {
         HStack(spacing: 16) {
             // Leading items
@@ -88,24 +88,24 @@ public struct CustomNavigationBar: View {
                 }
             }
             .frame(minWidth: 60, alignment: .leading)
-            
+
             Spacer()
-            
+
             // Title
             VStack(spacing: 2) {
                 Text(title)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(foregroundColor)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
                         .foregroundColor(foregroundColor.opacity(0.7))
                 }
             }
-            
+
             Spacer()
-            
+
             // Trailing items
             HStack(spacing: 12) {
                 ForEach(trailingItems) { item in
@@ -117,7 +117,7 @@ public struct CustomNavigationBar: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
     }
-    
+
     private var largeNavBar: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Top bar with items
@@ -127,9 +127,9 @@ public struct CustomNavigationBar: View {
                         navBarButton(item)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 HStack(spacing: 12) {
                     ForEach(trailingItems) { item in
                         navBarButton(item)
@@ -138,12 +138,12 @@ public struct CustomNavigationBar: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
-            
+
             // Large title
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 34, weight: .bold))
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 15))
@@ -154,7 +154,7 @@ public struct CustomNavigationBar: View {
             .padding(.bottom, 8)
         }
     }
-    
+
     private func navBarButton(_ item: NavBarItem) -> some View {
         Button(action: item.action) {
             ZStack(alignment: .topTrailing) {
@@ -168,7 +168,7 @@ public struct CustomNavigationBar: View {
                     }
                 }
                 .foregroundColor(foregroundColor)
-                
+
                 if let badge = item.badge, badge > 0 {
                     Text("\(min(badge, 99))")
                         .font(.system(size: 10, weight: .bold))
@@ -189,7 +189,7 @@ public struct SearchNavigationBar: View {
     let placeholder: String
     let onCancel: (() -> Void)?
     @FocusState private var isFocused: Bool
-    
+
     public init(
         searchText: Binding<String>,
         placeholder: String = "Search",
@@ -199,18 +199,18 @@ public struct SearchNavigationBar: View {
         self.placeholder = placeholder
         self.onCancel = onCancel
     }
-    
+
     public var body: some View {
         HStack(spacing: 12) {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 16))
                     .foregroundColor(.secondary)
-                
+
                 TextField(placeholder, text: $searchText)
                     .font(.system(size: 16))
                     .focused($isFocused)
-                
+
                 if !searchText.isEmpty {
                     Button {
                         searchText = ""
@@ -225,7 +225,7 @@ public struct SearchNavigationBar: View {
             .padding(.vertical, 10)
             .background(Color.platformGray6)
             .cornerRadius(10)
-            
+
             if isFocused || !searchText.isEmpty {
                 Button("Cancel") {
                     searchText = ""
@@ -251,7 +251,7 @@ public struct TabBarItem: View {
     let isSelected: Bool
     let badge: Int?
     let action: () -> Void
-    
+
     public init(
         icon: String,
         label: String,
@@ -265,14 +265,14 @@ public struct TabBarItem: View {
         self.badge = badge
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             VStack(spacing: 4) {
                 ZStack(alignment: .topTrailing) {
                     Image(systemName: isSelected ? icon + ".fill" : icon)
                         .font(.system(size: 22))
-                    
+
                     if let badge = badge, badge > 0 {
                         Text("\(min(badge, 99))")
                             .font(.system(size: 10, weight: .bold))
@@ -283,7 +283,7 @@ public struct TabBarItem: View {
                             .offset(x: 10, y: -6)
                     }
                 }
-                
+
                 Text(label)
                     .font(.system(size: 10))
             }
@@ -299,25 +299,25 @@ public struct CustomTabBar: View {
     @Binding var selectedTab: Int
     let tabs: [Tab]
     let style: TabBarStyle
-    
+
     public struct Tab {
         let icon: String
         let label: String
         let badge: Int?
-        
+
         public init(icon: String, label: String, badge: Int? = nil) {
             self.icon = icon
             self.label = label
             self.badge = badge
         }
     }
-    
+
     public enum TabBarStyle {
         case standard
         case floating
         case minimal
     }
-    
+
     public init(
         selectedTab: Binding<Int>,
         tabs: [Tab],
@@ -327,7 +327,7 @@ public struct CustomTabBar: View {
         self.tabs = tabs
         self.style = style
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -340,7 +340,7 @@ public struct CustomTabBar: View {
             }
         }
     }
-    
+
     private var standardTabBar: some View {
         HStack {
             ForEach(0..<tabs.count, id: \.self) { index in
@@ -361,7 +361,7 @@ public struct CustomTabBar: View {
         .background(Color.platformBackground)
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: -4)
     }
-    
+
     private var floatingTabBar: some View {
         HStack(spacing: 0) {
             ForEach(0..<tabs.count, id: \.self) { index in
@@ -373,7 +373,7 @@ public struct CustomTabBar: View {
                     VStack(spacing: 4) {
                         Image(systemName: selectedTab == index ? tabs[index].icon + ".fill" : tabs[index].icon)
                             .font(.system(size: 20))
-                        
+
                         if selectedTab == index {
                             Circle()
                                 .fill(Color.accentColor)
@@ -393,7 +393,7 @@ public struct CustomTabBar: View {
         .padding(.horizontal, 40)
         .padding(.bottom, 20)
     }
-    
+
     private var minimalTabBar: some View {
         HStack(spacing: 32) {
             ForEach(0..<tabs.count, id: \.self) { index in
@@ -417,7 +417,7 @@ public struct CustomTabBar: View {
     struct PreviewWrapper: View {
         @State private var searchText = ""
         @State private var selectedTab = 0
-        
+
         var body: some View {
             VStack(spacing: 0) {
                 // Standard nav bar
@@ -432,14 +432,14 @@ public struct CustomTabBar: View {
                     ],
                     style: .standard
                 )
-                
+
                 Divider()
-                
+
                 // Search bar
                 SearchNavigationBar(searchText: $searchText)
-                
+
                 Divider()
-                
+
                 // Large nav bar
                 CustomNavigationBar(
                     title: "Library",
@@ -449,9 +449,9 @@ public struct CustomTabBar: View {
                     ],
                     style: .large
                 )
-                
+
                 Spacer()
-                
+
                 // Tab bars
                 VStack(spacing: 20) {
                     CustomTabBar(
@@ -465,7 +465,7 @@ public struct CustomTabBar: View {
                         style: .floating
                     )
                 }
-                
+
                 CustomTabBar(
                     selectedTab: $selectedTab,
                     tabs: [
@@ -480,6 +480,6 @@ public struct CustomTabBar: View {
             .background(Color.platformGray6)
         }
     }
-    
+
     return PreviewWrapper()
 }

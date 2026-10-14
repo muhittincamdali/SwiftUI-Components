@@ -15,7 +15,7 @@ import SwiftUI
 /// ```
 public struct GlassCard<Content: View>: View {
     // MARK: - Types
-    
+
     /// Preset glass styles.
     public enum Style {
         case light
@@ -23,7 +23,7 @@ public struct GlassCard<Content: View>: View {
         case colorful(Color)
         case frosted
         case crystal
-        
+
         var tintColor: Color {
             switch self {
             case .light: return .white
@@ -33,7 +33,7 @@ public struct GlassCard<Content: View>: View {
             case .crystal: return .clear
             }
         }
-        
+
         var tintOpacity: Double {
             switch self {
             case .light: return 0.2
@@ -43,7 +43,7 @@ public struct GlassCard<Content: View>: View {
             case .crystal: return 0.1
             }
         }
-        
+
         var blurAmount: CGFloat {
             switch self {
             case .light, .dark: return 10
@@ -53,9 +53,9 @@ public struct GlassCard<Content: View>: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let style: Style
     private let cornerRadius: CGFloat
     private let borderWidth: CGFloat
@@ -64,9 +64,9 @@ public struct GlassCard<Content: View>: View {
     private let shadowOpacity: Double
     private let padding: CGFloat
     private let content: () -> Content
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new glass card.
     /// - Parameters:
     ///   - style: The glass style preset. Defaults to `.light`.
@@ -96,9 +96,9 @@ public struct GlassCard<Content: View>: View {
         self.padding = padding
         self.content = content
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         content()
             .padding(padding)
@@ -107,19 +107,19 @@ public struct GlassCard<Content: View>: View {
             .overlay(glassBorder)
             .shadow(color: .black.opacity(shadowOpacity), radius: shadowRadius, x: 0, y: 5)
     }
-    
+
     // MARK: - Glass Background
-    
+
     private var glassBackground: some View {
         ZStack {
             // Base blur layer
             Rectangle()
                 .fill(.ultraThinMaterial)
-            
+
             // Tint overlay
             Rectangle()
                 .fill(style.tintColor.opacity(style.tintOpacity))
-            
+
             // Gradient highlight
             LinearGradient(
                 colors: [
@@ -132,9 +132,9 @@ public struct GlassCard<Content: View>: View {
             )
         }
     }
-    
+
     // MARK: - Glass Border
-    
+
     private var glassBorder: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .stroke(
@@ -160,7 +160,7 @@ public struct TexturedGlassCard<Content: View>: View {
     private let noiseOpacity: Double
     private let padding: CGFloat
     private let content: () -> Content
-    
+
     /// Creates a textured glass card.
     public init(
         style: GlassCard<Content>.Style = .light,
@@ -175,7 +175,7 @@ public struct TexturedGlassCard<Content: View>: View {
         self.padding = padding
         self.content = content
     }
-    
+
     public var body: some View {
         content()
             .padding(padding)
@@ -183,9 +183,9 @@ public struct TexturedGlassCard<Content: View>: View {
                 ZStack {
                     Rectangle()
                         .fill(.ultraThinMaterial)
-                    
+
                     NoiseView(opacity: noiseOpacity)
-                    
+
                     LinearGradient(
                         colors: [
                             .white.opacity(0.25),
@@ -210,14 +210,14 @@ public struct TexturedGlassCard<Content: View>: View {
 /// A procedural noise texture view.
 private struct NoiseView: View {
     let opacity: Double
-    
+
     var body: some View {
         Canvas { context, size in
             for _ in 0..<Int(size.width * size.height * 0.1) {
                 let x = CGFloat.random(in: 0..<size.width)
                 let y = CGFloat.random(in: 0..<size.height)
                 let gray = Double.random(in: 0...1)
-                
+
                 context.fill(
                     Path(ellipseIn: CGRect(x: x, y: y, width: 1, height: 1)),
                     with: .color(.gray.opacity(gray * opacity))
@@ -235,9 +235,9 @@ public struct AnimatedGlassCard<Content: View>: View {
     private let padding: CGFloat
     private let animationDuration: Double
     private let content: () -> Content
-    
+
     @State private var phase: CGFloat = 0
-    
+
     /// Creates an animated glass card.
     public init(
         cornerRadius: CGFloat = 20,
@@ -250,7 +250,7 @@ public struct AnimatedGlassCard<Content: View>: View {
         self.animationDuration = animationDuration
         self.content = content
     }
-    
+
     public var body: some View {
         content()
             .padding(padding)
@@ -258,7 +258,7 @@ public struct AnimatedGlassCard<Content: View>: View {
                 ZStack {
                     Rectangle()
                         .fill(.ultraThinMaterial)
-                    
+
                     animatedGradient
                 }
             )
@@ -288,7 +288,7 @@ public struct AnimatedGlassCard<Content: View>: View {
                 }
             }
     }
-    
+
     private var animatedGradient: some View {
         LinearGradient(
             colors: [
@@ -308,7 +308,7 @@ public struct AnimatedGlassCard<Content: View>: View {
 public struct GlassModifier: ViewModifier {
     let style: GlassCard<EmptyView>.Style
     let cornerRadius: CGFloat
-    
+
     public func body(content: Content) -> some View {
         content
             .background(.ultraThinMaterial)
@@ -341,7 +341,7 @@ extension View {
             endPoint: .bottomTrailing
         )
         .ignoresSafeArea()
-        
+
         VStack(spacing: 20) {
             GlassCard(style: .light) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -353,12 +353,12 @@ extension View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
+
             GlassCard(style: .dark) {
                 Text("Dark Glass Style")
                     .foregroundStyle(.white)
             }
-            
+
             AnimatedGlassCard {
                 HStack {
                     Image(systemName: "sparkles")
@@ -366,7 +366,7 @@ extension View {
                 }
                 .foregroundStyle(.white)
             }
-            
+
             TexturedGlassCard {
                 Text("With Noise Texture")
             }

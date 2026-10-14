@@ -8,7 +8,7 @@ public struct EmptyStateView: View {
     let illustration: Illustration?
     let action: Action?
     let style: EmptyStateStyle
-    
+
     public enum Illustration {
         case noResults
         case noConnection
@@ -20,7 +20,7 @@ public struct EmptyStateView: View {
         case notifications
         case messages
         case files
-        
+
         var systemImage: String {
             switch self {
             case .noResults: return "magnifyingglass"
@@ -35,7 +35,7 @@ public struct EmptyStateView: View {
             case .files: return "folder"
             }
         }
-        
+
         var color: Color {
             switch self {
             case .noResults: return .blue
@@ -51,26 +51,26 @@ public struct EmptyStateView: View {
             }
         }
     }
-    
+
     public struct Action {
         let title: String
         let icon: String?
         let action: () -> Void
-        
+
         public init(_ title: String, icon: String? = nil, action: @escaping () -> Void) {
             self.title = title
             self.icon = icon
             self.action = action
         }
     }
-    
+
     public enum EmptyStateStyle {
         case standard
         case compact
         case card
         case fullscreen
     }
-    
+
     public init(
         title: String,
         message: String,
@@ -86,7 +86,7 @@ public struct EmptyStateView: View {
         self.action = action
         self.style = style
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -103,7 +103,7 @@ public struct EmptyStateView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(message)")
     }
-    
+
     private var illustrationView: some View {
         Group {
             if let illustration = illustration {
@@ -111,7 +111,7 @@ public struct EmptyStateView: View {
                     Circle()
                         .fill(illustration.color.opacity(0.15))
                         .frame(width: 100, height: 100)
-                    
+
                     Image(systemName: illustration.systemImage)
                         .font(.system(size: 40))
                         .foregroundColor(illustration.color)
@@ -123,22 +123,22 @@ public struct EmptyStateView: View {
             }
         }
     }
-    
+
     private var standardView: some View {
         VStack(spacing: 16) {
             illustrationView
-            
+
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 20, weight: .semibold))
                     .multilineTextAlignment(.center)
-                
+
                 Text(message)
                     .font(.system(size: 15))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
-            
+
             if let action = action {
                 Button(action: action.action) {
                     HStack(spacing: 8) {
@@ -159,7 +159,7 @@ public struct EmptyStateView: View {
         }
         .padding(32)
     }
-    
+
     private var compactView: some View {
         HStack(spacing: 16) {
             if let illustration = illustration {
@@ -174,18 +174,18 @@ public struct EmptyStateView: View {
                     .font(.system(size: 28))
                     .foregroundColor(.secondary)
             }
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
-                
+
                 Text(message)
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
-            
+
             if let action = action {
                 Button(action: action.action) {
                     if let icon = action.icon {
@@ -203,21 +203,21 @@ public struct EmptyStateView: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
-    
+
     private var cardView: some View {
         VStack(spacing: 16) {
             illustrationView
-            
+
             VStack(spacing: 6) {
                 Text(title)
                     .font(.system(size: 17, weight: .semibold))
-                
+
                 Text(message)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
-            
+
             if let action = action {
                 Button(action: action.action) {
                     HStack(spacing: 6) {
@@ -237,39 +237,39 @@ public struct EmptyStateView: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 4)
     }
-    
+
     private var fullscreenView: some View {
         VStack(spacing: 24) {
             Spacer()
-            
+
             if let illustration = illustration {
                 ZStack {
                     Circle()
                         .fill(illustration.color.opacity(0.1))
                         .frame(width: 160, height: 160)
-                    
+
                     Circle()
                         .fill(illustration.color.opacity(0.15))
                         .frame(width: 120, height: 120)
-                    
+
                     Image(systemName: illustration.systemImage)
                         .font(.system(size: 50))
                         .foregroundColor(illustration.color)
                 }
             }
-            
+
             VStack(spacing: 12) {
                 Text(title)
                     .font(.system(size: 24, weight: .bold))
                     .multilineTextAlignment(.center)
-                
+
                 Text(message)
                     .font(.system(size: 16))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
-            
+
             if let action = action {
                 Button(action: action.action) {
                     HStack(spacing: 8) {
@@ -287,7 +287,7 @@ public struct EmptyStateView: View {
                 }
                 .padding(.horizontal, 48)
             }
-            
+
             Spacer()
         }
     }
@@ -303,7 +303,7 @@ public extension EmptyStateView {
             action: action
         )
     }
-    
+
     static func noConnection(action: Action? = nil) -> EmptyStateView {
         EmptyStateView(
             title: "No Internet Connection",
@@ -312,7 +312,7 @@ public extension EmptyStateView {
             action: action ?? Action("Retry", icon: "arrow.clockwise") {}
         )
     }
-    
+
     static func empty(title: String = "Nothing Here Yet", message: String = "Items you add will appear here.", action: Action? = nil) -> EmptyStateView {
         EmptyStateView(
             title: title,
@@ -321,7 +321,7 @@ public extension EmptyStateView {
             action: action
         )
     }
-    
+
     static func error(message: String = "Something went wrong. Please try again.", action: Action? = nil) -> EmptyStateView {
         EmptyStateView(
             title: "Oops!",
@@ -330,7 +330,7 @@ public extension EmptyStateView {
             action: action ?? Action("Try Again", icon: "arrow.clockwise") {}
         )
     }
-    
+
     static func comingSoon(feature: String = "This feature") -> EmptyStateView {
         EmptyStateView(
             title: "Coming Soon",
@@ -350,14 +350,14 @@ public extension EmptyStateView {
                 action: .init("New Message", icon: "square.and.pencil") {},
                 style: .standard
             )
-            
+
             EmptyStateView(
                 title: "No Notifications",
                 message: "You're all caught up!",
                 illustration: .notifications,
                 style: .compact
             )
-            
+
             EmptyStateView(
                 title: "No Files",
                 message: "Upload your first file to get started.",
@@ -365,13 +365,13 @@ public extension EmptyStateView {
                 action: .init("Upload", icon: "plus") {},
                 style: .card
             )
-            
+
             EmptyStateView.noResults(action: .init("Clear Search") {})
-            
+
             EmptyStateView.noConnection()
-            
+
             EmptyStateView.error()
-            
+
             EmptyStateView.comingSoon(feature: "Analytics")
         }
         .padding()

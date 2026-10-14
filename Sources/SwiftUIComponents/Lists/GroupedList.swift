@@ -6,26 +6,26 @@ public struct GroupedList<Item: Identifiable, Content: View, Header: View>: View
     let style: GroupedListStyle
     @ViewBuilder let content: (Item) -> Content
     @ViewBuilder let header: (ListSection<Item>) -> Header
-    
+
     public struct ListSection<T: Identifiable>: Identifiable {
         public let id = UUID()
         let title: String
         let subtitle: String?
         let items: [T]
-        
+
         public init(title: String, subtitle: String? = nil, items: [T]) {
             self.title = title
             self.subtitle = subtitle
             self.items = items
         }
     }
-    
+
     public enum GroupedListStyle {
         case inset
         case plain
         case sidebar
     }
-    
+
     public init(
         sections: [ListSection<Item>],
         style: GroupedListStyle = .inset,
@@ -37,7 +37,7 @@ public struct GroupedList<Item: Identifiable, Content: View, Header: View>: View
         self.content = content
         self.header = header
     }
-    
+
     public var body: some View {
         ScrollView {
             LazyVStack(spacing: style == .inset ? 16 : 0) {
@@ -47,7 +47,7 @@ public struct GroupedList<Item: Identifiable, Content: View, Header: View>: View
                         header(section)
                             .padding(.horizontal, style == .inset ? 20 : 16)
                             .padding(.bottom, 8)
-                        
+
                         // Items
                         VStack(spacing: 0) {
                             ForEach(section.items) { item in
@@ -55,7 +55,7 @@ public struct GroupedList<Item: Identifiable, Content: View, Header: View>: View
                                     content(item)
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 12)
-                                    
+
                                     if item.id as AnyHashable != section.items.last?.id as AnyHashable {
                                         Divider()
                                             .padding(.leading, 16)
@@ -80,7 +80,7 @@ public struct SectionHeader: View {
     let subtitle: String?
     let action: (() -> Void)?
     let actionLabel: String?
-    
+
     public init(
         title: String,
         subtitle: String? = nil,
@@ -92,23 +92,23 @@ public struct SectionHeader: View {
         self.action = action
         self.actionLabel = actionLabel
     }
-    
+
     public var body: some View {
         HStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title.uppercased())
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(.secondary)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
                         .foregroundColor(.secondary.opacity(0.8))
                 }
             }
-            
+
             Spacer()
-            
+
             if let action = action, let label = actionLabel {
                 Button(action: action) {
                     Text(label)
@@ -126,7 +126,7 @@ public struct SelectableList<Item: Identifiable & Hashable, Content: View>: View
     let items: [Item]
     let allowsMultipleSelection: Bool
     @ViewBuilder let content: (Item, Bool) -> Content
-    
+
     public init(
         selection: Binding<Set<Item>>,
         items: [Item],
@@ -138,7 +138,7 @@ public struct SelectableList<Item: Identifiable & Hashable, Content: View>: View
         self.allowsMultipleSelection = allowsMultipleSelection
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             ForEach(items) { item in
@@ -147,9 +147,9 @@ public struct SelectableList<Item: Identifiable & Hashable, Content: View>: View
                 } label: {
                     HStack {
                         content(item, selection.contains(item))
-                        
+
                         Spacer()
-                        
+
                         if selection.contains(item) {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 14, weight: .semibold))
@@ -161,7 +161,7 @@ public struct SelectableList<Item: Identifiable & Hashable, Content: View>: View
                     .background(selection.contains(item) ? Color.accentColor.opacity(0.08) : Color.clear)
                 }
                 .buttonStyle(PlainButtonStyle())
-                
+
                 if item.id as AnyHashable != items.last?.id as AnyHashable {
                     Divider()
                         .padding(.leading, 16)
@@ -171,7 +171,7 @@ public struct SelectableList<Item: Identifiable & Hashable, Content: View>: View
         .background(Color.platformBackground)
         .cornerRadius(12)
     }
-    
+
     private func toggleSelection(_ item: Item) {
         if selection.contains(item) {
             selection.remove(item)
@@ -191,7 +191,7 @@ public struct CollapsibleSection<Content: View>: View {
     let badge: Int?
     @State private var isExpanded: Bool
     @ViewBuilder let content: () -> Content
-    
+
     public init(
         title: String,
         icon: String? = nil,
@@ -205,7 +205,7 @@ public struct CollapsibleSection<Content: View>: View {
         self._isExpanded = State(initialValue: isExpanded)
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             Button {
@@ -220,11 +220,11 @@ public struct CollapsibleSection<Content: View>: View {
                             .foregroundColor(.accentColor)
                             .frame(width: 28)
                     }
-                    
+
                     Text(title)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.primary)
-                    
+
                     if let badge = badge, badge > 0 {
                         Text("\(badge)")
                             .font(.system(size: 12, weight: .medium))
@@ -234,9 +234,9 @@ public struct CollapsibleSection<Content: View>: View {
                             .background(Color.accentColor)
                             .cornerRadius(10)
                     }
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
@@ -247,7 +247,7 @@ public struct CollapsibleSection<Content: View>: View {
                 .background(Color.platformGray6)
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             if isExpanded {
                 content()
                     .transition(.opacity.combined(with: .move(edge: .top)))
@@ -263,10 +263,10 @@ public struct CollapsibleSection<Content: View>: View {
         let title: String
         let subtitle: String
     }
-    
+
     struct PreviewWrapper: View {
         @State private var selection: Set<ListItem> = []
-        
+
         let sections = [
             GroupedList<ListItem, AnyView, AnyView>.ListSection(
                 title: "Favorites",
@@ -285,13 +285,13 @@ public struct CollapsibleSection<Content: View>: View {
                 ]
             )
         ]
-        
+
         let selectItems = [
             ListItem(title: "Option 1", subtitle: "Description 1"),
             ListItem(title: "Option 2", subtitle: "Description 2"),
             ListItem(title: "Option 3", subtitle: "Description 3")
         ]
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 24) {
@@ -328,13 +328,13 @@ public struct CollapsibleSection<Content: View>: View {
                         }
                     )
                     .frame(height: 400)
-                    
+
                     // Selectable List
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Selectable List")
                             .font(.headline)
                             .padding(.horizontal)
-                        
+
                         SelectableList(
                             selection: $selection,
                             items: selectItems
@@ -349,13 +349,13 @@ public struct CollapsibleSection<Content: View>: View {
                         }
                         .padding(.horizontal)
                     }
-                    
+
                     // Collapsible Section
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Collapsible Section")
                             .font(.headline)
                             .padding(.horizontal)
-                        
+
                         CollapsibleSection(title: "Categories", icon: "folder.fill", badge: 5) {
                             VStack(spacing: 0) {
                                 ForEach(["Work", "Personal", "Archive"], id: \.self) { item in
@@ -376,6 +376,6 @@ public struct CollapsibleSection<Content: View>: View {
             .background(Color.platformGray6)
         }
     }
-    
+
     return PreviewWrapper()
 }

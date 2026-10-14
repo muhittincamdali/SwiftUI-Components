@@ -10,7 +10,7 @@ import SwiftUI
 /// ```
 public struct PulseLoader: View {
     // MARK: - Types
-    
+
     /// The visual style of the pulse loader.
     public enum Style {
         case single
@@ -19,19 +19,19 @@ public struct PulseLoader: View {
         case wave
         case heartbeat
     }
-    
+
     // MARK: - Properties
-    
+
     private let color: Color
     private let style: Style
     private let size: CGFloat
     private let lineWidth: CGFloat
     private let speed: Double
-    
+
     @State private var animate: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new pulse loader.
     /// - Parameters:
     ///   - color: The pulse color. Defaults to `.blue`.
@@ -52,9 +52,9 @@ public struct PulseLoader: View {
         self.lineWidth = lineWidth
         self.speed = speed
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -75,16 +75,16 @@ public struct PulseLoader: View {
             animate = true
         }
     }
-    
+
     // MARK: - Single Pulse
-    
+
     private var singlePulse: some View {
         ZStack {
             Circle()
                 .fill(color.opacity(0.3))
                 .scaleEffect(animate ? 2.0 : 1.0)
                 .opacity(animate ? 0 : 1)
-            
+
             Circle()
                 .fill(color)
                 .frame(width: size * 0.4, height: size * 0.4)
@@ -95,9 +95,9 @@ public struct PulseLoader: View {
             value: animate
         )
     }
-    
+
     // MARK: - Rings Pulse
-    
+
     private var ringsPulse: some View {
         ZStack {
             ForEach(0..<3, id: \.self) { index in
@@ -114,9 +114,9 @@ public struct PulseLoader: View {
             }
         }
     }
-    
+
     // MARK: - Dots Pulse
-    
+
     private var dotsPulse: some View {
         HStack(spacing: size * 0.15) {
             ForEach(0..<3, id: \.self) { index in
@@ -134,9 +134,9 @@ public struct PulseLoader: View {
             }
         }
     }
-    
+
     // MARK: - Wave Pulse
-    
+
     private var wavePulse: some View {
         HStack(spacing: size * 0.08) {
             ForEach(0..<5, id: \.self) { index in
@@ -153,9 +153,9 @@ public struct PulseLoader: View {
             }
         }
     }
-    
+
     // MARK: - Heartbeat Pulse
-    
+
     private var heartbeatPulse: some View {
         Image(systemName: "heart.fill")
             .resizable()
@@ -179,15 +179,15 @@ public struct ActivityIndicator: View {
         case linear
         case orbital
     }
-    
+
     private let style: Style
     private let color: Color
     private let size: CGFloat
     private let lineWidth: CGFloat
-    
+
     @State private var rotation: Double = 0
     @State private var progress: Double = 0
-    
+
     public init(
         style: Style = .circular,
         color: Color = .blue,
@@ -199,7 +199,7 @@ public struct ActivityIndicator: View {
         self.size = size
         self.lineWidth = lineWidth
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -216,20 +216,20 @@ public struct ActivityIndicator: View {
             startAnimation()
         }
     }
-    
+
     private var circularIndicator: some View {
         Circle()
             .trim(from: 0, to: 0.7)
             .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
             .rotationEffect(.degrees(rotation))
     }
-    
+
     private var linearIndicator: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(color.opacity(0.2))
-                
+
                 Capsule()
                     .fill(color)
                     .frame(width: geometry.size.width * 0.3)
@@ -237,12 +237,12 @@ public struct ActivityIndicator: View {
             }
         }
     }
-    
+
     private var orbitalIndicator: some View {
         ZStack {
             Circle()
                 .stroke(color.opacity(0.2), lineWidth: lineWidth)
-            
+
             Circle()
                 .fill(color)
                 .frame(width: lineWidth * 2, height: lineWidth * 2)
@@ -250,7 +250,7 @@ public struct ActivityIndicator: View {
                 .rotationEffect(.degrees(rotation))
         }
     }
-    
+
     private func startAnimation() {
         withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
             rotation = 360
@@ -269,17 +269,17 @@ public struct ActivityIndicator: View {
             PulseLoader(color: .purple, style: .rings)
             PulseLoader(color: .green, style: .dots)
         }
-        
+
         HStack(spacing: 30) {
             PulseLoader(color: .orange, style: .wave)
             PulseLoader(color: .red, style: .heartbeat)
         }
-        
+
         HStack(spacing: 30) {
             ActivityIndicator(style: .circular)
             ActivityIndicator(style: .orbital, color: .purple)
         }
-        
+
         ActivityIndicator(style: .linear, color: .blue, size: 200)
             .padding(.horizontal)
     }

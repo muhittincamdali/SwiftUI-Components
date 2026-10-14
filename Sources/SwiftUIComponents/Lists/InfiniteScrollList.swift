@@ -17,7 +17,7 @@ import SwiftUI
 /// ```
 public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
     // MARK: - Properties
-    
+
     private let items: [Item]
     private let isLoading: Bool
     private let hasMore: Bool
@@ -28,9 +28,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
     private let emptyView: AnyView?
     private let errorView: AnyView?
     private let error: Error?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new infinite scroll list.
     /// - Parameters:
     ///   - items: The current items to display.
@@ -60,7 +60,7 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
         self.emptyView = nil
         self.errorView = nil
     }
-    
+
     /// Creates an infinite scroll list with custom views.
     public init<Loading: View, Empty: View, ErrorV: View>(
         items: [Item],
@@ -85,9 +85,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
         self.emptyView = AnyView(emptyView())
         self.errorView = AnyView(errorView())
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             if items.isEmpty && !isLoading {
@@ -99,9 +99,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
             }
         }
     }
-    
+
     // MARK: - Content View
-    
+
     private var contentView: some View {
         LazyVStack(spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -110,19 +110,19 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
                         checkLoadMore(index: index)
                     }
             }
-            
+
             if isLoading {
                 loadingView
             }
-            
+
             if !hasMore && !items.isEmpty {
                 endOfListView
             }
         }
     }
-    
+
     // MARK: - Loading View
-    
+
     private var loadingView: some View {
         Group {
             if let custom = loadingIndicator {
@@ -137,9 +137,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
             }
         }
     }
-    
+
     // MARK: - Empty State View
-    
+
     private var emptyStateView: some View {
         Group {
             if let custom = emptyView {
@@ -158,9 +158,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
             }
         }
     }
-    
+
     // MARK: - Error State View
-    
+
     private func errorStateView(_ error: Error) -> some View {
         Group {
             if let custom = errorView {
@@ -176,7 +176,7 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
-                    
+
                     Button("Retry") {
                         Task { await loadMore() }
                     }
@@ -187,9 +187,9 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
             }
         }
     }
-    
+
     // MARK: - End of List View
-    
+
     private var endOfListView: some View {
         HStack {
             Spacer()
@@ -200,12 +200,12 @@ public struct InfiniteScrollList<Item: Identifiable, RowContent: View>: View {
             Spacer()
         }
     }
-    
+
     // MARK: - Load More Check
-    
+
     private func checkLoadMore(index: Int) {
         guard hasMore && !isLoading else { return }
-        
+
         let threshold = items.count - loadThreshold
         if index >= threshold {
             Task {
@@ -224,12 +224,12 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
     @Published public private(set) var isLoading: Bool = false
     @Published public private(set) var hasMore: Bool = true
     @Published public private(set) var error: Error?
-    
+
     private var currentPage: Int = 0
     private var generation: Int = 0
     private let pageSize: Int
     private let fetchPage: (Int, Int) async throws -> [Item]
-    
+
     public init(
         pageSize: Int = 20,
         fetchPage: @escaping (Int, Int) async throws -> [Item]
@@ -237,18 +237,18 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
         self.pageSize = pageSize
         self.fetchPage = fetchPage
     }
-    
+
     /// Loads the next page of items.
     ///
     /// Does nothing while a page is loading or after a short page signalled the end.
     /// `fetchPage` receives the zero-based page index and the page size.
     public func loadMore() async {
         guard !isLoading && hasMore else { return }
-        
+
         let requestGeneration = generation
         isLoading = true
         error = nil
-        
+
         do {
             let newItems = try await fetchPage(currentPage, pageSize)
             // A refresh started while this page was in flight; its result is stale.
@@ -260,10 +260,10 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
             guard requestGeneration == generation else { return }
             self.error = error
         }
-        
+
         isLoading = false
     }
-    
+
     /// Discards loaded items and loads the first page again, even if a page is in flight.
     public func refresh() async {
         generation += 1
@@ -282,7 +282,7 @@ public final class PaginatedListViewModel<Item: Identifiable>: ObservableObject 
 public struct RefreshableInfiniteList<Item: Identifiable, RowContent: View>: View {
     @ObservedObject private var viewModel: PaginatedListViewModel<Item>
     private let rowContent: (Item) -> RowContent
-    
+
     public init(
         viewModel: PaginatedListViewModel<Item>,
         @ViewBuilder rowContent: @escaping (Item) -> RowContent
@@ -290,7 +290,7 @@ public struct RefreshableInfiniteList<Item: Identifiable, RowContent: View>: Vie
         self.viewModel = viewModel
         self.rowContent = rowContent
     }
-    
+
     public var body: some View {
         ScrollView {
             InfiniteScrollList(
@@ -319,12 +319,12 @@ struct InfiniteScrollListPreview: View {
         let id = UUID()
         let title: String
     }
-    
+
     @State private var items: [MockItem] = (1...10).map { MockItem(title: "Item \($0)") }
     @State private var isLoading = false
     @State private var hasMore = true
     @State private var page = 1
-    
+
     var body: some View {
         ScrollView {
             InfiniteScrollList(
@@ -337,30 +337,30 @@ struct InfiniteScrollListPreview: View {
                     Circle()
                         .fill(.blue.opacity(0.2))
                         .frame(width: 40, height: 40)
-                    
+
                     Text(item.title)
                         .font(.body)
-                    
+
                     Spacer()
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
-                
+
                 Divider()
             }
         }
     }
-    
+
     private func loadMore() async {
         isLoading = true
-        
+
         try? await Task.sleep(nanoseconds: 1_000_000_000)
-        
+
         let newItems = ((page * 10 + 1)...(page * 10 + 10)).map { MockItem(title: "Item \($0)") }
         items.append(contentsOf: newItems)
         page += 1
         hasMore = page < 5
-        
+
         isLoading = false
     }
 }

@@ -10,21 +10,21 @@ import SwiftUI
 /// ```
 public struct BreadcrumbView: View {
     // MARK: - Types
-    
+
     /// A breadcrumb item.
     public struct Crumb: Identifiable {
         public let id = UUID()
         public let title: String
         public let icon: Image?
         public let action: (() -> Void)?
-        
+
         public init(title: String, icon: Image? = nil, action: (() -> Void)? = nil) {
             self.title = title
             self.icon = icon
             self.action = action
         }
     }
-    
+
     /// The visual style of the breadcrumb.
     public enum Style {
         case chevron
@@ -32,9 +32,9 @@ public struct BreadcrumbView: View {
         case arrow
         case dot
     }
-    
+
     // MARK: - Properties
-    
+
     private let crumbs: [Crumb]
     private let style: Style
     private let font: Font
@@ -43,9 +43,9 @@ public struct BreadcrumbView: View {
     private let separatorColor: Color
     private let truncateMiddle: Bool
     private let maxItems: Int
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a breadcrumb from strings.
     public init(
         path: [String],
@@ -69,7 +69,7 @@ public struct BreadcrumbView: View {
         self.truncateMiddle = truncateMiddle
         self.maxItems = maxItems
     }
-    
+
     /// Creates a breadcrumb from crumb objects.
     public init(
         crumbs: [Crumb],
@@ -90,9 +90,9 @@ public struct BreadcrumbView: View {
         self.truncateMiddle = truncateMiddle
         self.maxItems = maxItems
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
@@ -100,37 +100,37 @@ public struct BreadcrumbView: View {
                     if index > 0 {
                         separator
                     }
-                    
+
                     crumbView(crumb, isLast: index == displayCrumbs.count - 1)
                 }
             }
         }
     }
-    
+
     // MARK: - Display Crumbs
-    
+
     private var displayCrumbs: [Crumb] {
         guard truncateMiddle && crumbs.count > maxItems else {
             return crumbs
         }
-        
+
         var result: [Crumb] = []
-        
+
         // First item
         result.append(crumbs[0])
-        
+
         // Ellipsis
         result.append(Crumb(title: "...", icon: nil, action: nil))
-        
+
         // Last items
         let lastItems = crumbs.suffix(maxItems - 2)
         result.append(contentsOf: lastItems)
-        
+
         return result
     }
-    
+
     // MARK: - Crumb View
-    
+
     private func crumbView(_ crumb: Crumb, isLast: Bool) -> some View {
         Button {
             crumb.action?()
@@ -140,7 +140,7 @@ public struct BreadcrumbView: View {
                     icon
                         .imageScale(.small)
                 }
-                
+
                 Text(crumb.title)
                     .font(font)
                     .fontWeight(isLast ? .semibold : .regular)
@@ -150,9 +150,9 @@ public struct BreadcrumbView: View {
         .buttonStyle(.plain)
         .disabled(crumb.action == nil || isLast)
     }
-    
+
     // MARK: - Separator
-    
+
     private var separator: some View {
         Group {
             switch style {
@@ -181,7 +181,7 @@ public struct CompactBreadcrumb: View {
     private let currentTitle: String
     private let parentTitle: String?
     private let onBack: (() -> Void)?
-    
+
     public init(
         currentTitle: String,
         parentTitle: String? = nil,
@@ -191,7 +191,7 @@ public struct CompactBreadcrumb: View {
         self.parentTitle = parentTitle
         self.onBack = onBack
     }
-    
+
     public var body: some View {
         HStack(spacing: 8) {
             if let parent = parentTitle, let action = onBack {
@@ -207,12 +207,12 @@ public struct CompactBreadcrumb: View {
                     .foregroundStyle(.blue)
                 }
                 .buttonStyle(.plain)
-                
+
                 Image(systemName: "chevron.right")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
             }
-            
+
             Text(currentTitle)
                 .font(.subheadline)
                 .fontWeight(.semibold)
@@ -227,7 +227,7 @@ public struct DropdownBreadcrumb: View {
     private let crumbs: [BreadcrumbView.Crumb]
     private let maxVisible: Int
     private let font: Font
-    
+
     public init(
         crumbs: [BreadcrumbView.Crumb],
         maxVisible: Int = 3,
@@ -237,15 +237,15 @@ public struct DropdownBreadcrumb: View {
         self.maxVisible = maxVisible
         self.font = font
     }
-    
+
     public var body: some View {
         HStack(spacing: 8) {
             if crumbs.count > maxVisible {
                 // First crumb
                 crumbButton(crumbs[0], isLast: false)
-                
+
                 separator
-                
+
                 // Overflow menu
                 Menu {
                     ForEach(Array(crumbs[1..<crumbs.count - maxVisible + 2].enumerated()), id: \.element.id) { index, crumb in
@@ -258,9 +258,9 @@ public struct DropdownBreadcrumb: View {
                         .font(font)
                         .foregroundStyle(.blue)
                 }
-                
+
                 separator
-                
+
                 // Last crumbs
                 ForEach(Array(crumbs.suffix(maxVisible - 2).enumerated()), id: \.element.id) { index, crumb in
                     if index > 0 {
@@ -278,7 +278,7 @@ public struct DropdownBreadcrumb: View {
             }
         }
     }
-    
+
     private func crumbButton(_ crumb: BreadcrumbView.Crumb, isLast: Bool) -> some View {
         Button {
             crumb.action?()
@@ -291,7 +291,7 @@ public struct DropdownBreadcrumb: View {
         .buttonStyle(.plain)
         .disabled(isLast)
     }
-    
+
     private var separator: some View {
         Image(systemName: "chevron.right")
             .font(.caption2.weight(.semibold))
@@ -306,17 +306,17 @@ public struct DropdownBreadcrumb: View {
             Text("Chevron Style").font(.caption)
             BreadcrumbView(path: ["Home", "Products", "Electronics", "Phones"])
         }
-        
+
         VStack(alignment: .leading) {
             Text("Slash Style").font(.caption)
             BreadcrumbView(path: ["Home", "Settings", "Account"], style: .slash)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Compact").font(.caption)
             CompactBreadcrumb(currentTitle: "Account", parentTitle: "Settings") { }
         }
-        
+
         VStack(alignment: .leading) {
             Text("Long Path (Truncated)").font(.caption)
             BreadcrumbView(path: ["Home", "Category", "Subcategory", "Product", "Details", "Reviews"])

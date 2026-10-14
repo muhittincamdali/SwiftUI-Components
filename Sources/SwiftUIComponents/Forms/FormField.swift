@@ -7,7 +7,7 @@ public struct FormField<Content: View>: View {
     let errorMessage: String?
     let isRequired: Bool
     @ViewBuilder let content: () -> Content
-    
+
     public init(
         label: String,
         helperText: String? = nil,
@@ -21,22 +21,22 @@ public struct FormField<Content: View>: View {
         self.isRequired = isRequired
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 4) {
                 Text(label)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.primary)
-                
+
                 if isRequired {
                     Text("*")
                         .foregroundColor(.red)
                 }
             }
-            
+
             content()
-            
+
             if let error = errorMessage {
                 HStack(spacing: 4) {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -62,14 +62,14 @@ public struct TextInputField: View {
     let style: InputStyle
     let keyboardType: KeyboardKind
     @FocusState private var isFocused: Bool
-    
+
     public enum InputStyle {
         case standard
         case outlined
         case filled
         case underlined
     }
-    
+
     public init(
         text: Binding<String>,
         placeholder: String = "",
@@ -83,7 +83,7 @@ public struct TextInputField: View {
         self.style = style
         self.keyboardType = keyboardType
     }
-    
+
     public var body: some View {
         HStack(spacing: 10) {
             if let icon = icon {
@@ -91,7 +91,7 @@ public struct TextInputField: View {
                     .font(.system(size: 16))
                     .foregroundColor(isFocused ? .accentColor : .secondary)
             }
-            
+
             TextField(placeholder, text: $text)
                 .font(.system(size: 16))
                 .keyboard(keyboardType)
@@ -102,7 +102,7 @@ public struct TextInputField: View {
         .background(background)
         .animation(.easeInOut(duration: 0.2), value: isFocused)
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -131,18 +131,18 @@ public struct PasswordField: View {
     let placeholder: String
     @State private var isSecure = true
     @FocusState private var isFocused: Bool
-    
+
     public init(password: Binding<String>, placeholder: String = "Password") {
         self._password = password
         self.placeholder = placeholder
     }
-    
+
     public var body: some View {
         HStack(spacing: 10) {
             Image(systemName: "lock")
                 .font(.system(size: 16))
                 .foregroundColor(isFocused ? .accentColor : .secondary)
-            
+
             Group {
                 if isSecure {
                     SecureField(placeholder, text: $password)
@@ -152,7 +152,7 @@ public struct PasswordField: View {
             }
             .font(.system(size: 16))
             .focused($isFocused)
-            
+
             Button {
                 isSecure.toggle()
             } label: {
@@ -178,7 +178,7 @@ public struct TextAreaField: View {
     let minHeight: CGFloat
     let maxHeight: CGFloat
     @FocusState private var isFocused: Bool
-    
+
     public init(
         text: Binding<String>,
         placeholder: String = "",
@@ -190,7 +190,7 @@ public struct TextAreaField: View {
         self.minHeight = minHeight
         self.maxHeight = maxHeight
     }
-    
+
     public var body: some View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty {
@@ -200,7 +200,7 @@ public struct TextAreaField: View {
                     .padding(.horizontal, 4)
                     .padding(.vertical, 8)
             }
-            
+
             TextEditor(text: $text)
                 .font(.system(size: 16))
                 .focused($isFocused)
@@ -222,24 +222,24 @@ public struct TextAreaField: View {
             FormField(label: "Email", helperText: "We'll never share your email", isRequired: true) {
                 TextInputField(text: .constant(""), placeholder: "Enter email", icon: "envelope", style: .outlined)
             }
-            
+
             FormField(label: "Username", errorMessage: "Username already taken") {
                 TextInputField(text: .constant("johndoe"), placeholder: "Enter username", icon: "person", style: .outlined)
             }
-            
+
             FormField(label: "Password", isRequired: true) {
                 PasswordField(password: .constant(""))
             }
-            
+
             FormField(label: "Bio") {
                 TextAreaField(text: .constant(""), placeholder: "Tell us about yourself...")
             }
-            
+
             Divider().padding(.vertical)
-            
+
             Text("Input Styles")
                 .font(.headline)
-            
+
             TextInputField(text: .constant(""), placeholder: "Standard", style: .standard)
             TextInputField(text: .constant(""), placeholder: "Outlined", style: .outlined)
             TextInputField(text: .constant(""), placeholder: "Filled", style: .filled)

@@ -11,34 +11,34 @@ import SwiftUI
 /// ```
 public struct MiniBarChart: View {
     // MARK: - Types
-    
+
     /// Data point with optional label and color.
     public struct DataPoint: Identifiable {
         public let id = UUID()
         public let value: Double
         public let label: String?
         public let color: Color?
-        
+
         public init(value: Double, label: String? = nil, color: Color? = nil) {
             self.value = value
             self.label = label
             self.color = color
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let data: [DataPoint]
     private let defaultColor: Color
     private let spacing: CGFloat
     private let cornerRadius: CGFloat
     private let showValues: Bool
     private let animated: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a mini bar chart from raw values.
     public init(
         data: [Double],
@@ -55,7 +55,7 @@ public struct MiniBarChart: View {
         self.showValues = showValues
         self.animated = animated
     }
-    
+
     /// Creates a mini bar chart from data points.
     public init(
         dataPoints: [DataPoint],
@@ -72,25 +72,25 @@ public struct MiniBarChart: View {
         self.showValues = showValues
         self.animated = animated
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let barWidth = (geometry.size.width - spacing * CGFloat(data.count - 1)) / CGFloat(data.count)
             let maxValue = data.map(\.value).max() ?? 1
-            
+
             HStack(alignment: .bottom, spacing: spacing) {
                 ForEach(Array(data.enumerated()), id: \.element.id) { index, point in
                     let height = (point.value / maxValue) * geometry.size.height
-                    
+
                     VStack(spacing: 2) {
                         if showValues {
                             Text(formatValue(point.value))
                                 .font(.system(size: 8))
                                 .foregroundStyle(.secondary)
                         }
-                        
+
                         RoundedRectangle(cornerRadius: cornerRadius)
                             .fill(point.color ?? defaultColor)
                             .frame(width: barWidth, height: (animated ? animationProgress : 1) * height)
@@ -106,7 +106,7 @@ public struct MiniBarChart: View {
             }
         }
     }
-    
+
     private func formatValue(_ value: Double) -> String {
         if value >= 1000000 {
             return String(format: "%.1fM", value / 1000000)
@@ -129,23 +129,23 @@ public struct HorizontalMiniBarChart: View {
         public let value: Double
         public let label: String
         public let color: Color?
-        
+
         public init(value: Double, label: String, color: Color? = nil) {
             self.value = value
             self.label = label
             self.color = color
         }
     }
-    
+
     private let data: [DataPoint]
     private let defaultColor: Color
     private let barHeight: CGFloat
     private let spacing: CGFloat
     private let showValues: Bool
     private let animated: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public init(
         data: [DataPoint],
         defaultColor: Color = .blue,
@@ -161,26 +161,26 @@ public struct HorizontalMiniBarChart: View {
         self.showValues = showValues
         self.animated = animated
     }
-    
+
     public var body: some View {
         let maxValue = data.map(\.value).max() ?? 1
-        
+
         VStack(alignment: .leading, spacing: spacing) {
             ForEach(data) { point in
                 HStack(spacing: 8) {
                     Text(point.label)
                         .font(.caption)
                         .frame(width: 60, alignment: .trailing)
-                    
+
                     GeometryReader { geometry in
                         let width = (point.value / maxValue) * geometry.size.width
-                        
+
                         RoundedRectangle(cornerRadius: barHeight / 2)
                             .fill(point.color ?? defaultColor)
                             .frame(width: (animated ? animationProgress : 1) * width, height: barHeight)
                     }
                     .frame(height: barHeight)
-                    
+
                     if showValues {
                         Text(formatValue(point.value))
                             .font(.caption)
@@ -198,7 +198,7 @@ public struct HorizontalMiniBarChart: View {
             }
         }
     }
-    
+
     private func formatValue(_ value: Double) -> String {
         if value >= 1000 {
             return String(format: "%.1fK", value / 1000)
@@ -216,21 +216,21 @@ public struct StackedBar: View {
         public let value: Double
         public let color: Color
         public let label: String?
-        
+
         public init(value: Double, color: Color, label: String? = nil) {
             self.value = value
             self.color = color
             self.label = label
         }
     }
-    
+
     private let segments: [Segment]
     private let height: CGFloat
     private let cornerRadius: CGFloat
     private let animated: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public init(
         segments: [Segment],
         height: CGFloat = 8,
@@ -242,15 +242,15 @@ public struct StackedBar: View {
         self.cornerRadius = cornerRadius
         self.animated = animated
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let total = segments.map(\.value).reduce(0, +)
-            
+
             HStack(spacing: 0) {
                 ForEach(segments) { segment in
                     let width = (segment.value / total) * geometry.size.width * (animated ? animationProgress : 1)
-                    
+
                     Rectangle()
                         .fill(segment.color)
                         .frame(width: width)
@@ -278,7 +278,7 @@ public struct StackedBar: View {
             MiniBarChart(data: [30, 45, 60, 25, 50, 40])
                 .frame(width: 150, height: 50)
         }
-        
+
         VStack(alignment: .leading) {
             Text("With Colors")
                 .font(.caption)
@@ -291,7 +291,7 @@ public struct StackedBar: View {
             ])
             .frame(width: 150, height: 50)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Horizontal Bar")
                 .font(.caption)
@@ -302,7 +302,7 @@ public struct StackedBar: View {
             ])
             .frame(width: 250)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Stacked Bar")
                 .font(.caption)

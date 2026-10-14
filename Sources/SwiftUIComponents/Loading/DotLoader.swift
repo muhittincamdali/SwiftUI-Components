@@ -10,7 +10,7 @@ import SwiftUI
 /// ```
 public struct DotLoader: View {
     // MARK: - Types
-    
+
     /// The animation style for the dots.
     public enum Style {
         case bouncing
@@ -20,20 +20,20 @@ public struct DotLoader: View {
         case elastic
         case orbital
     }
-    
+
     // MARK: - Properties
-    
+
     private let style: Style
     private let color: Color
     private let dotCount: Int
     private let dotSize: CGFloat
     private let spacing: CGFloat
     private let speed: Double
-    
+
     @State private var animationPhase: [Bool]
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new dot loader.
     /// - Parameters:
     ///   - style: The animation style. Defaults to `.bouncing`.
@@ -58,9 +58,9 @@ public struct DotLoader: View {
         self.speed = speed
         self._animationPhase = State(initialValue: Array(repeating: false, count: dotCount))
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -82,9 +82,9 @@ public struct DotLoader: View {
             startAnimation()
         }
     }
-    
+
     // MARK: - Bouncing Dots
-    
+
     private var bouncingDots: some View {
         HStack(spacing: spacing) {
             ForEach(0..<dotCount, id: \.self) { index in
@@ -95,9 +95,9 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Fading Dots
-    
+
     private var fadingDots: some View {
         HStack(spacing: spacing) {
             ForEach(0..<dotCount, id: \.self) { index in
@@ -108,9 +108,9 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Scaling Dots
-    
+
     private var scalingDots: some View {
         HStack(spacing: spacing) {
             ForEach(0..<dotCount, id: \.self) { index in
@@ -121,9 +121,9 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Typing Dots
-    
+
     private var typingDots: some View {
         HStack(spacing: spacing) {
             ForEach(0..<dotCount, id: \.self) { index in
@@ -134,9 +134,9 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Elastic Dots
-    
+
     private var elasticDots: some View {
         HStack(spacing: spacing) {
             ForEach(0..<dotCount, id: \.self) { index in
@@ -149,14 +149,14 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Orbital Dots
-    
+
     @State private var rotation: Double = 0
-    
+
     private var orbitalDots: some View {
         let radius = dotSize * 2
-        
+
         return ZStack {
             ForEach(0..<dotCount, id: \.self) { index in
                 let angle = (360.0 / Double(dotCount)) * Double(index)
@@ -174,13 +174,13 @@ public struct DotLoader: View {
             }
         }
     }
-    
+
     // MARK: - Animation
-    
+
     private func startAnimation() {
         for index in 0..<dotCount {
             let delay = Double(index) * (speed / Double(dotCount))
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 withAnimation(
                     .easeInOut(duration: speed)
@@ -200,21 +200,21 @@ public struct InlineLoader: View {
     private let text: String?
     private let color: Color
     private let dotSize: CGFloat
-    
+
     @State private var phase: Int = 0
-    
+
     public init(text: String? = nil, color: Color = .secondary, dotSize: CGFloat = 4) {
         self.text = text
         self.color = color
         self.dotSize = dotSize
     }
-    
+
     public var body: some View {
         HStack(spacing: 4) {
             if let text {
                 Text(text)
             }
-            
+
             HStack(spacing: 2) {
                 ForEach(0..<3, id: \.self) { index in
                     Circle()
@@ -240,15 +240,15 @@ public struct LoadingText: View {
     private let text: String
     private let font: Font
     private let color: Color
-    
+
     @State private var dotCount: Int = 0
-    
+
     public init(text: String = "Loading", font: Font = .body, color: Color = .secondary) {
         self.text = text
         self.font = font
         self.color = color
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             Text(text)
@@ -274,39 +274,39 @@ public struct LoadingText: View {
                 DotLoader(style: .bouncing)
                 Text("Bouncing").font(.caption)
             }
-            
+
             VStack {
                 DotLoader(style: .fading, color: .purple)
                 Text("Fading").font(.caption)
             }
-            
+
             VStack {
                 DotLoader(style: .scaling, color: .green)
                 Text("Scaling").font(.caption)
             }
         }
-        
+
         HStack(spacing: 40) {
             VStack {
                 DotLoader(style: .typing, color: .orange)
                 Text("Typing").font(.caption)
             }
-            
+
             VStack {
                 DotLoader(style: .elastic, color: .red)
                 Text("Elastic").font(.caption)
             }
-            
+
             VStack {
                 DotLoader(style: .orbital, color: .blue)
                 Text("Orbital").font(.caption)
             }
         }
-        
+
         Divider()
-        
+
         InlineLoader(text: "Sending")
-        
+
         LoadingText()
     }
     .padding()

@@ -12,20 +12,20 @@ import SwiftUI
 /// ```
 public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
     // MARK: - Properties
-    
+
     @Binding private var items: [Item]
     private let rowContent: (Item) -> RowContent
     private let rowHeight: CGFloat
     private let spacing: CGFloat
     private let showDragHandle: Bool
     private let onReorder: (([Item]) -> Void)?
-    
+
     @State private var draggingItem: Item?
     @State private var dragOffset: CGSize = .zero
     @State private var draggingIndex: Int?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new reorderable list.
     /// - Parameters:
     ///   - items: Binding to the items array.
@@ -49,9 +49,9 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
         self.onReorder = onReorder
         self.rowContent = rowContent
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         LazyVStack(spacing: spacing) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -61,9 +61,9 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
             }
         }
     }
-    
+
     // MARK: - Row View
-    
+
     private func rowView(item: Item, index: Int) -> some View {
         HStack(spacing: 12) {
             if showDragHandle {
@@ -72,7 +72,7 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
                     .foregroundStyle(.secondary)
                     .gesture(dragGesture(for: item, at: index))
             }
-            
+
             rowContent(item)
                 .frame(maxWidth: .infinity)
         }
@@ -86,9 +86,9 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
         )
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: draggingItem?.id)
     }
-    
+
     // MARK: - Drag Gesture
-    
+
     private func dragGesture(for item: Item, at index: Int) -> some Gesture {
         LongPressGesture(minimumDuration: 0.1)
             .sequenced(before: DragGesture())
@@ -100,7 +100,7 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
                         draggingIndex = index
                         Haptics.impact(.medium)
                     }
-                    
+
                     if let drag {
                         dragOffset = drag.translation
                         updateItemPosition(from: index)
@@ -118,25 +118,25 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
                 onReorder?(items)
             }
     }
-    
+
     // MARK: - Position Calculation
-    
+
     private func calculateOffset(for item: Item, at index: Int) -> CGFloat {
         guard let draggingItem, draggingItem.id == item.id else {
             return 0
         }
         return dragOffset.height
     }
-    
+
     private func updateItemPosition(from originalIndex: Int) {
         guard draggingItem != nil else { return }
-        
+
         let totalRowHeight = rowHeight + spacing
         let moveThreshold = totalRowHeight / 2
         let offsetInRows = Int((dragOffset.height + (dragOffset.height > 0 ? moveThreshold : -moveThreshold)) / totalRowHeight)
-        
+
         let newIndex = max(0, min(items.count - 1, originalIndex + offsetInRows))
-        
+
         if newIndex != draggingIndex {
             withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
                 if let currentIndex = draggingIndex {
@@ -157,7 +157,7 @@ public struct NativeReorderableList<Item: Identifiable, RowContent: View>: View 
     @Binding private var items: [Item]
     private let rowContent: (Item) -> RowContent
     private let onMove: (([Item]) -> Void)?
-    
+
     public init(
         items: Binding<[Item]>,
         onMove: (([Item]) -> Void)? = nil,
@@ -167,7 +167,7 @@ public struct NativeReorderableList<Item: Identifiable, RowContent: View>: View 
         self.onMove = onMove
         self.rowContent = rowContent
     }
-    
+
     public var body: some View {
         List {
             ForEach(items) { item in
@@ -177,7 +177,7 @@ public struct NativeReorderableList<Item: Identifiable, RowContent: View>: View 
         }
         .listStyle(.plain)
     }
-    
+
     private func moveItems(from source: IndexSet, to destination: Int) {
         items.move(fromOffsets: source, toOffset: destination)
         onMove?(items)
@@ -191,13 +191,13 @@ public struct NumberedReorderableList<Item: Identifiable, RowContent: View>: Vie
     @Binding private var items: [Item]
     private let rowContent: (Int, Item) -> RowContent
     private let numberStyle: NumberStyle
-    
+
     public enum NumberStyle {
         case numeric
         case alphabetic
         case roman
         case custom((Int) -> String)
-        
+
         func format(_ index: Int) -> String {
             switch self {
             case .numeric:
@@ -214,25 +214,25 @@ public struct NumberedReorderableList<Item: Identifiable, RowContent: View>: Vie
                 return formatter(index)
             }
         }
-        
+
         private func romanNumeral(_ number: Int) -> String {
             let values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
             let symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
-            
+
             var result = ""
             var remaining = number
-            
+
             for (index, value) in values.enumerated() {
                 while remaining >= value {
                     result += symbols[index]
                     remaining -= value
                 }
             }
-            
+
             return result
         }
     }
-    
+
     public init(
         items: Binding<[Item]>,
         numberStyle: NumberStyle = .numeric,
@@ -242,7 +242,7 @@ public struct NumberedReorderableList<Item: Identifiable, RowContent: View>: Vie
         self.numberStyle = numberStyle
         self.rowContent = rowContent
     }
-    
+
     public var body: some View {
         ReorderableList(items: $items) { item in
             HStack(spacing: 12) {
@@ -252,7 +252,7 @@ public struct NumberedReorderableList<Item: Identifiable, RowContent: View>: Vie
                         .foregroundStyle(.secondary)
                         .frame(width: 30)
                 }
-                
+
                 rowContent(items.firstIndex(where: { $0.id == item.id }) ?? 0, item)
             }
         }
@@ -265,7 +265,7 @@ struct ReorderableListPreview: View {
         let id = UUID()
         var title: String
     }
-    
+
     @State private var items: [ListItem] = [
         .init(title: "First Item"),
         .init(title: "Second Item"),
@@ -273,13 +273,13 @@ struct ReorderableListPreview: View {
         .init(title: "Fourth Item"),
         .init(title: "Fifth Item")
     ]
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 Text("Drag handles to reorder")
                     .font(.headline)
-                
+
                 ReorderableList(items: $items) { item in
                     HStack {
                         Circle()
@@ -290,10 +290,10 @@ struct ReorderableListPreview: View {
                                     .font(.headline)
                                     .foregroundStyle(.blue)
                             )
-                        
+
                         Text(item.title)
                             .font(.body)
-                        
+
                         Spacer()
                     }
                 }

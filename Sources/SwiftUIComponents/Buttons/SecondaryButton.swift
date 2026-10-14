@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct SecondaryButton: View {
     // MARK: - Types
-    
+
     /// The visual style of the secondary button.
     public enum Style {
         /// Outlined border with transparent fill.
@@ -24,13 +24,13 @@ public struct SecondaryButton: View {
         /// Tinted background with colored text.
         case tinted
     }
-    
+
     /// The size preset for the button.
     public enum Size {
         case small
         case medium
         case large
-        
+
         var height: CGFloat {
             switch self {
             case .small: return 36
@@ -38,7 +38,7 @@ public struct SecondaryButton: View {
             case .large: return 52
             }
         }
-        
+
         var font: Font {
             switch self {
             case .small: return .subheadline
@@ -46,7 +46,7 @@ public struct SecondaryButton: View {
             case .large: return .headline
             }
         }
-        
+
         var padding: CGFloat {
             switch self {
             case .small: return 12
@@ -55,9 +55,9 @@ public struct SecondaryButton: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let title: String
     private let style: Style
     private let size: Size
@@ -69,15 +69,15 @@ public struct SecondaryButton: View {
     private let icon: Image?
     private let iconPosition: IconPosition
     private let action: () -> Void
-    
+
     /// Position of the icon relative to the title.
     public enum IconPosition {
         case leading
         case trailing
     }
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new secondary button.
     /// - Parameters:
     ///   - title: The text displayed on the button.
@@ -116,9 +116,9 @@ public struct SecondaryButton: View {
         self.iconPosition = iconPosition
         self.action = action
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Button(action: {
             guard !isLoading && !isDisabled else { return }
@@ -134,11 +134,11 @@ public struct SecondaryButton: View {
                         icon
                             .imageScale(.medium)
                     }
-                    
+
                     Text(title)
                         .font(size.font)
                         .fontWeight(.medium)
-                    
+
                     if let icon, iconPosition == .trailing {
                         icon
                             .imageScale(.medium)
@@ -161,9 +161,9 @@ public struct SecondaryButton: View {
         .animation(.easeInOut(duration: 0.2), value: isLoading)
         .animation(.easeInOut(duration: 0.2), value: isDisabled)
     }
-    
+
     // MARK: - Computed Properties
-    
+
     private var foregroundColor: Color {
         switch style {
         case .outline, .ghost:
@@ -174,7 +174,7 @@ public struct SecondaryButton: View {
             return accentColor
         }
     }
-    
+
     private var backgroundColor: Color {
         switch style {
         case .outline, .ghost:
@@ -185,7 +185,7 @@ public struct SecondaryButton: View {
             return accentColor.opacity(0.15)
         }
     }
-    
+
     private var borderColor: Color {
         switch style {
         case .outline:
@@ -194,7 +194,7 @@ public struct SecondaryButton: View {
             return .clear
         }
     }
-    
+
     private var borderWidth: CGFloat {
         style == .outline ? 1.5 : 0
     }
@@ -205,11 +205,11 @@ public struct SecondaryButton: View {
 /// A custom button style for secondary buttons with press animation.
 public struct SecondaryButtonStyle: ButtonStyle {
     private let accentColor: Color
-    
+
     public init(accentColor: Color = .blue) {
         self.accentColor = accentColor
     }
-    
+
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)

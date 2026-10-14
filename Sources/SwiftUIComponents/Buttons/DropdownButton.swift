@@ -5,9 +5,9 @@ public struct DropdownButton<Content: View>: View {
     let title: String
     let icon: String?
     @ViewBuilder let content: () -> Content
-    
+
     @State private var isExpanded = false
-    
+
     public init(
         _ title: String,
         icon: String? = "chevron.down",
@@ -17,7 +17,7 @@ public struct DropdownButton<Content: View>: View {
         self.icon = icon
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Button {
@@ -28,9 +28,9 @@ public struct DropdownButton<Content: View>: View {
                 HStack {
                     Text(title)
                         .fontWeight(.medium)
-                    
+
                     Spacer()
-                    
+
                     if let icon = icon {
                         Image(systemName: icon)
                             .rotationEffect(.degrees(isExpanded ? 180 : 0))
@@ -45,7 +45,7 @@ public struct DropdownButton<Content: View>: View {
                 )
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             if isExpanded {
                 content()
                     .padding(.horizontal, 8)
@@ -68,13 +68,13 @@ public struct DropdownItem: View {
     let title: String
     let icon: String?
     let action: () -> Void
-    
+
     public init(_ title: String, icon: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack {
@@ -107,7 +107,7 @@ public struct DropdownItem: View {
                 DropdownItem("Delete", icon: "trash") {}
             }
         }
-        
+
         DropdownButton("More Actions", icon: "ellipsis") {
             VStack(spacing: 4) {
                 DropdownItem("Copy") {}

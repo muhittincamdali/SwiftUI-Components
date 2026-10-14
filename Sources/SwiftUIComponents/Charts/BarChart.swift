@@ -8,23 +8,23 @@ public struct BarChart: View {
     let barWidth: CGFloat
     let spacing: CGFloat
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
     @State private var selectedBar: UUID?
-    
+
     public struct BarData: Identifiable {
         public let id = UUID()
         let value: Double
         let label: String
         let color: Color
-        
+
         public init(value: Double, label: String, color: Color = .accentColor) {
             self.value = value
             self.label = label
             self.color = color
         }
     }
-    
+
     public init(
         data: [BarData],
         showValues: Bool = true,
@@ -40,17 +40,17 @@ public struct BarChart: View {
         self.spacing = spacing
         self.animate = animate
     }
-    
+
     private var maxValue: Double {
         data.map { $0.value }.max() ?? 1
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let availableWidth = geometry.size.width
             let chartHeight = geometry.size.height - 40
             let calculatedBarWidth = barWidth > 0 ? barWidth : (availableWidth - CGFloat(data.count + 1) * spacing) / CGFloat(data.count)
-            
+
             VStack(spacing: 0) {
                 ZStack(alignment: .bottom) {
                     // Grid
@@ -65,7 +65,7 @@ public struct BarChart: View {
                         }
                         .frame(height: chartHeight)
                     }
-                    
+
                     // Bars
                     HStack(alignment: .bottom, spacing: spacing) {
                         ForEach(data) { bar in
@@ -77,7 +77,7 @@ public struct BarChart: View {
                                         .foregroundColor(.secondary)
                                         .opacity(animationProgress)
                                 }
-                                
+
                                 // Bar
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(bar.color)
@@ -96,7 +96,7 @@ public struct BarChart: View {
                     .frame(height: chartHeight)
                 }
                 .frame(height: chartHeight)
-                
+
                 // Labels
                 HStack(spacing: spacing) {
                     ForEach(data) { bar in
@@ -128,9 +128,9 @@ public struct HorizontalBarChart: View {
     let showValues: Bool
     let barHeight: CGFloat
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public init(
         data: [BarChart.BarData],
         showValues: Bool = true,
@@ -142,11 +142,11 @@ public struct HorizontalBarChart: View {
         self.barHeight = barHeight
         self.animate = animate
     }
-    
+
     private var maxValue: Double {
         data.map { $0.value }.max() ?? 1
     }
-    
+
     public var body: some View {
         VStack(spacing: 12) {
             ForEach(data) { bar in
@@ -155,14 +155,14 @@ public struct HorizontalBarChart: View {
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                         .frame(width: 60, alignment: .leading)
-                    
+
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
                             // Background
                             RoundedRectangle(cornerRadius: 4)
                                 .fill(Color.platformGray6)
                                 .frame(height: barHeight)
-                            
+
                             // Filled bar
                             RoundedRectangle(cornerRadius: 4)
                                 .fill(bar.color)
@@ -173,7 +173,7 @@ public struct HorizontalBarChart: View {
                         }
                     }
                     .frame(height: barHeight)
-                    
+
                     if showValues {
                         Text(String(format: "%.0f", bar.value))
                             .font(.system(size: 12, weight: .medium))
@@ -201,42 +201,42 @@ public struct GroupedBarChart: View {
     let groups: [BarGroup]
     let showLegend: Bool
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public struct BarGroup: Identifiable {
         public let id = UUID()
         let label: String
         let bars: [NamedBar]
-        
+
         public init(label: String, bars: [NamedBar]) {
             self.label = label
             self.bars = bars
         }
     }
-    
+
     public struct NamedBar {
         let name: String
         let value: Double
         let color: Color
-        
+
         public init(name: String, value: Double, color: Color) {
             self.name = name
             self.value = value
             self.color = color
         }
     }
-    
+
     public init(groups: [BarGroup], showLegend: Bool = true, animate: Bool = true) {
         self.groups = groups
         self.showLegend = showLegend
         self.animate = animate
     }
-    
+
     private var maxValue: Double {
         groups.flatMap { $0.bars.map { $0.value } }.max() ?? 1
     }
-    
+
     private var uniqueNames: [(name: String, color: Color)] {
         var seen = Set<String>()
         var result: [(String, Color)] = []
@@ -250,7 +250,7 @@ public struct GroupedBarChart: View {
         }
         return result
     }
-    
+
     public var body: some View {
         VStack(spacing: 12) {
             // Legend
@@ -268,12 +268,12 @@ public struct GroupedBarChart: View {
                     }
                 }
             }
-            
+
             GeometryReader { geometry in
                 let groupWidth = geometry.size.width / CGFloat(groups.count)
                 let barWidth = (groupWidth - 16) / CGFloat(uniqueNames.count)
                 let chartHeight = geometry.size.height - 30
-                
+
                 VStack(spacing: 0) {
                     HStack(alignment: .bottom, spacing: 0) {
                         ForEach(groups) { group in
@@ -294,7 +294,7 @@ public struct GroupedBarChart: View {
                         }
                     }
                     .frame(height: chartHeight)
-                    
+
                     // Labels
                     HStack(spacing: 0) {
                         ForEach(groups) { group in
@@ -327,7 +327,7 @@ public struct GroupedBarChart: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Vertical Bar Chart")
                     .font(.headline)
-                
+
                 BarChart(data: [
                     .init(value: 85, label: "Mon", color: .blue),
                     .init(value: 65, label: "Tue", color: .blue),
@@ -339,11 +339,11 @@ public struct GroupedBarChart: View {
                 ])
                 .frame(height: 200)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Horizontal Bar Chart")
                     .font(.headline)
-                
+
                 HorizontalBarChart(data: [
                     .init(value: 85, label: "Swift", color: .orange),
                     .init(value: 70, label: "Python", color: .blue),
@@ -352,11 +352,11 @@ public struct GroupedBarChart: View {
                     .init(value: 30, label: "Rust", color: .brown)
                 ])
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Grouped Bar Chart")
                     .font(.headline)
-                
+
                 GroupedBarChart(groups: [
                     .init(label: "Q1", bars: [
                         .init(name: "Sales", value: 80, color: .blue),

@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct ModalView<Content: View>: View {
     // MARK: - Types
-    
+
     /// The presentation style of the modal.
     public enum Style {
         case center
@@ -20,7 +20,7 @@ public struct ModalView<Content: View>: View {
         case bottomSheet
         case alert
     }
-    
+
     /// The transition animation for the modal.
     public enum Transition {
         case fade
@@ -28,9 +28,9 @@ public struct ModalView<Content: View>: View {
         case slide
         case spring
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var isPresented: Bool
     private let style: Style
     private let transition: Transition
@@ -40,9 +40,9 @@ public struct ModalView<Content: View>: View {
     private let showCloseButton: Bool
     private let cornerRadius: CGFloat
     private let content: () -> Content
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new modal view.
     public init(
         isPresented: Binding<Bool>,
@@ -65,24 +65,24 @@ public struct ModalView<Content: View>: View {
         self.cornerRadius = cornerRadius
         self.content = content
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         ZStack {
             if isPresented {
                 // Background
                 backgroundView
-                
+
                 // Modal content
                 modalContent
             }
         }
         .animation(animation, value: isPresented)
     }
-    
+
     // MARK: - Background View
-    
+
     @ViewBuilder
     private var backgroundView: some View {
         Group {
@@ -101,9 +101,9 @@ public struct ModalView<Content: View>: View {
         }
         .transition(.opacity)
     }
-    
+
     // MARK: - Modal Content
-    
+
     @ViewBuilder
     private var modalContent: some View {
         switch style {
@@ -117,9 +117,9 @@ public struct ModalView<Content: View>: View {
             alertModal
         }
     }
-    
+
     // MARK: - Center Modal
-    
+
     private var centerModal: some View {
         VStack {
             if showCloseButton {
@@ -130,7 +130,7 @@ public struct ModalView<Content: View>: View {
                 .padding(.horizontal, 12)
                 .padding(.top, 12)
             }
-            
+
             content()
         }
         .background(backgroundColor)
@@ -139,9 +139,9 @@ public struct ModalView<Content: View>: View {
         .padding(32)
         .transition(contentTransition)
     }
-    
+
     // MARK: - Full Screen Modal
-    
+
     private var fullScreenModal: some View {
         VStack(spacing: 0) {
             if showCloseButton {
@@ -151,7 +151,7 @@ public struct ModalView<Content: View>: View {
                 }
                 .padding()
             }
-            
+
             content()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -159,9 +159,9 @@ public struct ModalView<Content: View>: View {
         .ignoresSafeArea()
         .transition(.move(edge: .bottom).combined(with: .opacity))
     }
-    
+
     // MARK: - Bottom Sheet Modal
-    
+
     private var bottomSheetModal: some View {
         VStack(spacing: 0) {
             // Drag indicator
@@ -169,7 +169,7 @@ public struct ModalView<Content: View>: View {
                 .fill(Color.platformGray4)
                 .frame(width: 36, height: 5)
                 .padding(.top, 8)
-            
+
             if showCloseButton {
                 HStack {
                     Spacer()
@@ -177,7 +177,7 @@ public struct ModalView<Content: View>: View {
                 }
                 .padding(.horizontal, 12)
             }
-            
+
             content()
         }
         .frame(maxWidth: .infinity)
@@ -187,9 +187,9 @@ public struct ModalView<Content: View>: View {
         .ignoresSafeArea(edges: .bottom)
         .transition(.move(edge: .bottom))
     }
-    
+
     // MARK: - Alert Modal
-    
+
     private var alertModal: some View {
         content()
             .padding(20)
@@ -199,9 +199,9 @@ public struct ModalView<Content: View>: View {
             .frame(maxWidth: 280)
             .transition(.scale(scale: 0.9).combined(with: .opacity))
     }
-    
+
     // MARK: - Close Button
-    
+
     private var closeButton: some View {
         Button {
             dismiss()
@@ -214,9 +214,9 @@ public struct ModalView<Content: View>: View {
                 .clipShape(Circle())
         }
     }
-    
+
     // MARK: - Animation
-    
+
     private var animation: Animation {
         switch transition {
         case .fade:
@@ -229,7 +229,7 @@ public struct ModalView<Content: View>: View {
             return .spring(response: 0.4, dampingFraction: 0.7)
         }
     }
-    
+
     private var contentTransition: AnyTransition {
         switch transition {
         case .fade:
@@ -242,9 +242,9 @@ public struct ModalView<Content: View>: View {
             return .scale(scale: 0.9).combined(with: .opacity)
         }
     }
-    
+
     // MARK: - Actions
-    
+
     private func dismiss() {
         withAnimation(animation) {
             isPresented = false
@@ -261,25 +261,25 @@ public struct AlertModal: View {
     private let message: String?
     private let primaryAction: AlertAction?
     private let secondaryAction: AlertAction?
-    
+
     public struct AlertAction {
         public let title: String
         public let style: Style
         public let action: () -> Void
-        
+
         public enum Style {
             case `default`
             case cancel
             case destructive
         }
-        
+
         public init(title: String, style: Style = .default, action: @escaping () -> Void) {
             self.title = title
             self.style = style
             self.action = action
         }
     }
-    
+
     public init(
         isPresented: Binding<Bool>,
         title: String,
@@ -293,7 +293,7 @@ public struct AlertModal: View {
         self.primaryAction = primaryAction
         self.secondaryAction = secondaryAction
     }
-    
+
     public var body: some View {
         ModalView(
             isPresented: $isPresented,
@@ -305,7 +305,7 @@ public struct AlertModal: View {
                     Text(title)
                         .font(.headline)
                         .multilineTextAlignment(.center)
-                    
+
                     if let message {
                         Text(message)
                             .font(.subheadline)
@@ -313,12 +313,12 @@ public struct AlertModal: View {
                             .multilineTextAlignment(.center)
                     }
                 }
-                
+
                 VStack(spacing: 8) {
                     if let primary = primaryAction {
                         actionButton(primary)
                     }
-                    
+
                     if let secondary = secondaryAction {
                         actionButton(secondary)
                     }
@@ -326,7 +326,7 @@ public struct AlertModal: View {
             }
         }
     }
-    
+
     private func actionButton(_ action: AlertAction) -> some View {
         Button {
             action.action()
@@ -342,7 +342,7 @@ public struct AlertModal: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
-    
+
     private func buttonColor(for style: AlertAction.Style) -> Color {
         switch style {
         case .default: return .white
@@ -350,7 +350,7 @@ public struct AlertModal: View {
         case .destructive: return .white
         }
     }
-    
+
     private func buttonBackground(for style: AlertAction.Style) -> Color {
         switch style {
         case .default: return .blue
@@ -365,7 +365,7 @@ struct ModalViewPreview: View {
     @State private var showCenter = false
     @State private var showAlert = false
     @State private var showSheet = false
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
@@ -373,7 +373,7 @@ struct ModalViewPreview: View {
                 Button("Show Alert") { showAlert = true }
                 Button("Show Bottom Sheet") { showSheet = true }
             }
-            
+
             ModalView(isPresented: $showCenter) {
                 VStack(spacing: 20) {
                     Text("Center Modal")
@@ -384,7 +384,7 @@ struct ModalViewPreview: View {
                 }
                 .padding()
             }
-            
+
             AlertModal(
                 isPresented: $showAlert,
                 title: "Delete Item?",
@@ -392,7 +392,7 @@ struct ModalViewPreview: View {
                 primaryAction: .init(title: "Delete", style: .destructive) { },
                 secondaryAction: .init(title: "Cancel", style: .cancel) { }
             )
-            
+
             ModalView(isPresented: $showSheet, style: .bottomSheet) {
                 VStack(spacing: 16) {
                     Text("Bottom Sheet")

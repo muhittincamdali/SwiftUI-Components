@@ -12,13 +12,13 @@ import SwiftUI
 /// ```
 public struct FloatingActionButton: View {
     // MARK: - Types
-    
+
     /// The size of the FAB.
     public enum Size {
         case mini
         case regular
         case extended
-        
+
         var dimension: CGFloat {
             switch self {
             case .mini: return 40
@@ -26,7 +26,7 @@ public struct FloatingActionButton: View {
             case .extended: return 48
             }
         }
-        
+
         var iconScale: CGFloat {
             switch self {
             case .mini: return 0.8
@@ -35,7 +35,7 @@ public struct FloatingActionButton: View {
             }
         }
     }
-    
+
     /// An action item for expandable FAB.
     public struct ActionItem: Identifiable {
         public let id = UUID()
@@ -43,7 +43,7 @@ public struct FloatingActionButton: View {
         public let label: String?
         public let color: Color
         public let action: () -> Void
-        
+
         public init(
             icon: Image,
             label: String? = nil,
@@ -56,9 +56,9 @@ public struct FloatingActionButton: View {
             self.action = action
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let icon: Image
     private let expandedIcon: Image?
     private let label: String?
@@ -68,12 +68,12 @@ public struct FloatingActionButton: View {
     private let shadowRadius: CGFloat
     private let actions: [ActionItem]
     private let action: (() -> Void)?
-    
+
     @State private var isExpanded: Bool = false
     @State private var rotation: Angle = .zero
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a simple floating action button.
     /// - Parameters:
     ///   - icon: The icon to display.
@@ -102,7 +102,7 @@ public struct FloatingActionButton: View {
         self.actions = []
         self.action = action
     }
-    
+
     /// Creates an expandable floating action button with sub-actions.
     /// - Parameters:
     ///   - icon: The default icon.
@@ -131,21 +131,21 @@ public struct FloatingActionButton: View {
         self.actions = actions
         self.action = nil
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         ZStack(alignment: .bottom) {
             if !actions.isEmpty {
                 expandableContent
             }
-            
+
             mainButton
         }
     }
-    
+
     // MARK: - Main Button
-    
+
     private var mainButton: some View {
         Button {
             if actions.isEmpty {
@@ -168,7 +168,7 @@ public struct FloatingActionButton: View {
                 .imageScale(size == .mini ? .small : .large)
                 .scaleEffect(size.iconScale)
                 .rotationEffect(actions.isEmpty ? .zero : rotation)
-                
+
                 if let label, size == .extended {
                     Text(label)
                         .font(.headline)
@@ -184,9 +184,9 @@ public struct FloatingActionButton: View {
         }
         .buttonStyle(FABButtonStyle())
     }
-    
+
     // MARK: - Expandable Content
-    
+
     @ViewBuilder
     private var expandableContent: some View {
         if isExpanded {
@@ -201,7 +201,7 @@ public struct FloatingActionButton: View {
                 }
                 .transition(.opacity)
         }
-        
+
         VStack(spacing: 12) {
             ForEach(Array(actions.enumerated()), id: \.element.id) { index, item in
                 if isExpanded {
@@ -223,9 +223,9 @@ public struct FloatingActionButton: View {
         }
         .padding(.bottom, size.dimension + 16)
     }
-    
+
     // MARK: - Action Button
-    
+
     private func actionButton(for item: ActionItem, index: Int) -> some View {
         HStack(spacing: 12) {
             if let label = item.label {
@@ -241,7 +241,7 @@ public struct FloatingActionButton: View {
                             .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
                     )
             }
-            
+
             Button {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
                     isExpanded = false
@@ -278,12 +278,12 @@ private struct FABButtonStyle: ButtonStyle {
 public struct FABModifier<FABContent: View>: ViewModifier {
     let fab: FABContent
     let padding: CGFloat
-    
+
     public init(@ViewBuilder fab: () -> FABContent, padding: CGFloat = 16) {
         self.fab = fab()
         self.padding = padding
     }
-    
+
     public func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
             content
@@ -307,10 +307,10 @@ extension View {
     ZStack {
         Color.platformGroupedBackground
             .ignoresSafeArea()
-        
+
         VStack {
             Spacer()
-            
+
             HStack {
                 // Simple FAB
                 FloatingActionButton(
@@ -318,18 +318,18 @@ extension View {
                     size: .mini,
                     backgroundColor: .green
                 ) { }
-                
+
                 // Extended FAB
                 FloatingActionButton(
                     icon: Image(systemName: "pencil"),
                     label: "Compose",
                     size: .extended
                 ) { }
-                
+
                 Spacer()
             }
             .padding()
-            
+
             // Expandable FAB
             FloatingActionButton(
                 icon: Image(systemName: "plus"),

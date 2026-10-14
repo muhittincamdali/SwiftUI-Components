@@ -11,22 +11,22 @@ import SwiftUI
 /// ```
 public struct MarqueeText: View {
     // MARK: - Types
-    
+
     /// The direction of the scroll animation.
     public enum ScrollDirection {
         case leftToRight
         case rightToLeft
     }
-    
+
     /// The animation style.
     public enum AnimationStyle {
         case continuous
         case bounce
         case pauseAtEdges
     }
-    
+
     // MARK: - Properties
-    
+
     private let text: String
     private let font: Font
     private let textColor: Color
@@ -37,14 +37,14 @@ public struct MarqueeText: View {
     private let pauseDuration: Double
     private let fadeEdges: Bool
     private let fadeWidth: CGFloat
-    
+
     @State private var offset: CGFloat = 0
     @State private var textWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
     @State private var isAnimating: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new marquee text view.
     /// - Parameters:
     ///   - text: The text to display.
@@ -80,13 +80,13 @@ public struct MarqueeText: View {
         self.fadeEdges = fadeEdges
         self.fadeWidth = fadeWidth
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let needsScroll = textWidth > geometry.size.width
-            
+
             ZStack {
                 if needsScroll {
                     scrollingContent
@@ -111,9 +111,9 @@ public struct MarqueeText: View {
         .frame(height: textHeight)
         .clipped()
     }
-    
+
     // MARK: - Content Views
-    
+
     private var staticContent: some View {
         Text(text)
             .font(font)
@@ -122,7 +122,7 @@ public struct MarqueeText: View {
             .fixedSize()
             .background(measureTextWidth)
     }
-    
+
     private var scrollingContent: some View {
         HStack(spacing: spacing) {
             ForEach(0..<3, id: \.self) { _ in
@@ -136,9 +136,9 @@ public struct MarqueeText: View {
         .background(measureTextWidth)
         .offset(x: offset)
     }
-    
+
     // MARK: - Edge Mask
-    
+
     @ViewBuilder
     private var edgeMask: some View {
         if fadeEdges {
@@ -149,10 +149,10 @@ public struct MarqueeText: View {
                     endPoint: .trailing
                 )
                 .frame(width: fadeWidth)
-                
+
                 Rectangle()
                     .fill(.white)
-                
+
                 LinearGradient(
                     colors: [.white, .clear],
                     startPoint: .leading,
@@ -164,9 +164,9 @@ public struct MarqueeText: View {
             Rectangle()
         }
     }
-    
+
     // MARK: - Measurement
-    
+
     private var measureTextWidth: some View {
         GeometryReader { geometry in
             Color.clear
@@ -175,7 +175,7 @@ public struct MarqueeText: View {
                 }
         }
     }
-    
+
     private var textHeight: CGFloat {
         let uiFont: PlatformFont
         switch font {
@@ -204,12 +204,12 @@ public struct MarqueeText: View {
         }
         return uiFont.platformLineHeight + 4
     }
-    
+
     // MARK: - Animation
-    
+
     private func startAnimation() {
         isAnimating = true
-        
+
         switch animationStyle {
         case .continuous:
             continuousAnimation()
@@ -219,14 +219,14 @@ public struct MarqueeText: View {
             pauseAtEdgesAnimation()
         }
     }
-    
+
     private func continuousAnimation() {
         let totalWidth = textWidth + spacing
         let duration = totalWidth / speed
-        
+
         // Start from right
         offset = direction == .rightToLeft ? 0 : -totalWidth
-        
+
         withAnimation(
             .linear(duration: duration)
             .repeatForever(autoreverses: false)
@@ -234,13 +234,13 @@ public struct MarqueeText: View {
             offset = direction == .rightToLeft ? -totalWidth : 0
         }
     }
-    
+
     private func bounceAnimation() {
         let totalTravel = textWidth - containerWidth + spacing
         let duration = totalTravel / speed
-        
+
         offset = 0
-        
+
         withAnimation(
             .easeInOut(duration: duration)
             .repeatForever(autoreverses: true)
@@ -248,31 +248,31 @@ public struct MarqueeText: View {
             offset = -totalTravel
         }
     }
-    
+
     private func pauseAtEdgesAnimation() {
         let totalTravel = textWidth - containerWidth + spacing
         let duration = totalTravel / speed
-        
+
         func animateForward() {
             offset = 0
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + pauseDuration) {
                 withAnimation(.linear(duration: duration)) {
                     offset = -totalTravel
                 }
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration + pauseDuration) {
                     withAnimation(.linear(duration: duration)) {
                         offset = 0
                     }
-                    
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                         animateForward()
                     }
                 }
             }
         }
-        
+
         animateForward()
     }
 }
@@ -287,7 +287,7 @@ public struct NewsTicker: View {
     private let textColor: Color
     private let separatorColor: Color
     private let speed: Double
-    
+
     public init(
         items: [String],
         separator: String = " • ",
@@ -303,10 +303,10 @@ public struct NewsTicker: View {
         self.separatorColor = separatorColor
         self.speed = speed
     }
-    
+
     public var body: some View {
         let combinedText = items.joined(separator: separator)
-        
+
         MarqueeText(
             combinedText + separator,
             font: font,
@@ -326,11 +326,11 @@ public struct VerticalMarqueeText: View {
     private let textColor: Color
     private let displayDuration: Double
     private let transitionDuration: Double
-    
+
     @State private var currentIndex: Int = 0
     @State private var offset: CGFloat = 0
     @State private var opacity: Double = 1.0
-    
+
     public init(
         texts: [String],
         font: Font = .body,
@@ -344,7 +344,7 @@ public struct VerticalMarqueeText: View {
         self.displayDuration = displayDuration
         self.transitionDuration = transitionDuration
     }
-    
+
     public var body: some View {
         Text(texts.isEmpty ? "" : texts[currentIndex])
             .font(font)
@@ -355,10 +355,10 @@ public struct VerticalMarqueeText: View {
                 await rotateTexts()
             }
     }
-    
+
     private func rotateTexts() async {
         guard texts.count > 1 else { return }
-        
+
         while !Task.isCancelled {
             do {
                 try await Task.sleep(for: .seconds(displayDuration))
@@ -393,7 +393,7 @@ public struct VerticalMarqueeText: View {
             )
             .frame(width: 250)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Bounce:")
                 .font(.caption)
@@ -404,7 +404,7 @@ public struct VerticalMarqueeText: View {
             )
             .frame(width: 180)
         }
-        
+
         VStack(alignment: .leading) {
             Text("News Ticker:")
                 .font(.caption)
@@ -420,7 +420,7 @@ public struct VerticalMarqueeText: View {
             .padding(.vertical, 8)
             .background(Color.platformGray6)
         }
-        
+
         VStack(alignment: .leading) {
             Text("Vertical:")
                 .font(.caption)

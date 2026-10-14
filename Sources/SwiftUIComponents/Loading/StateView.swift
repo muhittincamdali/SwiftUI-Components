@@ -7,7 +7,7 @@ public struct StateView<Content: View, Loading: View, Empty: View, Error: View>:
     @ViewBuilder let loading: () -> Loading
     @ViewBuilder let empty: () -> Empty
     @ViewBuilder let error: (Swift.Error) -> Error
-    
+
     public enum ViewState {
         case idle
         case loading
@@ -15,7 +15,7 @@ public struct StateView<Content: View, Loading: View, Empty: View, Error: View>:
         case empty
         case error(Swift.Error)
     }
-    
+
     public init(
         state: ViewState,
         @ViewBuilder content: @escaping () -> Content,
@@ -29,7 +29,7 @@ public struct StateView<Content: View, Loading: View, Empty: View, Error: View>:
         self.empty = empty
         self.error = error
     }
-    
+
     public var body: some View {
         switch state {
         case .idle, .loaded:
@@ -49,11 +49,11 @@ public struct AsyncContentView<T, Content: View, Loading: View>: View {
     let loader: () async throws -> T
     @ViewBuilder let content: (T) -> Content
     @ViewBuilder let loading: () -> Loading
-    
+
     @State private var loadedData: T?
     @State private var isLoading = true
     @State private var error: Error?
-    
+
     public init(
         loader: @escaping () async throws -> T,
         @ViewBuilder content: @escaping (T) -> Content,
@@ -63,7 +63,7 @@ public struct AsyncContentView<T, Content: View, Loading: View>: View {
         self.content = content
         self.loading = loading
     }
-    
+
     public var body: some View {
         Group {
             if isLoading {
@@ -75,14 +75,14 @@ public struct AsyncContentView<T, Content: View, Loading: View>: View {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 40))
                         .foregroundColor(.red)
-                    
+
                     Text("Error loading content")
                         .font(.headline)
-                    
+
                     Text(error.localizedDescription)
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    
+
                     Button("Retry") {
                         Task {
                             await load()
@@ -97,17 +97,17 @@ public struct AsyncContentView<T, Content: View, Loading: View>: View {
             await load()
         }
     }
-    
+
     private func load() async {
         isLoading = true
         error = nil
-        
+
         do {
             loadedData = try await loader()
         } catch {
             self.error = error
         }
-        
+
         isLoading = false
     }
 }
@@ -116,7 +116,7 @@ public struct AsyncContentView<T, Content: View, Loading: View>: View {
 public struct RefreshableView<Content: View>: View {
     let onRefresh: () async -> Void
     @ViewBuilder let content: () -> Content
-    
+
     public init(
         onRefresh: @escaping () async -> Void,
         @ViewBuilder content: @escaping () -> Content
@@ -124,7 +124,7 @@ public struct RefreshableView<Content: View>: View {
         self.onRefresh = onRefresh
         self.content = content
     }
-    
+
     public var body: some View {
         ScrollView {
             content()
@@ -140,7 +140,7 @@ public struct RetryView: View {
     let message: String
     let buttonTitle: String
     let onRetry: () -> Void
-    
+
     public init(
         message: String = "Something went wrong",
         buttonTitle: String = "Try Again",
@@ -150,18 +150,18 @@ public struct RetryView: View {
         self.buttonTitle = buttonTitle
         self.onRetry = onRetry
     }
-    
+
     public var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "arrow.clockwise.circle")
                 .font(.system(size: 50))
                 .foregroundColor(.secondary)
-            
+
             Text(message)
                 .font(.system(size: 16))
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
-            
+
             Button(action: onRetry) {
                 HStack(spacing: 8) {
                     Image(systemName: "arrow.clockwise")
@@ -185,7 +185,7 @@ public struct RetryView: View {
         VStack {
             Text("Loading State")
                 .font(.headline)
-            
+
             StateView(state: .loading) {
                 Text("Content")
             } loading: {
@@ -198,9 +198,9 @@ public struct RetryView: View {
             }
         }
         .frame(height: 100)
-        
+
         Divider()
-        
+
         // Retry view
         RetryView(
             message: "Could not load data.\nPlease check your connection.",

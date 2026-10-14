@@ -13,18 +13,18 @@ import SwiftUI
 /// ```
 public struct SnackBar: View {
     // MARK: - Types
-    
+
     /// An action button for the snackbar.
     public struct Action {
         public let title: String
         public let action: () -> Void
-        
+
         public init(title: String, action: @escaping () -> Void) {
             self.title = title
             self.action = action
         }
     }
-    
+
     /// The visual style of the snackbar.
     public enum Style {
         case standard
@@ -32,7 +32,7 @@ public struct SnackBar: View {
         case success
         case warning
         case error
-        
+
         var backgroundColor: Color {
             switch self {
             case .standard: return Color.platformGray2
@@ -42,7 +42,7 @@ public struct SnackBar: View {
             case .error: return .red
             }
         }
-        
+
         var icon: Image? {
             switch self {
             case .standard: return nil
@@ -53,17 +53,17 @@ public struct SnackBar: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let message: String
     private let style: Style
     private let action: Action?
     private let dismissAction: (() -> Void)?
     private let showDismissButton: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new snackbar.
     /// - Parameters:
     ///   - message: The message to display.
@@ -84,23 +84,23 @@ public struct SnackBar: View {
         self.showDismissButton = showDismissButton
         self.dismissAction = dismissAction
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         HStack(spacing: 12) {
             if let icon = style.icon {
                 icon
                     .foregroundStyle(.white)
             }
-            
+
             Text(message)
                 .font(.subheadline)
                 .foregroundStyle(.white)
                 .lineLimit(2)
-            
+
             Spacer()
-            
+
             if let action {
                 Button(action.title) {
                     action.action()
@@ -108,7 +108,7 @@ public struct SnackBar: View {
                 .font(.subheadline.bold())
                 .foregroundStyle(.white.opacity(0.9))
             }
-            
+
             if showDismissButton {
                 Button {
                     dismissAction?()
@@ -133,21 +133,21 @@ public struct SnackBar: View {
 @MainActor
 public final class SnackBarManager: ObservableObject {
     public static let shared = SnackBarManager()
-    
+
     @Published public var currentSnackBar: SnackBarData?
     @Published public var isShowing: Bool = false
-    
+
     private var queue: [SnackBarData] = []
     private var dismissTask: Task<Void, Never>?
     private var clearTask: Task<Void, Never>?
-    
+
     public struct SnackBarData: Identifiable {
         public let id = UUID()
         public let message: String
         public let style: SnackBar.Style
         public let action: SnackBar.Action?
         public let duration: Double
-        
+
         public init(
             message: String,
             style: SnackBar.Style = .standard,
@@ -160,20 +160,20 @@ public final class SnackBarManager: ObservableObject {
             self.duration = duration
         }
     }
-    
+
     /// Creates a manager. Most apps use ``shared``; separate instances are useful in tests.
     public init() {}
-    
+
     /// Number of snackbars waiting behind the current one.
     public var pendingCount: Int { queue.count }
-    
+
     /// Shows a snackbar.
     /// If one is already visible, the new one is queued and shown after it.
     public func show(_ data: SnackBarData) {
         queue.append(data)
         processQueue()
     }
-    
+
     /// Shows a simple message.
     public func show(
         message: String,
@@ -182,14 +182,14 @@ public final class SnackBarManager: ObservableObject {
     ) {
         show(SnackBarData(message: message, style: style, duration: duration))
     }
-    
+
     /// Dismisses the current snackbar.
     public func dismiss() {
         dismissTask?.cancel()
         withAnimation(.easeInOut(duration: 0.25)) {
             isShowing = false
         }
-        
+
         // Clear after the exit animation, unless another snackbar was shown meanwhile.
         clearTask?.cancel()
         clearTask = Task { [weak self] in
@@ -199,18 +199,18 @@ public final class SnackBarManager: ObservableObject {
             self.processQueue()
         }
     }
-    
+
     private func processQueue() {
         guard !isShowing, !queue.isEmpty else { return }
-        
+
         clearTask?.cancel()
         let data = queue.removeFirst()
         currentSnackBar = data
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             isShowing = true
         }
-        
+
         dismissTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(data.duration))
             guard let self, !Task.isCancelled else { return }
@@ -226,16 +226,16 @@ public struct SnackBarModifier: ViewModifier {
     @ObservedObject private var manager = SnackBarManager.shared
     let edge: VerticalEdge
     let padding: CGFloat
-    
+
     public init(edge: VerticalEdge = .bottom, padding: CGFloat = 16) {
         self.edge = edge
         self.padding = padding
     }
-    
+
     public func body(content: Content) -> some View {
         ZStack(alignment: edge == .bottom ? .bottom : .top) {
             content
-            
+
             if manager.isShowing, let data = manager.currentSnackBar {
                 SnackBar(
                     message: data.message,
@@ -270,26 +270,26 @@ struct SnackBarPreview: View {
     var body: some View {
         VStack(spacing: 20) {
             SnackBar(message: "Standard snackbar message")
-            
+
             SnackBar(
                 message: "Item deleted successfully",
                 style: .success,
                 action: .init(title: "Undo") { }
             )
-            
+
             SnackBar(
                 message: "Network connection lost",
                 style: .error,
                 showDismissButton: true
             )
-            
+
             SnackBar(
                 message: "Please check your settings",
                 style: .warning
             )
-            
+
             Spacer()
-            
+
             Button("Show Snackbar") {
                 SnackBarManager.shared.show(message: "Hello from SnackBar!", style: .info)
             }

@@ -13,7 +13,7 @@ import SwiftUI
 /// ```
 public struct TabBarView: View {
     // MARK: - Types
-    
+
     /// A tab bar item configuration.
     public struct Item: Identifiable {
         public let id = UUID()
@@ -21,7 +21,7 @@ public struct TabBarView: View {
         public let selectedIcon: Image?
         public let title: String
         public let badge: String?
-        
+
         public init(
             icon: Image,
             selectedIcon: Image? = nil,
@@ -34,7 +34,7 @@ public struct TabBarView: View {
             self.badge = badge
         }
     }
-    
+
     /// The visual style of the tab bar.
     public enum Style {
         case standard
@@ -42,9 +42,9 @@ public struct TabBarView: View {
         case floating
         case minimal
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var selectedIndex: Int
     private let items: [Item]
     private let style: Style
@@ -52,9 +52,9 @@ public struct TabBarView: View {
     private let backgroundColor: Color
     private let showLabels: Bool
     private let hapticFeedback: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new tab bar view.
     public init(
         selectedIndex: Binding<Int>,
@@ -73,9 +73,9 @@ public struct TabBarView: View {
         self.showLabels = showLabels
         self.hapticFeedback = hapticFeedback
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -90,9 +90,9 @@ public struct TabBarView: View {
             }
         }
     }
-    
+
     // MARK: - Standard Tab Bar
-    
+
     private var standardTabBar: some View {
         HStack {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -108,9 +108,9 @@ public struct TabBarView: View {
             alignment: .top
         )
     }
-    
+
     // MARK: - Pill Tab Bar
-    
+
     private var pillTabBar: some View {
         HStack(spacing: 8) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -125,9 +125,9 @@ public struct TabBarView: View {
         )
         .padding(.horizontal, 16)
     }
-    
+
     // MARK: - Floating Tab Bar
-    
+
     private var floatingTabBar: some View {
         HStack(spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -143,9 +143,9 @@ public struct TabBarView: View {
         )
         .padding(.horizontal, 40)
     }
-    
+
     // MARK: - Minimal Tab Bar
-    
+
     private var minimalTabBar: some View {
         HStack {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -155,9 +155,9 @@ public struct TabBarView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
     }
-    
+
     // MARK: - Tab Buttons
-    
+
     private func tabButton(item: Item, index: Int, isSelected: Bool) -> some View {
         Button {
             selectTab(index)
@@ -167,13 +167,13 @@ public struct TabBarView: View {
                     (isSelected ? (item.selectedIcon ?? item.icon) : item.icon)
                         .font(.system(size: 24))
                         .symbolVariant(isSelected ? .fill : .none)
-                    
+
                     if let badge = item.badge {
                         badgeView(badge)
                             .offset(x: 8, y: -4)
                     }
                 }
-                
+
                 if showLabels {
                     Text(item.title)
                         .font(.caption2)
@@ -185,7 +185,7 @@ public struct TabBarView: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private func pillButton(item: Item, index: Int, isSelected: Bool) -> some View {
         Button {
             selectTab(index)
@@ -194,7 +194,7 @@ public struct TabBarView: View {
                 (isSelected ? (item.selectedIcon ?? item.icon) : item.icon)
                     .font(.system(size: 20))
                     .symbolVariant(isSelected ? .fill : .none)
-                
+
                 if isSelected && showLabels {
                     Text(item.title)
                         .font(.subheadline)
@@ -212,7 +212,7 @@ public struct TabBarView: View {
         .buttonStyle(.plain)
         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
     }
-    
+
     private func floatingButton(item: Item, index: Int, isSelected: Bool) -> some View {
         Button {
             selectTab(index)
@@ -223,13 +223,13 @@ public struct TabBarView: View {
                         .font(.system(size: 22))
                         .symbolVariant(isSelected ? .fill : .none)
                         .scaleEffect(isSelected ? 1.1 : 1.0)
-                    
+
                     if let badge = item.badge {
                         badgeView(badge)
                             .offset(x: 8, y: -4)
                     }
                 }
-                
+
                 Circle()
                     .fill(tintColor)
                     .frame(width: 5, height: 5)
@@ -241,7 +241,7 @@ public struct TabBarView: View {
         .buttonStyle(.plain)
         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
     }
-    
+
     private func minimalButton(item: Item, index: Int, isSelected: Bool) -> some View {
         Button {
             selectTab(index)
@@ -252,7 +252,7 @@ public struct TabBarView: View {
                     .frame(height: 2)
                     .opacity(isSelected ? 1 : 0)
                     .padding(.bottom, 8)
-                
+
                 (isSelected ? (item.selectedIcon ?? item.icon) : item.icon)
                     .font(.system(size: 24))
                     .symbolVariant(isSelected ? .fill : .none)
@@ -263,9 +263,9 @@ public struct TabBarView: View {
         .buttonStyle(.plain)
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isSelected)
     }
-    
+
     // MARK: - Badge View
-    
+
     private func badgeView(_ text: String) -> some View {
         Text(text)
             .font(.system(size: 10, weight: .bold))
@@ -275,16 +275,16 @@ public struct TabBarView: View {
             .background(Capsule().fill(.red))
             .fixedSize()
     }
-    
+
     // MARK: - Selection
-    
+
     private func selectTab(_ index: Int) {
         guard index != selectedIndex else { return }
-        
+
         if hapticFeedback {
             Haptics.impact(.light)
         }
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
             selectedIndex = index
         }
@@ -299,7 +299,7 @@ public struct TabBarContainer<Content: View>: View {
     private let items: [TabBarView.Item]
     private let style: TabBarView.Style
     private let content: (Int) -> Content
-    
+
     public init(
         selectedIndex: Binding<Int>,
         items: [TabBarView.Item],
@@ -311,12 +311,12 @@ public struct TabBarContainer<Content: View>: View {
         self.style = style
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             content(selectedIndex)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
+
             TabBarView(selectedIndex: $selectedIndex, items: items, style: style)
         }
     }
@@ -327,31 +327,31 @@ struct TabBarViewPreview: View {
     @State private var selectedTab1 = 0
     @State private var selectedTab2 = 0
     @State private var selectedTab3 = 0
-    
+
     let items: [TabBarView.Item] = [
         .init(icon: Image(systemName: "house"), title: "Home"),
         .init(icon: Image(systemName: "magnifyingglass"), title: "Search"),
         .init(icon: Image(systemName: "bell"), title: "Alerts", badge: "3"),
         .init(icon: Image(systemName: "person"), title: "Profile")
     ]
-    
+
     var body: some View {
         VStack(spacing: 40) {
             VStack {
                 Text("Standard").font(.caption)
                 TabBarView(selectedIndex: $selectedTab1, items: items, style: .standard)
             }
-            
+
             VStack {
                 Text("Pill").font(.caption)
                 TabBarView(selectedIndex: $selectedTab2, items: items, style: .pill)
             }
-            
+
             VStack {
                 Text("Floating").font(.caption)
                 TabBarView(selectedIndex: $selectedTab3, items: items, style: .floating)
             }
-            
+
             Spacer()
         }
         .padding(.top, 40)

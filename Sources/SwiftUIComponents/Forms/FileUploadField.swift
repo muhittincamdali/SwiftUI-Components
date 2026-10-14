@@ -7,9 +7,9 @@ public struct FileUploadField: View {
     let allowedTypes: [String]
     let maxFileSize: Int // in MB
     let style: UploadStyle
-    
+
     @State private var isDragging = false
-    
+
     public struct UploadedFile: Identifiable {
         public let id = UUID()
         let name: String
@@ -17,7 +17,7 @@ public struct FileUploadField: View {
         let type: String
         var progress: Double
         var isUploaded: Bool
-        
+
         public init(name: String, size: Int, type: String, progress: Double = 0, isUploaded: Bool = false) {
             self.name = name
             self.size = size
@@ -26,13 +26,13 @@ public struct FileUploadField: View {
             self.isUploaded = isUploaded
         }
     }
-    
+
     public enum UploadStyle {
         case dropzone
         case button
         case compact
     }
-    
+
     public init(
         selectedFiles: Binding<[UploadedFile]>,
         maxFiles: Int = 5,
@@ -46,7 +46,7 @@ public struct FileUploadField: View {
         self.maxFileSize = maxFileSize
         self.style = style
     }
-    
+
     public var body: some View {
         VStack(spacing: 12) {
             switch style {
@@ -57,7 +57,7 @@ public struct FileUploadField: View {
             case .compact:
                 compactView
             }
-            
+
             // File list
             if !selectedFiles.isEmpty {
                 VStack(spacing: 8) {
@@ -68,21 +68,21 @@ public struct FileUploadField: View {
             }
         }
     }
-    
+
     private var dropzoneView: some View {
         VStack(spacing: 12) {
             Image(systemName: "icloud.and.arrow.up")
                 .font(.system(size: 32))
                 .foregroundColor(isDragging ? .accentColor : .secondary)
-            
+
             VStack(spacing: 4) {
                 Text("Drag and drop files here")
                     .font(.system(size: 15, weight: .medium))
-                
+
                 Text("or")
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
-                
+
                 Button("Browse Files") {
                     // File picker action
                     addDemoFile()
@@ -90,7 +90,7 @@ public struct FileUploadField: View {
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.accentColor)
             }
-            
+
             Text("Max \(maxFiles) files • \(allowedTypes.joined(separator: ", ").uppercased()) • Up to \(maxFileSize)MB each")
                 .font(.system(size: 11))
                 .foregroundColor(.secondary)
@@ -107,7 +107,7 @@ public struct FileUploadField: View {
                 .fill(isDragging ? Color.accentColor.opacity(0.05) : Color.platformGray6.opacity(0.5))
         )
     }
-    
+
     private var buttonView: some View {
         Button {
             addDemoFile()
@@ -115,18 +115,18 @@ public struct FileUploadField: View {
             HStack {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 20))
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Upload Files")
                         .font(.system(size: 15, weight: .semibold))
-                    
+
                     Text("\(selectedFiles.count)/\(maxFiles) files")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
@@ -141,7 +141,7 @@ public struct FileUploadField: View {
         .buttonStyle(PlainButtonStyle())
         .disabled(selectedFiles.count >= maxFiles)
     }
-    
+
     private var compactView: some View {
         HStack {
             Button {
@@ -157,15 +157,15 @@ public struct FileUploadField: View {
             }
             .buttonStyle(PlainButtonStyle())
             .disabled(selectedFiles.count >= maxFiles)
-            
+
             Spacer()
-            
+
             Text("\(selectedFiles.count)/\(maxFiles)")
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
         }
     }
-    
+
     private func fileRow(_ file: UploadedFile) -> some View {
         HStack(spacing: 12) {
             // File icon
@@ -175,13 +175,13 @@ public struct FileUploadField: View {
                 .frame(width: 40, height: 40)
                 .background(fileColor(for: file.type).opacity(0.15))
                 .cornerRadius(8)
-            
+
             // File info
             VStack(alignment: .leading, spacing: 4) {
                 Text(file.name)
                     .font(.system(size: 14, weight: .medium))
                     .lineLimit(1)
-                
+
                 if file.isUploaded {
                     Text(formatFileSize(file.size))
                         .font(.system(size: 12))
@@ -193,7 +193,7 @@ public struct FileUploadField: View {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Color.platformGray5)
                                 .frame(height: 4)
-                            
+
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Color.accentColor)
                                 .frame(width: geometry.size.width * file.progress, height: 4)
@@ -202,16 +202,16 @@ public struct FileUploadField: View {
                     .frame(height: 4)
                 }
             }
-            
+
             Spacer()
-            
+
             // Status/Actions
             if file.isUploaded {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 20))
                     .foregroundColor(.green)
             }
-            
+
             Button {
                 selectedFiles.removeAll { $0.id == file.id }
             } label: {
@@ -226,7 +226,7 @@ public struct FileUploadField: View {
         .cornerRadius(10)
         .shadow(color: .black.opacity(0.04), radius: 4, x: 0, y: 2)
     }
-    
+
     private func fileIcon(for type: String) -> String {
         switch type.lowercased() {
         case "pdf": return "doc.fill"
@@ -238,7 +238,7 @@ public struct FileUploadField: View {
         default: return "doc.fill"
         }
     }
-    
+
     private func fileColor(for type: String) -> Color {
         switch type.lowercased() {
         case "pdf": return .red
@@ -249,7 +249,7 @@ public struct FileUploadField: View {
         default: return .gray
         }
     }
-    
+
     private func formatFileSize(_ bytes: Int) -> String {
         let kb = Double(bytes) / 1024
         if kb < 1024 {
@@ -258,7 +258,7 @@ public struct FileUploadField: View {
             return String(format: "%.1f MB", kb / 1024)
         }
     }
-    
+
     private func addDemoFile() {
         guard selectedFiles.count < maxFiles else { return }
         let demo = UploadedFile(
@@ -279,22 +279,22 @@ public struct FileUploadField: View {
             .init(name: "report.pdf", size: 2_500_000, type: "pdf", progress: 1.0, isUploaded: true),
             .init(name: "photo.jpg", size: 1_200_000, type: "jpg", progress: 0.6, isUploaded: false)
         ]
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 24) {
                     FormField(label: "Attachments") {
                         FileUploadField(selectedFiles: $files1, style: .dropzone)
                     }
-                    
+
                     Divider()
-                    
+
                     FormField(label: "Documents") {
                         FileUploadField(selectedFiles: $files2, style: .button)
                     }
-                    
+
                     Divider()
-                    
+
                     FormField(label: "Quick Upload") {
                         FileUploadField(selectedFiles: $files1, style: .compact)
                     }

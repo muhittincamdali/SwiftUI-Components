@@ -11,7 +11,7 @@ import SwiftUI
 /// ```
 public struct Tooltip: View {
     // MARK: - Types
-    
+
     /// The position of the tooltip relative to the anchor.
     public enum Position {
         case top
@@ -20,14 +20,14 @@ public struct Tooltip: View {
         case trailing
         case auto
     }
-    
+
     /// The arrow style of the tooltip.
     public enum ArrowStyle {
         case none
         case small
         case medium
         case large
-        
+
         var size: CGFloat {
             switch self {
             case .none: return 0
@@ -37,9 +37,9 @@ public struct Tooltip: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let text: String
     private let position: Position
     private let arrowStyle: ArrowStyle
@@ -49,9 +49,9 @@ public struct Tooltip: View {
     private let cornerRadius: CGFloat
     private let padding: CGFloat
     private let maxWidth: CGFloat
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new tooltip.
     public init(
         _ text: String,
@@ -74,9 +74,9 @@ public struct Tooltip: View {
         self.padding = padding
         self.maxWidth = maxWidth
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Text(text)
             .font(font)
@@ -99,16 +99,16 @@ public struct TooltipModifier: ViewModifier {
     private let position: Tooltip.Position
     private let trigger: TooltipTrigger
     private let delay: Double
-    
+
     @State private var isShowing: Bool = false
     @State private var tooltipPosition: Tooltip.Position = .top
-    
+
     public enum TooltipTrigger {
         case tap
         case longPress
         case hover
     }
-    
+
     public init(
         text: String,
         position: Tooltip.Position = .auto,
@@ -120,7 +120,7 @@ public struct TooltipModifier: ViewModifier {
         self.trigger = trigger
         self.delay = delay
     }
-    
+
     public func body(content: Content) -> some View {
         content
             .overlay(alignment: tooltipAlignment) {
@@ -142,7 +142,7 @@ public struct TooltipModifier: ViewModifier {
                 }
             }
     }
-    
+
     private var tooltipAlignment: Alignment {
         switch tooltipPosition {
         case .top: return .top
@@ -152,7 +152,7 @@ public struct TooltipModifier: ViewModifier {
         case .auto: return .top
         }
     }
-    
+
     private var tooltipOffset: CGSize {
         let distance: CGFloat = 8
         switch tooltipPosition {
@@ -163,7 +163,7 @@ public struct TooltipModifier: ViewModifier {
         case .auto: return CGSize(width: 0, height: -distance)
         }
     }
-    
+
     private var tooltipGesture: AnyGesture<Void> {
         switch trigger {
         case .tap:
@@ -181,20 +181,20 @@ public struct TooltipModifier: ViewModifier {
             return AnyGesture(TapGesture().onEnded { })
         }
     }
-    
+
     private func showTooltip() {
         tooltipPosition = position == .auto ? .top : position
         withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
             isShowing = true
         }
     }
-    
+
     private func hideTooltip() {
         withAnimation(.easeOut(duration: 0.15)) {
             isShowing = false
         }
     }
-    
+
     private func toggleTooltip() {
         if isShowing {
             hideTooltip()
@@ -226,7 +226,7 @@ public struct PopoverTooltip<Content: View, PopoverContent: View>: View {
     private let arrowEdge: Edge
     private let content: () -> Content
     private let popover: () -> PopoverContent
-    
+
     public init(
         isPresented: Binding<Bool>,
         arrowEdge: Edge = .top,
@@ -238,7 +238,7 @@ public struct PopoverTooltip<Content: View, PopoverContent: View>: View {
         self.content = content
         self.popover = popover
     }
-    
+
     public var body: some View {
         content()
             .popover(isPresented: $isPresented, arrowEdge: arrowEdge) {
@@ -254,14 +254,14 @@ public struct PopoverTooltip<Content: View, PopoverContent: View>: View {
 public struct InfoTooltipButton: View {
     private let text: String
     private let iconColor: Color
-    
+
     @State private var isShowing = false
-    
+
     public init(_ text: String, iconColor: Color = .secondary) {
         self.text = text
         self.iconColor = iconColor
     }
-    
+
     public var body: some View {
         Button {
             isShowing.toggle()
@@ -286,12 +286,12 @@ public struct InfoTooltipButton: View {
             .background(Color.platformGray6)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .tooltip("This is a helpful tooltip!")
-        
+
         HStack {
             Text("Need help?")
             InfoTooltipButton("Here's some additional information about this feature.")
         }
-        
+
         Text("Tap me")
             .padding()
             .background(Color.blue.opacity(0.1))

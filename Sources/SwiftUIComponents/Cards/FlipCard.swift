@@ -14,12 +14,12 @@ import SwiftUI
 /// ```
 public struct FlipCard<Front: View, Back: View>: View {
     // MARK: - Types
-    
+
     /// The axis around which the card flips.
     public enum FlipAxis {
         case horizontal
         case vertical
-        
+
         var axis: (x: CGFloat, y: CGFloat, z: CGFloat) {
             switch self {
             case .horizontal: return (0, 1, 0)
@@ -27,7 +27,7 @@ public struct FlipCard<Front: View, Back: View>: View {
             }
         }
     }
-    
+
     /// The direction of the flip animation.
     public enum FlipDirection {
         case leftToRight
@@ -35,9 +35,9 @@ public struct FlipCard<Front: View, Back: View>: View {
         case topToBottom
         case bottomToTop
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var isFlipped: Bool
     private let axis: FlipAxis
     private let duration: Double
@@ -48,12 +48,12 @@ public struct FlipCard<Front: View, Back: View>: View {
     private let shadowColor: Color
     private let frontContent: () -> Front
     private let backContent: () -> Back
-    
+
     @State private var rotation: Double = 0
     @State private var animating: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new flip card.
     /// - Parameters:
     ///   - isFlipped: Binding to control flip state.
@@ -89,9 +89,9 @@ public struct FlipCard<Front: View, Back: View>: View {
         self.frontContent = front
         self.backContent = back
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         ZStack {
             // Front side
@@ -102,7 +102,7 @@ public struct FlipCard<Front: View, Back: View>: View {
                     axis: axis.axis,
                     perspective: perspective
                 )
-            
+
             // Back side (pre-rotated 180 degrees)
             backContent()
                 .opacity(rotation >= 90 ? 1 : 0)
@@ -122,17 +122,17 @@ public struct FlipCard<Front: View, Back: View>: View {
             flip(to: newValue)
         }
     }
-    
+
     // MARK: - Animation
-    
+
     private func flip(to flipped: Bool) {
         guard !animating else { return }
         animating = true
-        
+
         withAnimation(.easeInOut(duration: duration)) {
             rotation = flipped ? 180 : 0
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
             animating = false
         }
@@ -147,7 +147,7 @@ public struct FlipCardModifier<Back: View>: ViewModifier {
     let axis: FlipCard<AnyView, Back>.FlipAxis
     let duration: Double
     let back: () -> Back
-    
+
     public func body(content: Content) -> some View {
         FlipCard(
             isFlipped: $isFlipped,
@@ -178,14 +178,14 @@ extension View {
 /// A pre-styled flip card designed for credit card displays.
 public struct CreditCardFlipCard: View {
     @Binding var isFlipped: Bool
-    
+
     let cardNumber: String
     let cardHolder: String
     let expiryDate: String
     let cvv: String
     let brandLogo: Image?
     let gradient: LinearGradient
-    
+
     /// Creates a credit card style flip card.
     public init(
         isFlipped: Binding<Bool>,
@@ -208,13 +208,13 @@ public struct CreditCardFlipCard: View {
         self.brandLogo = brandLogo
         self.gradient = gradient
     }
-    
+
     public var body: some View {
         FlipCard(isFlipped: $isFlipped) {
             // Front
             ZStack(alignment: .bottomLeading) {
                 gradient
-                
+
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
                         Spacer()
@@ -223,13 +223,13 @@ public struct CreditCardFlipCard: View {
                             .scaledToFit()
                             .frame(height: 40)
                     }
-                    
+
                     Spacer()
-                    
+
                     Text(formatCardNumber(cardNumber))
                         .font(.system(size: 22, weight: .medium, design: .monospaced))
                         .foregroundStyle(.white)
-                    
+
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("CARD HOLDER")
@@ -240,9 +240,9 @@ public struct CreditCardFlipCard: View {
                                 .fontWeight(.medium)
                                 .foregroundStyle(.white)
                         }
-                        
+
                         Spacer()
-                        
+
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("EXPIRES")
                                 .font(.caption2)
@@ -261,21 +261,21 @@ public struct CreditCardFlipCard: View {
             // Back
             ZStack {
                 gradient
-                
+
                 VStack(spacing: 20) {
                     Rectangle()
                         .fill(.black)
                         .frame(height: 50)
                         .padding(.top, 20)
-                    
+
                     HStack {
                         Spacer()
-                        
+
                         ZStack(alignment: .trailing) {
                             Rectangle()
                                 .fill(.white)
                                 .frame(width: 200, height: 40)
-                            
+
                             Text(cvv)
                                 .font(.system(.body, design: .monospaced))
                                 .fontWeight(.medium)
@@ -283,14 +283,14 @@ public struct CreditCardFlipCard: View {
                         }
                         .padding(.trailing, 20)
                     }
-                    
+
                     Spacer()
                 }
             }
             .aspectRatio(1.586, contentMode: .fit)
         }
     }
-    
+
     private func formatCardNumber(_ number: String) -> String {
         let cleaned = number.replacingOccurrences(of: " ", with: "")
         var result = ""
@@ -308,7 +308,7 @@ public struct CreditCardFlipCard: View {
 struct FlipCardPreview: View {
     @State private var isFlipped1 = false
     @State private var isFlipped2 = false
-    
+
     var body: some View {
         VStack(spacing: 30) {
             FlipCard(isFlipped: $isFlipped1) {
@@ -330,7 +330,7 @@ struct FlipCardPreview: View {
                     )
                     .frame(height: 200)
             }
-            
+
             CreditCardFlipCard(
                 isFlipped: $isFlipped2,
                 cardNumber: "4242424242424242",
@@ -339,7 +339,7 @@ struct FlipCardPreview: View {
                 cvv: "123"
             )
             .frame(maxWidth: 340)
-            
+
             Button("Flip All") {
                 isFlipped1.toggle()
                 isFlipped2.toggle()

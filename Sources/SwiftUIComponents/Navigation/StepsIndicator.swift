@@ -5,33 +5,33 @@ public struct StepsIndicator: View {
     let steps: [Step]
     let currentStep: Int
     let style: StepsStyle
-    
+
     public struct Step: Identifiable {
         public let id = UUID()
         let title: String
         let subtitle: String?
         let icon: String?
-        
+
         public init(title: String, subtitle: String? = nil, icon: String? = nil) {
             self.title = title
             self.subtitle = subtitle
             self.icon = icon
         }
     }
-    
+
     public enum StepsStyle {
         case horizontal
         case vertical
         case numbered
         case icons
     }
-    
+
     public init(steps: [Step], currentStep: Int, style: StepsStyle = .horizontal) {
         self.steps = steps
         self.currentStep = currentStep
         self.style = style
     }
-    
+
     public var body: some View {
         switch style {
         case .horizontal:
@@ -44,7 +44,7 @@ public struct StepsIndicator: View {
             iconSteps
         }
     }
-    
+
     private var horizontalSteps: some View {
         HStack(spacing: 0) {
             ForEach(Array(steps.enumerated()), id: \.element.id) { index, step in
@@ -55,7 +55,7 @@ public struct StepsIndicator: View {
                             Circle()
                                 .fill(stepColor(for: index))
                                 .frame(width: 32, height: 32)
-                            
+
                             if index < currentStep {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 14, weight: .bold))
@@ -66,14 +66,14 @@ public struct StepsIndicator: View {
                                     .foregroundColor(index == currentStep ? .white : .secondary)
                             }
                         }
-                        
+
                         Text(step.title)
                             .font(.system(size: 11))
                             .foregroundColor(index <= currentStep ? .primary : .secondary)
                             .lineLimit(1)
                     }
                     .frame(maxWidth: .infinity)
-                    
+
                     // Connector line
                     if index < steps.count - 1 {
                         Rectangle()
@@ -86,7 +86,7 @@ public struct StepsIndicator: View {
             }
         }
     }
-    
+
     private var verticalSteps: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(Array(steps.enumerated()), id: \.element.id) { index, step in
@@ -97,7 +97,7 @@ public struct StepsIndicator: View {
                             Circle()
                                 .fill(stepColor(for: index))
                                 .frame(width: 32, height: 32)
-                            
+
                             if index < currentStep {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 14, weight: .bold))
@@ -108,7 +108,7 @@ public struct StepsIndicator: View {
                                     .foregroundColor(index == currentStep ? .white : .secondary)
                             }
                         }
-                        
+
                         if index < steps.count - 1 {
                             Rectangle()
                                 .fill(index < currentStep ? Color.accentColor : Color.platformGray4)
@@ -116,13 +116,13 @@ public struct StepsIndicator: View {
                                 .frame(height: 40)
                         }
                     }
-                    
+
                     // Content
                     VStack(alignment: .leading, spacing: 4) {
                         Text(step.title)
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(index <= currentStep ? .primary : .secondary)
-                        
+
                         if let subtitle = step.subtitle {
                             Text(subtitle)
                                 .font(.system(size: 13))
@@ -130,13 +130,13 @@ public struct StepsIndicator: View {
                         }
                     }
                     .padding(.top, 4)
-                    
+
                     Spacer()
                 }
             }
         }
     }
-    
+
     private var numberedSteps: some View {
         HStack(spacing: 0) {
             ForEach(Array(steps.enumerated()), id: \.element.id) { index, step in
@@ -146,7 +146,7 @@ public struct StepsIndicator: View {
                             Circle()
                                 .fill(Color.green)
                                 .frame(width: 40, height: 40)
-                            
+
                             Image(systemName: "checkmark")
                                 .font(.system(size: 18, weight: .bold))
                                 .foregroundColor(.white)
@@ -158,18 +158,18 @@ public struct StepsIndicator: View {
                                     Circle()
                                         .fill(index == currentStep ? Color.accentColor.opacity(0.1) : Color.clear)
                                 )
-                            
+
                             Text("\(index + 1)")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(index == currentStep ? .accentColor : .secondary)
                         }
                     }
-                    
+
                     VStack(spacing: 2) {
                         Text(step.title)
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(index <= currentStep ? .primary : .secondary)
-                        
+
                         if let subtitle = step.subtitle {
                             Text(subtitle)
                                 .font(.system(size: 10))
@@ -179,7 +179,7 @@ public struct StepsIndicator: View {
                     .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
-                
+
                 if index < steps.count - 1 {
                     Rectangle()
                         .fill(index < currentStep ? Color.green : Color.platformGray4)
@@ -190,7 +190,7 @@ public struct StepsIndicator: View {
             }
         }
     }
-    
+
     private var iconSteps: some View {
         HStack(spacing: 0) {
             ForEach(Array(steps.enumerated()), id: \.element.id) { index, step in
@@ -199,7 +199,7 @@ public struct StepsIndicator: View {
                         Circle()
                             .fill(index <= currentStep ? Color.accentColor : Color.platformGray5)
                             .frame(width: 48, height: 48)
-                        
+
                         if let icon = step.icon {
                             Image(systemName: index < currentStep ? "checkmark" : icon)
                                 .font(.system(size: 20))
@@ -210,13 +210,13 @@ public struct StepsIndicator: View {
                                 .foregroundColor(index <= currentStep ? .white : .secondary)
                         }
                     }
-                    
+
                     Text(step.title)
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(index <= currentStep ? .primary : .secondary)
                 }
                 .frame(maxWidth: .infinity)
-                
+
                 if index < steps.count - 1 {
                     VStack {
                         Rectangle()
@@ -229,7 +229,7 @@ public struct StepsIndicator: View {
             }
         }
     }
-    
+
     private func stepColor(for index: Int) -> Color {
         if index < currentStep {
             return .green
@@ -251,7 +251,7 @@ public struct WizardNavigation: View {
     let previousLabel: String
     let nextLabel: String
     let finishLabel: String
-    
+
     public init(
         currentStep: Binding<Int>,
         totalSteps: Int,
@@ -271,7 +271,7 @@ public struct WizardNavigation: View {
         self.nextLabel = nextLabel
         self.finishLabel = finishLabel
     }
-    
+
     public var body: some View {
         HStack {
             // Previous button
@@ -292,16 +292,16 @@ public struct WizardNavigation: View {
                 .foregroundColor(currentStep > 0 ? .accentColor : .secondary)
             }
             .disabled(currentStep == 0)
-            
+
             Spacer()
-            
+
             // Progress indicator
             Text("\(currentStep + 1) of \(totalSteps)")
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
-            
+
             Spacer()
-            
+
             // Next/Finish button
             if currentStep < totalSteps - 1 {
                 Button {
@@ -342,14 +342,14 @@ public struct WizardNavigation: View {
 #Preview("Steps Indicators") {
     struct PreviewWrapper: View {
         @State private var currentStep = 1
-        
+
         let steps: [StepsIndicator.Step] = [
             .init(title: "Details", icon: "person.fill"),
             .init(title: "Shipping", icon: "shippingbox.fill"),
             .init(title: "Payment", icon: "creditcard.fill"),
             .init(title: "Review", icon: "checkmark.circle.fill")
         ]
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 32) {
@@ -358,19 +358,19 @@ public struct WizardNavigation: View {
                             .font(.headline)
                         StepsIndicator(steps: steps, currentStep: currentStep, style: .horizontal)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Numbered")
                             .font(.headline)
                         StepsIndicator(steps: steps, currentStep: currentStep, style: .numbered)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Icons")
                             .font(.headline)
                         StepsIndicator(steps: steps, currentStep: currentStep, style: .icons)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Vertical")
                             .font(.headline)
@@ -385,9 +385,9 @@ public struct WizardNavigation: View {
                             style: .vertical
                         )
                     }
-                    
+
                     Divider()
-                    
+
                     WizardNavigation(
                         currentStep: $currentStep,
                         totalSteps: 4,
@@ -398,6 +398,6 @@ public struct WizardNavigation: View {
             }
         }
     }
-    
+
     return PreviewWrapper()
 }

@@ -7,9 +7,9 @@ public struct OutlineButton: View {
     let color: Color
     let cornerRadius: CGFloat
     let lineWidth: CGFloat
-    
+
     @State private var isPressed = false
-    
+
     public init(
         _ title: String,
         color: Color = .accentColor,
@@ -23,7 +23,7 @@ public struct OutlineButton: View {
         self.lineWidth = lineWidth
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             Text(title)

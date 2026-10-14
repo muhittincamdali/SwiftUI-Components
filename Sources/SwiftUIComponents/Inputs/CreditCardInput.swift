@@ -15,7 +15,7 @@ import SwiftUI
 /// ```
 public struct CreditCardInput: View {
     // MARK: - Types
-    
+
     /// Detected card type based on number prefix.
     public enum CardType: String, CaseIterable, Sendable {
         case visa
@@ -25,7 +25,7 @@ public struct CreditCardInput: View {
         case dinersClub
         case jcb
         case unknown
-        
+
         var icon: String {
             switch self {
             case .visa: return "💳" // Would use actual brand logos
@@ -37,7 +37,7 @@ public struct CreditCardInput: View {
             case .unknown: return "💳"
             }
         }
-        
+
         /// Number of security-code digits for this network.
         public var cvvLength: Int {
             switch self {
@@ -45,7 +45,7 @@ public struct CreditCardInput: View {
             default: return 3
             }
         }
-        
+
         /// Number of card-number digits for this network.
         public var numberLength: Int {
             switch self {
@@ -54,7 +54,7 @@ public struct CreditCardInput: View {
             default: return 16
             }
         }
-        
+
         /// Digit group sizes used when formatting a number of this type.
         var groupSizes: [Int] {
             switch self {
@@ -93,7 +93,7 @@ public struct CreditCardInput: View {
             return .unknown
         }
     }
-    
+
     /// Result of checking an expiry date in `MM/YY` form.
     public enum ExpiryCheck: Equatable, Sendable {
         /// Fewer than four digits entered.
@@ -111,33 +111,33 @@ public struct CreditCardInput: View {
         case valid
         case invalid(String)
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var cardNumber: String
     @Binding private var expiryDate: String
     @Binding private var cvv: String
     @Binding private var cardholderName: String
-    
+
     private let showCardPreview: Bool
     private let accentColor: Color
     private let errorColor: Color
     private let onValidationChange: ((Bool) -> Void)?
-    
+
     @State private var cardType: CardType = .unknown
     @State private var numberValidation: ValidationState = .idle
     @State private var expiryValidation: ValidationState = .idle
     @State private var cvvValidation: ValidationState = .idle
     @State private var nameValidation: ValidationState = .idle
-    
+
     @FocusState private var focusedField: Field?
-    
+
     private enum Field: Hashable {
         case number, expiry, cvv, name
     }
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new credit card input.
     public init(
         cardNumber: Binding<String>,
@@ -158,25 +158,25 @@ public struct CreditCardInput: View {
         self.errorColor = errorColor
         self.onValidationChange = onValidationChange
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         VStack(spacing: 20) {
             if showCardPreview {
                 cardPreviewView
             }
-            
+
             VStack(spacing: 16) {
                 // Card number
                 cardNumberField
-                
+
                 // Expiry and CVV row
                 HStack(spacing: 12) {
                     expiryField
                     cvvField
                 }
-                
+
                 // Cardholder name
                 cardholderField
             }
@@ -186,9 +186,9 @@ public struct CreditCardInput: View {
         .onChange(of: cvv) { _, _ in validateAll() }
         .onChange(of: cardholderName) { _, _ in validateAll() }
     }
-    
+
     // MARK: - Card Preview
-    
+
     private var cardPreviewView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
@@ -199,7 +199,7 @@ public struct CreditCardInput: View {
                         endPoint: .bottomTrailing
                     )
                 )
-            
+
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     Text(cardType.icon)
@@ -210,13 +210,13 @@ public struct CreditCardInput: View {
                         .fontWeight(.bold)
                         .foregroundStyle(.white.opacity(0.8))
                 }
-                
+
                 Spacer()
-                
+
                 Text(formatDisplayNumber(cardNumber))
                     .font(.system(size: 22, weight: .medium, design: .monospaced))
                     .foregroundStyle(.white)
-                
+
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("CARDHOLDER")
@@ -226,9 +226,9 @@ public struct CreditCardInput: View {
                             .font(.caption)
                             .foregroundStyle(.white)
                     }
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("EXPIRES")
                             .font(.caption2)
@@ -244,15 +244,15 @@ public struct CreditCardInput: View {
         .frame(height: 200)
         .aspectRatio(1.586, contentMode: .fit)
     }
-    
+
     // MARK: - Card Number Field
-    
+
     private var cardNumberField: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Card Number")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             HStack {
                 TextField("1234 5678 9012 3456", text: $cardNumber)
                     .keyboard(.number)
@@ -261,7 +261,7 @@ public struct CreditCardInput: View {
                         cardType = CardType.detect(from: newValue)
                         cardNumber = Self.formatCardNumber(newValue)
                     }
-                
+
                 Text(cardType.icon)
                     .font(.title2)
             }
@@ -269,7 +269,7 @@ public struct CreditCardInput: View {
             .background(Color.platformGray6)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(fieldBorder(for: .number, validation: numberValidation))
-            
+
             if case .invalid(let message) = numberValidation {
                 Text(message)
                     .font(.caption)
@@ -277,15 +277,15 @@ public struct CreditCardInput: View {
             }
         }
     }
-    
+
     // MARK: - Expiry Field
-    
+
     private var expiryField: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Expiry Date")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             TextField("MM/YY", text: $expiryDate)
                 .keyboard(.number)
                 .focused($focusedField, equals: .expiry)
@@ -296,7 +296,7 @@ public struct CreditCardInput: View {
                 .background(Color.platformGray6)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(fieldBorder(for: .expiry, validation: expiryValidation))
-            
+
             if case .invalid(let message) = expiryValidation {
                 Text(message)
                     .font(.caption)
@@ -304,15 +304,15 @@ public struct CreditCardInput: View {
             }
         }
     }
-    
+
     // MARK: - CVV Field
-    
+
     private var cvvField: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("CVV")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             SecureField("123", text: $cvv)
                 .keyboard(.number)
                 .focused($focusedField, equals: .cvv)
@@ -323,7 +323,7 @@ public struct CreditCardInput: View {
                 .background(Color.platformGray6)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(fieldBorder(for: .cvv, validation: cvvValidation))
-            
+
             if case .invalid(let message) = cvvValidation {
                 Text(message)
                     .font(.caption)
@@ -331,15 +331,15 @@ public struct CreditCardInput: View {
             }
         }
     }
-    
+
     // MARK: - Cardholder Field
-    
+
     private var cardholderField: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Cardholder Name")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             TextField("John Doe", text: $cardholderName)
                 .textContentType(.name)
                 .wordCapitalization()
@@ -348,7 +348,7 @@ public struct CreditCardInput: View {
                 .background(Color.platformGray6)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(fieldBorder(for: .name, validation: nameValidation))
-            
+
             if case .invalid(let message) = nameValidation {
                 Text(message)
                     .font(.caption)
@@ -356,9 +356,9 @@ public struct CreditCardInput: View {
             }
         }
     }
-    
+
     // MARK: - Field Border
-    
+
     private func fieldBorder(for field: Field, validation: ValidationState) -> some View {
         let color: Color = {
             if focusedField == field {
@@ -370,11 +370,11 @@ public struct CreditCardInput: View {
             case .idle: return .clear
             }
         }()
-        
+
         return RoundedRectangle(cornerRadius: 12)
             .stroke(color, lineWidth: focusedField == field ? 2 : 1)
     }
-    
+
     // MARK: - Formatting
 
     /// Keeps only ASCII digits, so full-width or other Unicode numerals are ignored.
@@ -508,7 +508,7 @@ struct CreditCardInputPreview: View {
     @State private var cvv = ""
     @State private var name = ""
     @State private var isValid = false
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -519,7 +519,7 @@ struct CreditCardInputPreview: View {
                     cardholderName: $name,
                     onValidationChange: { isValid = $0 }
                 )
-                
+
                 Button("Pay Now") { }
                     .frame(maxWidth: .infinity)
                     .padding()

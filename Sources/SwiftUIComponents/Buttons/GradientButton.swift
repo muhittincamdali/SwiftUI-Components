@@ -16,48 +16,48 @@ import SwiftUI
 /// ```
 public struct GradientButton: View {
     // MARK: - Types
-    
+
     /// The type of gradient to apply.
     public enum GradientType: Sendable {
         case linear(colors: [Color], startPoint: UnitPoint, endPoint: UnitPoint)
         case radial(colors: [Color], center: UnitPoint, startRadius: CGFloat, endRadius: CGFloat)
         case angular(colors: [Color], center: UnitPoint, angle: Angle)
         case conic(colors: [Color], center: UnitPoint)
-        
+
         /// Preset gradient styles.
         public static let sunrise = GradientType.linear(
             colors: [.orange, .pink, .purple],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
-        
+
         public static let ocean = GradientType.linear(
             colors: [.cyan, .blue, .indigo],
             startPoint: .top,
             endPoint: .bottom
         )
-        
+
         public static let forest = GradientType.linear(
             colors: [.green, .mint, .teal],
             startPoint: .leading,
             endPoint: .trailing
         )
-        
+
         public static let fire = GradientType.linear(
             colors: [.yellow, .orange, .red],
             startPoint: .top,
             endPoint: .bottom
         )
-        
+
         public static let midnight = GradientType.linear(
             colors: [.indigo, .purple, .black],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
     }
-    
+
     // MARK: - Properties
-    
+
     private let title: String
     private let gradient: GradientType
     private let foregroundColor: Color
@@ -69,12 +69,12 @@ public struct GradientButton: View {
     private let hasShadow: Bool
     private let icon: Image?
     private let action: () -> Void
-    
+
     @State private var shimmerPhase: CGFloat = -1.0
     @State private var isPressed: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new gradient button.
     /// - Parameters:
     ///   - title: The button title.
@@ -113,24 +113,24 @@ public struct GradientButton: View {
         self.icon = icon
         self.action = action
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Button(action: action) {
             ZStack {
                 gradientBackground
-                
+
                 if hasShimmer {
                     shimmerOverlay
                 }
-                
+
                 HStack(spacing: 10) {
                     if let icon {
                         icon
                             .imageScale(.medium)
                     }
-                    
+
                     Text(title)
                         .font(font)
                         .fontWeight(.semibold)
@@ -160,9 +160,9 @@ public struct GradientButton: View {
             }
         }
     }
-    
+
     // MARK: - Gradient Background
-    
+
     @ViewBuilder
     private var gradientBackground: some View {
         switch gradient {
@@ -176,9 +176,9 @@ public struct GradientButton: View {
             AngularGradient(colors: colors + [colors.first ?? .clear], center: center)
         }
     }
-    
+
     // MARK: - Shimmer Overlay
-    
+
     private var shimmerOverlay: some View {
         GeometryReader { geometry in
             LinearGradient(
@@ -198,9 +198,9 @@ public struct GradientButton: View {
         }
         .allowsHitTesting(false)
     }
-    
+
     // MARK: - Glow Overlay
-    
+
     @ViewBuilder
     private var glowOverlay: some View {
         if hasGlow {
@@ -209,9 +209,9 @@ public struct GradientButton: View {
                 .blur(radius: 4)
         }
     }
-    
+
     // MARK: - Colors
-    
+
     private var shadowColor: Color {
         switch gradient {
         case .linear(let colors, _, _),
@@ -221,7 +221,7 @@ public struct GradientButton: View {
             return colors.last ?? .black
         }
     }
-    
+
     private var glowColor: Color {
         switch gradient {
         case .linear(let colors, _, _),
@@ -263,11 +263,11 @@ extension GradientButton {
 #Preview {
     VStack(spacing: 20) {
         GradientButton("Sunrise", gradient: .sunrise) { }
-        
+
         GradientButton("Ocean", gradient: .ocean, hasShimmer: true) { }
-        
+
         GradientButton("Forest", gradient: .forest, hasGlow: true) { }
-        
+
         GradientButton(
             "Premium",
             gradient: .linear(
@@ -279,7 +279,7 @@ extension GradientButton {
             hasShimmer: true,
             icon: Image(systemName: "crown.fill")
         ) { }
-        
+
         GradientButton(
             "Fire",
             gradient: .fire,

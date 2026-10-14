@@ -7,9 +7,9 @@ public struct SplitButton<Content: View>: View {
     let primaryAction: () -> Void
     let color: Color
     @ViewBuilder let menuContent: () -> Content
-    
+
     @State private var showMenu = false
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -23,7 +23,7 @@ public struct SplitButton<Content: View>: View {
         self.primaryAction = primaryAction
         self.menuContent = menuContent
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             // Primary action
@@ -40,13 +40,13 @@ public struct SplitButton<Content: View>: View {
                 .padding(.vertical, 12)
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             // Divider
             Rectangle()
                 .fill(Color.white.opacity(0.3))
                 .frame(width: 1)
                 .padding(.vertical, 8)
-            
+
             // Menu trigger
             Menu {
                 menuContent()
@@ -71,30 +71,30 @@ public struct SplitButton<Content: View>: View {
 public struct ButtonGroup: View {
     let buttons: [GroupButton]
     let style: GroupStyle
-    
+
     public struct GroupButton: Identifiable {
         public let id = UUID()
         let title: String
         let icon: String?
         let action: () -> Void
-        
+
         public init(_ title: String, icon: String? = nil, action: @escaping () -> Void) {
             self.title = title
             self.icon = icon
             self.action = action
         }
     }
-    
+
     public enum GroupStyle {
         case filled(Color)
         case outlined(Color)
     }
-    
+
     public init(buttons: [GroupButton], style: GroupStyle = .filled(.accentColor)) {
         self.buttons = buttons
         self.style = style
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             ForEach(Array(buttons.enumerated()), id: \.element.id) { index, button in
@@ -111,7 +111,7 @@ public struct ButtonGroup: View {
                     .padding(.vertical, 10)
                 }
                 .buttonStyle(PlainButtonStyle())
-                
+
                 if index < buttons.count - 1 {
                     divider
                 }
@@ -119,14 +119,14 @@ public struct ButtonGroup: View {
         }
         .background(background)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
         case .outlined(let color): return color
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -136,7 +136,7 @@ public struct ButtonGroup: View {
             RoundedRectangle(cornerRadius: 10).stroke(color, lineWidth: 2)
         }
     }
-    
+
     @ViewBuilder
     private var divider: some View {
         switch style {
@@ -154,7 +154,7 @@ public struct StepperButton: View {
     let range: ClosedRange<Int>
     let step: Int
     let color: Color
-    
+
     public init(
         value: Binding<Int>,
         range: ClosedRange<Int> = 0...100,
@@ -166,7 +166,7 @@ public struct StepperButton: View {
         self.step = step
         self.color = color
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             Button {
@@ -180,12 +180,12 @@ public struct StepperButton: View {
                     .frame(width: 44, height: 44)
             }
             .disabled(value <= range.lowerBound)
-            
+
             Text("\(value)")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
                 .frame(minWidth: 50)
-            
+
             Button {
                 if value + step <= range.upperBound {
                     value += step
@@ -226,20 +226,20 @@ public struct StepperButton: View {
             Button("Save as Template") {}
             Button("Save and Close") {}
         }
-        
+
         // Button group
         ButtonGroup(buttons: [
             .init("Bold", icon: "bold") {},
             .init("Italic", icon: "italic") {},
             .init("Underline", icon: "underline") {}
         ])
-        
+
         ButtonGroup(buttons: [
             .init("Left", icon: "text.alignleft") {},
             .init("Center", icon: "text.aligncenter") {},
             .init("Right", icon: "text.alignright") {}
         ], style: .outlined(.blue))
-        
+
         // Stepper
         StepperButton(value: .constant(5), range: 0...10)
     }

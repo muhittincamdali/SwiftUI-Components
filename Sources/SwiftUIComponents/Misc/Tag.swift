@@ -8,18 +8,18 @@ public struct Tag: View {
     let style: TagStyle
     let size: TagSize
     let onRemove: (() -> Void)?
-    
+
     public enum TagStyle {
         case filled
         case outlined
         case soft
     }
-    
+
     public enum TagSize {
         case small
         case medium
         case large
-        
+
         var font: Font {
             switch self {
             case .small: return .system(size: 11, weight: .medium)
@@ -27,7 +27,7 @@ public struct Tag: View {
             case .large: return .system(size: 15, weight: .medium)
             }
         }
-        
+
         var verticalPadding: CGFloat {
             switch self {
             case .small: return 4
@@ -35,7 +35,7 @@ public struct Tag: View {
             case .large: return 8
             }
         }
-        
+
         var horizontalPadding: CGFloat {
             switch self {
             case .small: return 8
@@ -44,7 +44,7 @@ public struct Tag: View {
             }
         }
     }
-    
+
     public init(
         _ text: String,
         icon: String? = nil,
@@ -60,17 +60,17 @@ public struct Tag: View {
         self.size = size
         self.onRemove = onRemove
     }
-    
+
     public var body: some View {
         HStack(spacing: 4) {
             if let icon = icon {
                 Image(systemName: icon)
                     .font(.system(size: size == .small ? 10 : 12))
             }
-            
+
             Text(text)
                 .font(size.font)
-            
+
             if let onRemove = onRemove {
                 Button(action: onRemove) {
                     Image(systemName: "xmark")
@@ -83,7 +83,7 @@ public struct Tag: View {
         .padding(.vertical, size.verticalPadding)
         .background(background)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
@@ -91,7 +91,7 @@ public struct Tag: View {
         case .soft: return color
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -112,7 +112,7 @@ public struct TagGroup: View {
     let style: Tag.TagStyle
     let onTagTap: ((String) -> Void)?
     let onRemove: ((String) -> Void)?
-    
+
     public init(
         tags: [String],
         color: Color = .accentColor,
@@ -126,7 +126,7 @@ public struct TagGroup: View {
         self.onTagTap = onTagTap
         self.onRemove = onRemove
     }
-    
+
     public var body: some View {
         FlowLayout(spacing: 8) {
             ForEach(tags, id: \.self) { tag in
@@ -152,7 +152,7 @@ public struct SelectableTag: View {
     let isSelected: Bool
     let color: Color
     let action: () -> Void
-    
+
     public init(
         _ text: String,
         isSelected: Bool,
@@ -164,7 +164,7 @@ public struct SelectableTag: View {
         self.color = color
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 6) {
@@ -193,7 +193,7 @@ public struct StatusTag: View {
     let text: String
     let status: Status
     let showDot: Bool
-    
+
     public enum Status {
         case active
         case pending
@@ -201,7 +201,7 @@ public struct StatusTag: View {
         case failed
         case draft
         case archived
-        
+
         var color: Color {
             switch self {
             case .active: return .green
@@ -213,13 +213,13 @@ public struct StatusTag: View {
             }
         }
     }
-    
+
     public init(_ text: String, status: Status, showDot: Bool = true) {
         self.text = text
         self.status = status
         self.showDot = showDot
     }
-    
+
     public var body: some View {
         HStack(spacing: 6) {
             if showDot {
@@ -227,7 +227,7 @@ public struct StatusTag: View {
                     .fill(status.color)
                     .frame(width: 6, height: 6)
             }
-            
+
             Text(text)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(status.color)
@@ -245,62 +245,62 @@ public struct StatusTag: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Tag Styles")
                     .font(.headline)
-                
+
                 HStack(spacing: 8) {
                     Tag("Filled", style: .filled)
                     Tag("Outlined", style: .outlined)
                     Tag("Soft", style: .soft)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Tag Sizes")
                     .font(.headline)
-                
+
                 HStack(spacing: 8) {
                     Tag("Small", size: .small)
                     Tag("Medium", size: .medium)
                     Tag("Large", size: .large)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("With Icon & Remove")
                     .font(.headline)
-                
+
                 HStack(spacing: 8) {
                     Tag("Swift", icon: "swift", color: .orange, style: .soft)
                     Tag("SwiftUI", color: .blue, style: .soft, onRemove: {})
                     Tag("iOS", icon: "apple.logo", color: .purple, style: .filled)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Tag Group")
                     .font(.headline)
-                
+
                 TagGroup(
                     tags: ["Swift", "SwiftUI", "Combine", "UIKit", "iOS", "macOS"],
                     color: .blue,
                     onRemove: { _ in }
                 )
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Selectable Tags")
                     .font(.headline)
-                
+
                 HStack(spacing: 8) {
                     SelectableTag("Option 1", isSelected: true, action: {})
                     SelectableTag("Option 2", isSelected: false, action: {})
                     SelectableTag("Option 3", isSelected: false, action: {})
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Status Tags")
                     .font(.headline)
-                
+
                 HStack(spacing: 8) {
                     StatusTag("Active", status: .active)
                     StatusTag("Pending", status: .pending)

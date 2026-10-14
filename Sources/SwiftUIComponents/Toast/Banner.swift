@@ -14,7 +14,7 @@ import SwiftUI
 /// ```
 public struct Banner: View {
     // MARK: - Types
-    
+
     /// The visual style of the banner.
     public enum Style {
         case info
@@ -22,7 +22,7 @@ public struct Banner: View {
         case warning
         case error
         case custom(background: Color, foreground: Color)
-        
+
         var backgroundColor: Color {
             switch self {
             case .info: return .blue
@@ -32,14 +32,14 @@ public struct Banner: View {
             case .custom(let bg, _): return bg
             }
         }
-        
+
         var foregroundColor: Color {
             switch self {
             case .custom(_, let fg): return fg
             default: return .white
             }
         }
-        
+
         var icon: Image {
             switch self {
             case .info: return Image(systemName: "info.circle.fill")
@@ -50,27 +50,27 @@ public struct Banner: View {
             }
         }
     }
-    
+
     /// An action button for the banner.
     public struct Action {
         public let title: String
         public let style: ActionStyle
         public let action: () -> Void
-        
+
         public enum ActionStyle {
             case primary
             case secondary
         }
-        
+
         public init(title: String, style: ActionStyle = .primary, action: @escaping () -> Void) {
             self.title = title
             self.style = style
             self.action = action
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let title: String
     private let message: String?
     private let style: Style
@@ -79,9 +79,9 @@ public struct Banner: View {
     private let primaryAction: Action?
     private let secondaryAction: Action?
     private let onDismiss: (() -> Void)?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new banner.
     public init(
         title: String,
@@ -102,9 +102,9 @@ public struct Banner: View {
         self.secondaryAction = secondaryAction
         self.onDismiss = onDismiss
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         VStack(spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
@@ -112,14 +112,14 @@ public struct Banner: View {
                 (icon ?? style.icon)
                     .font(.title3)
                     .foregroundStyle(style.foregroundColor)
-                
+
                 // Content
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(style.foregroundColor)
-                    
+
                     if let message {
                         Text(message)
                             .font(.caption)
@@ -127,9 +127,9 @@ public struct Banner: View {
                             .lineLimit(3)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 // Close button
                 if showCloseButton {
                     Button {
@@ -144,12 +144,12 @@ public struct Banner: View {
                     }
                 }
             }
-            
+
             // Actions
             if primaryAction != nil || secondaryAction != nil {
                 HStack(spacing: 12) {
                     Spacer()
-                    
+
                     if let secondary = secondaryAction {
                         Button(secondary.title) {
                             secondary.action()
@@ -157,7 +157,7 @@ public struct Banner: View {
                         .font(.subheadline)
                         .foregroundStyle(style.foregroundColor.opacity(0.9))
                     }
-                    
+
                     if let primary = primaryAction {
                         Button(primary.title) {
                             primary.action()
@@ -183,13 +183,13 @@ public struct Banner: View {
 @MainActor
 public final class BannerManager: ObservableObject {
     public static let shared = BannerManager()
-    
+
     @Published public var currentBanner: BannerData?
     @Published public var isShowing: Bool = false
-    
+
     private var dismissTask: Task<Void, Never>?
     private var clearTask: Task<Void, Never>?
-    
+
     public struct BannerData: Identifiable {
         public let id = UUID()
         public let title: String
@@ -197,7 +197,7 @@ public final class BannerManager: ObservableObject {
         public let style: Banner.Style
         public let duration: Double?
         public let primaryAction: Banner.Action?
-        
+
         public init(
             title: String,
             message: String? = nil,
@@ -212,21 +212,21 @@ public final class BannerManager: ObservableObject {
             self.primaryAction = primaryAction
         }
     }
-    
+
     /// Creates a manager. Most apps use ``shared``; separate instances are useful in tests.
     public init() {}
-    
+
     /// Shows a banner, replacing any banner that is currently visible.
     public func show(_ data: BannerData) {
         dismissTask?.cancel()
         clearTask?.cancel()
-        
+
         currentBanner = data
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             isShowing = true
         }
-        
+
         if let duration = data.duration {
             dismissTask = Task { [weak self] in
                 try? await Task.sleep(for: .seconds(duration))
@@ -235,7 +235,7 @@ public final class BannerManager: ObservableObject {
             }
         }
     }
-    
+
     /// Shows a simple banner.
     public func show(
         title: String,
@@ -245,15 +245,15 @@ public final class BannerManager: ObservableObject {
     ) {
         show(BannerData(title: title, message: message, style: style, duration: duration))
     }
-    
+
     /// Dismisses the current banner.
     public func dismiss() {
         dismissTask?.cancel()
-        
+
         withAnimation(.easeOut(duration: 0.2)) {
             isShowing = false
         }
-        
+
         // Clear after the exit animation, unless a new banner was shown meanwhile.
         clearTask?.cancel()
         clearTask = Task { [weak self] in
@@ -270,15 +270,15 @@ public final class BannerManager: ObservableObject {
 public struct BannerModifier: ViewModifier {
     @ObservedObject private var manager = BannerManager.shared
     let edge: VerticalEdge
-    
+
     public init(edge: VerticalEdge = .top) {
         self.edge = edge
     }
-    
+
     public func body(content: Content) -> some View {
         ZStack(alignment: edge == .top ? .top : .bottom) {
             content
-            
+
             if manager.isShowing, let data = manager.currentBanner {
                 Banner(
                     title: data.title,
@@ -308,7 +308,7 @@ public struct InlineBanner: View {
     private let message: String
     private let style: Banner.Style
     private let onDismiss: (() -> Void)?
-    
+
     public init(
         message: String,
         style: Banner.Style = .info,
@@ -318,17 +318,17 @@ public struct InlineBanner: View {
         self.style = style
         self.onDismiss = onDismiss
     }
-    
+
     public var body: some View {
         HStack(spacing: 10) {
             style.icon
                 .font(.subheadline)
-            
+
             Text(message)
                 .font(.subheadline)
-            
+
             Spacer()
-            
+
             if onDismiss != nil {
                 Button {
                     onDismiss?()
@@ -355,27 +355,27 @@ struct BannerPreview: View {
                 style: .info,
                 primaryAction: .init(title: "Update") { }
             )
-            
+
             Banner(
                 title: "Payment Successful",
                 message: "Your order has been confirmed.",
                 style: .success
             )
-            
+
             Banner(
                 title: "Connection Lost",
                 style: .error,
                 primaryAction: .init(title: "Retry") { },
                 secondaryAction: .init(title: "Cancel", style: .secondary) { }
             )
-            
+
             InlineBanner(
                 message: "Please verify your email address",
                 style: .warning
             )
-            
+
             Spacer()
-            
+
             Button("Show Banner") {
                 BannerManager.shared.show(
                     title: "Hello!",

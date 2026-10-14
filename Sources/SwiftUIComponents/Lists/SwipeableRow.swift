@@ -15,7 +15,7 @@ import SwiftUI
 /// ```
 public struct SwipeableRow<Content: View>: View {
     // MARK: - Types
-    
+
     /// A swipe action configuration.
     public struct SwipeAction: Identifiable {
         public let id = UUID()
@@ -24,7 +24,7 @@ public struct SwipeableRow<Content: View>: View {
         public let color: Color
         public let isDestructive: Bool
         public let action: () -> Void
-        
+
         public init(
             title: String,
             icon: Image? = nil,
@@ -39,21 +39,21 @@ public struct SwipeableRow<Content: View>: View {
             self.action = action
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let leadingActions: [SwipeAction]
     private let trailingActions: [SwipeAction]
     private let actionWidth: CGFloat
     private let threshold: CGFloat
     private let content: () -> Content
-    
+
     @State private var offset: CGFloat = 0
     @State private var startOffset: CGFloat = 0
     @GestureState private var isDragging: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new swipeable row.
     /// - Parameters:
     ///   - leadingActions: Actions revealed on right swipe. Defaults to `[]`.
@@ -74,9 +74,9 @@ public struct SwipeableRow<Content: View>: View {
         self.threshold = threshold
         self.content = content
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -84,13 +84,13 @@ public struct SwipeableRow<Content: View>: View {
                 HStack(spacing: 0) {
                     // Leading actions
                     leadingActionsView
-                    
+
                     Spacer()
-                    
+
                     // Trailing actions
                     trailingActionsView
                 }
-                
+
                 // Content
                 content()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -112,9 +112,9 @@ public struct SwipeableRow<Content: View>: View {
         }
         .clipped()
     }
-    
+
     // MARK: - Leading Actions View
-    
+
     private var leadingActionsView: some View {
         HStack(spacing: 0) {
             ForEach(leadingActions) { action in
@@ -124,9 +124,9 @@ public struct SwipeableRow<Content: View>: View {
         .frame(width: max(0, offset))
         .clipped()
     }
-    
+
     // MARK: - Trailing Actions View
-    
+
     private var trailingActionsView: some View {
         HStack(spacing: 0) {
             ForEach(trailingActions) { action in
@@ -136,9 +136,9 @@ public struct SwipeableRow<Content: View>: View {
         .frame(width: max(0, -offset))
         .clipped()
     }
-    
+
     // MARK: - Action Button
-    
+
     private func actionButton(_ action: SwipeAction) -> some View {
         Button {
             performAction(action)
@@ -158,16 +158,16 @@ public struct SwipeableRow<Content: View>: View {
             .background(action.color)
         }
     }
-    
+
     // MARK: - Gesture Handling
-    
+
     private func handleDrag(value: DragGesture.Value, width: CGFloat) {
         let translation = value.translation.width + startOffset
-        
+
         // Limit based on available actions
         let maxLeading = CGFloat(leadingActions.count) * actionWidth
         let maxTrailing = -CGFloat(trailingActions.count) * actionWidth
-        
+
         if leadingActions.isEmpty && translation > 0 {
             offset = translation * 0.3 // Resistance
         } else if trailingActions.isEmpty && translation < 0 {
@@ -176,12 +176,12 @@ public struct SwipeableRow<Content: View>: View {
             offset = min(maxLeading, max(maxTrailing, translation))
         }
     }
-    
+
     private func handleDragEnd(value: DragGesture.Value, width: CGFloat) {
         let velocity = value.predictedEndLocation.x - value.location.x
         let maxLeading = CGFloat(leadingActions.count) * actionWidth
         let maxTrailing = -CGFloat(trailingActions.count) * actionWidth
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             // Check for full swipe actions
             if offset > width * threshold && !leadingActions.isEmpty {
@@ -197,7 +197,7 @@ public struct SwipeableRow<Content: View>: View {
                     return
                 }
             }
-            
+
             // Snap to positions
             if offset > maxLeading / 2 || velocity > 200 {
                 offset = maxLeading
@@ -206,14 +206,14 @@ public struct SwipeableRow<Content: View>: View {
             } else {
                 offset = 0
             }
-            
+
             startOffset = offset
         }
     }
-    
+
     private func performAction(_ action: SwipeAction) {
         action.action()
-        
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             offset = 0
             startOffset = 0
@@ -229,7 +229,7 @@ public struct SwipeableList<Data: RandomAccessCollection, RowContent: View>: Vie
     private let leadingActions: (Data.Element) -> [SwipeableRow<RowContent>.SwipeAction]
     private let trailingActions: (Data.Element) -> [SwipeableRow<RowContent>.SwipeAction]
     private let rowContent: (Data.Element) -> RowContent
-    
+
     public init(
         _ data: Data,
         leadingActions: @escaping (Data.Element) -> [SwipeableRow<RowContent>.SwipeAction] = { _ in [] },
@@ -241,7 +241,7 @@ public struct SwipeableList<Data: RandomAccessCollection, RowContent: View>: Vie
         self.trailingActions = trailingActions
         self.rowContent = rowContent
     }
-    
+
     public var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(data) { item in
@@ -252,7 +252,7 @@ public struct SwipeableList<Data: RandomAccessCollection, RowContent: View>: Vie
                     rowContent(item)
                 }
                 .frame(height: 60)
-                
+
                 Divider()
             }
         }
@@ -272,7 +272,7 @@ extension SwipeableRow.SwipeAction {
             action: action
         )
     }
-    
+
     /// Creates an archive action.
     public static func archive(action: @escaping () -> Void) -> Self {
         .init(
@@ -282,7 +282,7 @@ extension SwipeableRow.SwipeAction {
             action: action
         )
     }
-    
+
     /// Creates a pin action.
     public static func pin(action: @escaping () -> Void) -> Self {
         .init(
@@ -292,7 +292,7 @@ extension SwipeableRow.SwipeAction {
             action: action
         )
     }
-    
+
     /// Creates a share action.
     public static func share(action: @escaping () -> Void) -> Self {
         .init(
@@ -302,7 +302,7 @@ extension SwipeableRow.SwipeAction {
             action: action
         )
     }
-    
+
     /// Creates a flag action.
     public static func flag(action: @escaping () -> Void) -> Self {
         .init(
@@ -312,7 +312,7 @@ extension SwipeableRow.SwipeAction {
             action: action
         )
     }
-    
+
     /// Creates a more action.
     public static func more(action: @escaping () -> Void) -> Self {
         .init(
@@ -336,7 +336,7 @@ struct SwipeableRowPreview: View {
                     Circle()
                         .fill(.blue)
                         .frame(width: 40, height: 40)
-                    
+
                     VStack(alignment: .leading) {
                         Text("John Doe")
                             .font(.headline)
@@ -344,15 +344,15 @@ struct SwipeableRowPreview: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     Spacer()
                 }
                 .padding(.horizontal)
             }
             .frame(height: 70)
-            
+
             Divider()
-            
+
             SwipeableRow(
                 trailingActions: [.delete { }]
             ) {
@@ -360,7 +360,7 @@ struct SwipeableRowPreview: View {
                     Circle()
                         .fill(.green)
                         .frame(width: 40, height: 40)
-                    
+
                     VStack(alignment: .leading) {
                         Text("Jane Smith")
                             .font(.headline)
@@ -368,13 +368,13 @@ struct SwipeableRowPreview: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     Spacer()
                 }
                 .padding(.horizontal)
             }
             .frame(height: 70)
-            
+
             Spacer()
         }
     }

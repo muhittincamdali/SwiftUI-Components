@@ -13,21 +13,21 @@ import SwiftUI
 /// ```
 public struct SegmentedControl: View {
     // MARK: - Types
-    
+
     /// A segment configuration.
     public struct Segment: Identifiable {
         public let id = UUID()
         public let title: String
         public let icon: Image?
         public let badge: String?
-        
+
         public init(title: String, icon: Image? = nil, badge: String? = nil) {
             self.title = title
             self.icon = icon
             self.badge = badge
         }
     }
-    
+
     /// The visual style of the segmented control.
     public enum Style {
         case capsule
@@ -35,9 +35,9 @@ public struct SegmentedControl: View {
         case underline
         case boxed
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var selectedIndex: Int
     private let segments: [Segment]
     private let style: Style
@@ -48,11 +48,11 @@ public struct SegmentedControl: View {
     private let font: Font
     private let height: CGFloat
     private let hapticFeedback: Bool
-    
+
     @Namespace private var animation
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a segmented control from strings.
     public init(
         selectedIndex: Binding<Int>,
@@ -77,7 +77,7 @@ public struct SegmentedControl: View {
         self.height = height
         self.hapticFeedback = hapticFeedback
     }
-    
+
     /// Creates a segmented control from segment objects.
     public init(
         selectedIndex: Binding<Int>,
@@ -102,9 +102,9 @@ public struct SegmentedControl: View {
         self.height = height
         self.hapticFeedback = hapticFeedback
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -119,9 +119,9 @@ public struct SegmentedControl: View {
             }
         }
     }
-    
+
     // MARK: - Capsule Style
-    
+
     private var capsuleStyle: some View {
         HStack(spacing: 0) {
             ForEach(Array(segments.enumerated()), id: \.element.id) { index, segment in
@@ -141,9 +141,9 @@ public struct SegmentedControl: View {
                 .fill(backgroundColor)
         )
     }
-    
+
     // MARK: - Rounded Style
-    
+
     private var roundedStyle: some View {
         HStack(spacing: 0) {
             ForEach(Array(segments.enumerated()), id: \.element.id) { index, segment in
@@ -163,9 +163,9 @@ public struct SegmentedControl: View {
                 .fill(backgroundColor)
         )
     }
-    
+
     // MARK: - Underline Style
-    
+
     private var underlineStyle: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -178,10 +178,10 @@ public struct SegmentedControl: View {
                                 if let icon = segment.icon {
                                     icon.imageScale(.small)
                                 }
-                                
+
                                 Text(segment.title)
                                     .font(font)
-                                
+
                                 if let badge = segment.badge {
                                     badgeView(badge)
                                 }
@@ -194,10 +194,10 @@ public struct SegmentedControl: View {
                 }
             }
             .frame(height: height)
-            
+
             GeometryReader { geometry in
                 let segmentWidth = geometry.size.width / CGFloat(segments.count)
-                
+
                 Rectangle()
                     .fill(tintColor)
                     .frame(width: segmentWidth, height: 2)
@@ -207,9 +207,9 @@ public struct SegmentedControl: View {
             .frame(height: 2)
         }
     }
-    
+
     // MARK: - Boxed Style
-    
+
     private var boxedStyle: some View {
         HStack(spacing: 0) {
             ForEach(Array(segments.enumerated()), id: \.element.id) { index, segment in
@@ -220,7 +220,7 @@ public struct SegmentedControl: View {
                         if let icon = segment.icon {
                             icon.imageScale(.small)
                         }
-                        
+
                         Text(segment.title)
                             .font(font)
                     }
@@ -230,7 +230,7 @@ public struct SegmentedControl: View {
                     .background(selectedIndex == index ? tintColor : Color.clear)
                 }
                 .buttonStyle(.plain)
-                
+
                 if index < segments.count - 1 {
                     Divider()
                         .frame(height: height * 0.6)
@@ -243,9 +243,9 @@ public struct SegmentedControl: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
-    
+
     // MARK: - Segment Button
-    
+
     private func segmentButton<Background: View>(
         segment: Segment,
         index: Int,
@@ -257,15 +257,15 @@ public struct SegmentedControl: View {
         } label: {
             ZStack {
                 background()
-                
+
                 HStack(spacing: 4) {
                     if let icon = segment.icon {
                         icon.imageScale(.small)
                     }
-                    
+
                     Text(segment.title)
                         .font(font)
-                    
+
                     if let badge = segment.badge {
                         badgeView(badge)
                     }
@@ -276,9 +276,9 @@ public struct SegmentedControl: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     // MARK: - Badge View
-    
+
     private func badgeView(_ text: String) -> some View {
         Text(text)
             .font(.system(size: 10, weight: .bold))
@@ -287,16 +287,16 @@ public struct SegmentedControl: View {
             .padding(.vertical, 1)
             .background(Capsule().fill(.red))
     }
-    
+
     // MARK: - Selection
-    
+
     private func selectSegment(_ index: Int) {
         guard index != selectedIndex else { return }
-        
+
         if hapticFeedback {
             Haptics.impact(.light)
         }
-        
+
         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
             selectedIndex = index
         }
@@ -311,9 +311,9 @@ public struct IconSegmentedControl: View {
     private let icons: [Image]
     private let tintColor: Color
     private let size: CGFloat
-    
+
     @Namespace private var animation
-    
+
     public init(
         selectedIndex: Binding<Int>,
         icons: [Image],
@@ -325,7 +325,7 @@ public struct IconSegmentedControl: View {
         self.tintColor = tintColor
         self.size = size
     }
-    
+
     public var body: some View {
         HStack(spacing: 8) {
             ForEach(0..<icons.count, id: \.self) { index in
@@ -356,7 +356,7 @@ struct SegmentedControlPreview: View {
     @State private var selected3 = 1
     @State private var selected4 = 0
     @State private var selectedIcon = 0
-    
+
     var body: some View {
         VStack(spacing: 30) {
             VStack {
@@ -367,7 +367,7 @@ struct SegmentedControlPreview: View {
                     style: .capsule
                 )
             }
-            
+
             VStack {
                 Text("Rounded").font(.caption)
                 SegmentedControl(
@@ -377,7 +377,7 @@ struct SegmentedControlPreview: View {
                     tintColor: .green
                 )
             }
-            
+
             VStack {
                 Text("Underline").font(.caption)
                 SegmentedControl(
@@ -387,7 +387,7 @@ struct SegmentedControlPreview: View {
                     tintColor: .purple
                 )
             }
-            
+
             VStack {
                 Text("Boxed").font(.caption)
                 SegmentedControl(
@@ -396,7 +396,7 @@ struct SegmentedControlPreview: View {
                     style: .boxed
                 )
             }
-            
+
             VStack {
                 Text("Icons").font(.caption)
                 IconSegmentedControl(

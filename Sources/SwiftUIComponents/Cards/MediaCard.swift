@@ -11,14 +11,14 @@ public struct MediaCard: View {
     let mediaType: MediaType
     let onPlay: (() -> Void)?
     let onTap: (() -> Void)?
-    
+
     public enum MediaCardStyle {
         case standard
         case overlay
         case horizontal
         case playlist
     }
-    
+
     public enum MediaType {
         case video
         case article
@@ -26,7 +26,7 @@ public struct MediaCard: View {
         case music
         case image
     }
-    
+
     public init(
         title: String,
         subtitle: String? = nil,
@@ -48,7 +48,7 @@ public struct MediaCard: View {
         self.onPlay = onPlay
         self.onTap = onTap
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -66,7 +66,7 @@ public struct MediaCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(String(describing: mediaType)) \(title)")
     }
-    
+
     private var mediaIcon: String {
         switch mediaType {
         case .video: return "play.fill"
@@ -76,7 +76,7 @@ public struct MediaCard: View {
         case .image: return "photo.fill"
         }
     }
-    
+
     private var imagePlaceholder: some View {
         ZStack {
             LinearGradient(
@@ -84,13 +84,13 @@ public struct MediaCard: View {
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
-            
+
             Image(systemName: mediaIcon)
                 .font(.system(size: 30))
                 .foregroundColor(.white.opacity(0.5))
         }
     }
-    
+
     @ViewBuilder
     private var playButton: some View {
         if mediaType == .video || mediaType == .podcast || mediaType == .music {
@@ -104,7 +104,7 @@ public struct MediaCard: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var durationBadge: some View {
         if let duration = duration {
@@ -117,7 +117,7 @@ public struct MediaCard: View {
                 .cornerRadius(4)
         }
     }
-    
+
     private var standardView: some View {
         VStack(alignment: .leading, spacing: 0) {
             ZStack {
@@ -125,9 +125,9 @@ public struct MediaCard: View {
                     .aspectRatio(16/9, contentMode: .fill)
                     .frame(height: 180)
                     .clipped()
-                
+
                 playButton
-                
+
                 VStack {
                     Spacer()
                     HStack {
@@ -137,18 +137,18 @@ public struct MediaCard: View {
                     }
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 if let category = category {
                     Text(category.uppercased())
                         .font(.system(size: 10, weight: .bold))
                         .foregroundColor(.accentColor)
                 }
-                
+
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
                     .lineLimit(2)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 13))
@@ -162,24 +162,24 @@ public struct MediaCard: View {
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
     }
-    
+
     private var overlayView: some View {
         ZStack(alignment: .bottom) {
             imagePlaceholder
                 .aspectRatio(16/9, contentMode: .fill)
                 .frame(height: 220)
                 .clipped()
-            
+
             // Gradient overlay
             LinearGradient(
                 colors: [.clear, .black.opacity(0.8)],
                 startPoint: .center,
                 endPoint: .bottom
             )
-            
+
             // Play button centered
             playButton
-            
+
             // Content
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -191,12 +191,12 @@ public struct MediaCard: View {
                     Spacer()
                     durationBadge
                 }
-                
+
                 Text(title)
                     .font(.system(size: 18, weight: .bold))
                     .foregroundColor(.white)
                     .lineLimit(2)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 13))
@@ -208,17 +208,17 @@ public struct MediaCard: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 4)
     }
-    
+
     private var horizontalView: some View {
         HStack(spacing: 12) {
             ZStack {
                 imagePlaceholder
                     .frame(width: 140, height: 90)
                     .cornerRadius(8)
-                
+
                 playButton
                     .scaleEffect(0.7)
-                
+
                 VStack {
                     Spacer()
                     HStack {
@@ -229,18 +229,18 @@ public struct MediaCard: View {
                 }
             }
             .frame(width: 140, height: 90)
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 if let category = category {
                     Text(category.uppercased())
                         .font(.system(size: 9, weight: .bold))
                         .foregroundColor(.accentColor)
                 }
-                
+
                 Text(title)
                     .font(.system(size: 14, weight: .semibold))
                     .lineLimit(2)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
@@ -248,7 +248,7 @@ public struct MediaCard: View {
                         .lineLimit(1)
                 }
             }
-            
+
             Spacer()
         }
         .padding(10)
@@ -256,18 +256,18 @@ public struct MediaCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
-    
+
     private var playlistView: some View {
         HStack(spacing: 12) {
             imagePlaceholder
                 .frame(width: 56, height: 56)
                 .cornerRadius(8)
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 14, weight: .medium))
                     .lineLimit(1)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
@@ -275,15 +275,15 @@ public struct MediaCard: View {
                         .lineLimit(1)
                 }
             }
-            
+
             Spacer()
-            
+
             if let duration = duration {
                 Text(duration)
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
             }
-            
+
             Button(action: { onPlay?() }) {
                 Image(systemName: "play.circle.fill")
                     .font(.system(size: 28))
@@ -308,7 +308,7 @@ public struct MediaCard: View {
                 mediaType: .video,
                 onPlay: {}
             )
-            
+
             MediaCard(
                 title: "The Future of iOS Development",
                 subtitle: "Tech Talk Conference 2024",
@@ -318,7 +318,7 @@ public struct MediaCard: View {
                 mediaType: .video,
                 onPlay: {}
             )
-            
+
             MediaCard(
                 title: "Understanding Swift Concurrency",
                 subtitle: "Podcast Episode #42",
@@ -327,7 +327,7 @@ public struct MediaCard: View {
                 mediaType: .podcast,
                 onPlay: {}
             )
-            
+
             VStack(spacing: 0) {
                 MediaCard(
                     title: "Track 1 - Introduction",

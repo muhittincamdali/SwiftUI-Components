@@ -7,7 +7,7 @@ public struct SelectField<T: Hashable>: View {
     let placeholder: String
     let icon: String?
     @State private var isExpanded = false
-    
+
     public init(
         selection: Binding<T?>,
         options: [(value: T, label: String)],
@@ -19,14 +19,14 @@ public struct SelectField<T: Hashable>: View {
         self.placeholder = placeholder
         self.icon = icon
     }
-    
+
     private var selectedLabel: String {
         if let selection = selection {
             return options.first { $0.value == selection }?.label ?? placeholder
         }
         return placeholder
     }
-    
+
     public var body: some View {
         VStack(spacing: 4) {
             Button {
@@ -40,13 +40,13 @@ public struct SelectField<T: Hashable>: View {
                             .font(.system(size: 16))
                             .foregroundColor(.secondary)
                     }
-                    
+
                     Text(selectedLabel)
                         .font(.system(size: 16))
                         .foregroundColor(selection == nil ? .secondary : .primary)
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "chevron.down")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
@@ -60,7 +60,7 @@ public struct SelectField<T: Hashable>: View {
                 )
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             if isExpanded {
                 VStack(spacing: 0) {
                     ForEach(options.indices, id: \.self) { index in
@@ -75,9 +75,9 @@ public struct SelectField<T: Hashable>: View {
                                 Text(option.label)
                                     .font(.system(size: 15))
                                     .foregroundColor(.primary)
-                                
+
                                 Spacer()
-                                
+
                                 if selection == option.value {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 14, weight: .semibold))
@@ -89,7 +89,7 @@ public struct SelectField<T: Hashable>: View {
                             .background(selection == option.value ? Color.accentColor.opacity(0.1) : Color.clear)
                         }
                         .buttonStyle(PlainButtonStyle())
-                        
+
                         if index < options.count - 1 {
                             Divider()
                         }
@@ -110,7 +110,7 @@ public struct MultiSelectField<T: Hashable>: View {
     let options: [(value: T, label: String)]
     let placeholder: String
     @State private var isExpanded = false
-    
+
     public init(
         selections: Binding<Set<T>>,
         options: [(value: T, label: String)],
@@ -120,7 +120,7 @@ public struct MultiSelectField<T: Hashable>: View {
         self.options = options
         self.placeholder = placeholder
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Selected chips
@@ -130,7 +130,7 @@ public struct MultiSelectField<T: Hashable>: View {
                         HStack(spacing: 4) {
                             Text(option.label)
                                 .font(.system(size: 13))
-                            
+
                             Button {
                                 selections.remove(option.value)
                             } label: {
@@ -146,7 +146,7 @@ public struct MultiSelectField<T: Hashable>: View {
                     }
                 }
             }
-            
+
             // Dropdown trigger
             Button {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -157,9 +157,9 @@ public struct MultiSelectField<T: Hashable>: View {
                     Text(selections.isEmpty ? placeholder : "Add more...")
                         .font(.system(size: 15))
                         .foregroundColor(.secondary)
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 20))
                         .foregroundColor(.accentColor)
@@ -172,7 +172,7 @@ public struct MultiSelectField<T: Hashable>: View {
                 )
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             // Options list
             if isExpanded {
                 VStack(spacing: 0) {
@@ -188,11 +188,11 @@ public struct MultiSelectField<T: Hashable>: View {
                                 Image(systemName: selections.contains(option.value) ? "checkmark.square.fill" : "square")
                                     .font(.system(size: 18))
                                     .foregroundColor(selections.contains(option.value) ? .accentColor : .secondary)
-                                
+
                                 Text(option.label)
                                     .font(.system(size: 15))
                                     .foregroundColor(.primary)
-                                
+
                                 Spacer()
                             }
                             .padding(.horizontal, 14)
@@ -213,7 +213,7 @@ public struct MultiSelectField<T: Hashable>: View {
     struct PreviewWrapper: View {
         @State private var selectedCountry: String? = nil
         @State private var selectedTags: Set<String> = []
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 24) {
@@ -231,7 +231,7 @@ public struct MultiSelectField<T: Hashable>: View {
                             icon: "globe"
                         )
                     }
-                    
+
                     FormField(label: "Tags") {
                         MultiSelectField(
                             selections: $selectedTags,

@@ -10,7 +10,7 @@ import SwiftUI
 /// ```
 public struct PageIndicator: View {
     // MARK: - Types
-    
+
     /// The visual style of the page indicator.
     public enum Style {
         case dots
@@ -19,9 +19,9 @@ public struct PageIndicator: View {
         case progress
         case worm
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var currentPage: Int
     private let totalPages: Int
     private let style: Style
@@ -30,9 +30,9 @@ public struct PageIndicator: View {
     private let dotSize: CGFloat
     private let spacing: CGFloat
     private let interactive: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new page indicator.
     public init(
         currentPage: Binding<Int>,
@@ -53,9 +53,9 @@ public struct PageIndicator: View {
         self.spacing = spacing
         self.interactive = interactive
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -72,9 +72,9 @@ public struct PageIndicator: View {
             }
         }
     }
-    
+
     // MARK: - Dots Indicator
-    
+
     private var dotsIndicator: some View {
         HStack(spacing: spacing) {
             ForEach(0..<totalPages, id: \.self) { index in
@@ -93,9 +93,9 @@ public struct PageIndicator: View {
             }
         }
     }
-    
+
     // MARK: - Pills Indicator
-    
+
     private var pillsIndicator: some View {
         HStack(spacing: spacing) {
             ForEach(0..<totalPages, id: \.self) { index in
@@ -113,34 +113,34 @@ public struct PageIndicator: View {
             }
         }
     }
-    
+
     // MARK: - Numbers Indicator
-    
+
     private var numbersIndicator: some View {
         HStack(spacing: 4) {
             Text("\(currentPage + 1)")
                 .font(.subheadline.monospacedDigit())
                 .fontWeight(.bold)
                 .foregroundStyle(activeColor)
-            
+
             Text("/")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             Text("\(totalPages)")
                 .font(.subheadline.monospacedDigit())
                 .foregroundStyle(.secondary)
         }
     }
-    
+
     // MARK: - Progress Indicator
-    
+
     private var progressIndicator: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(inactiveColor)
-                
+
                 Capsule()
                     .fill(activeColor)
                     .frame(width: geometry.size.width * CGFloat(currentPage + 1) / CGFloat(totalPages))
@@ -150,13 +150,13 @@ public struct PageIndicator: View {
         .frame(height: dotSize / 2)
         .frame(width: CGFloat(totalPages) * (dotSize + spacing) * 2)
     }
-    
+
     // MARK: - Worm Indicator
-    
+
     private var wormIndicator: some View {
         GeometryReader { geometry in
             let dotWidth = dotSize
-            
+
             ZStack(alignment: .leading) {
                 // Background dots
                 HStack(spacing: spacing) {
@@ -166,7 +166,7 @@ public struct PageIndicator: View {
                             .frame(width: dotWidth, height: dotWidth)
                     }
                 }
-                
+
                 // Animated worm
                 Capsule()
                     .fill(activeColor)
@@ -190,7 +190,7 @@ public struct ScrollingPageIndicator: View {
     private let activeColor: Color
     private let inactiveColor: Color
     private let dotSize: CGFloat
-    
+
     public init(
         currentPage: Binding<Int>,
         totalPages: Int,
@@ -206,12 +206,12 @@ public struct ScrollingPageIndicator: View {
         self.inactiveColor = inactiveColor
         self.dotSize = dotSize
     }
-    
+
     public var body: some View {
         HStack(spacing: 6) {
             ForEach(visibleRange, id: \.self) { index in
                 let scale = scaleForIndex(index)
-                
+
                 Circle()
                     .fill(currentPage == index ? activeColor : inactiveColor)
                     .frame(width: dotSize * scale, height: dotSize * scale)
@@ -219,7 +219,7 @@ public struct ScrollingPageIndicator: View {
             }
         }
     }
-    
+
     private var visibleRange: Range<Int> {
         Self.visibleRange(currentPage: currentPage, totalPages: totalPages, visibleDots: visibleDots)
     }
@@ -236,7 +236,7 @@ public struct ScrollingPageIndicator: View {
 
         return start..<end
     }
-    
+
     private func scaleForIndex(_ index: Int) -> CGFloat {
         let distance = abs(currentPage - index)
         switch distance {
@@ -255,34 +255,34 @@ struct PageIndicatorPreview: View {
     @State private var page3 = 2
     @State private var page4 = 0
     @State private var page5 = 5
-    
+
     var body: some View {
         VStack(spacing: 40) {
             VStack {
                 Text("Dots").font(.caption)
                 PageIndicator(currentPage: $page1, totalPages: 5, style: .dots)
             }
-            
+
             VStack {
                 Text("Pills").font(.caption)
                 PageIndicator(currentPage: $page2, totalPages: 5, style: .pills)
             }
-            
+
             VStack {
                 Text("Numbers").font(.caption)
                 PageIndicator(currentPage: $page3, totalPages: 5, style: .numbers)
             }
-            
+
             VStack {
                 Text("Progress").font(.caption)
                 PageIndicator(currentPage: $page4, totalPages: 5, style: .progress)
             }
-            
+
             VStack {
                 Text("Scrolling (many pages)").font(.caption)
                 ScrollingPageIndicator(currentPage: $page5, totalPages: 20)
             }
-            
+
             HStack {
                 Button("Prev") {
                     withAnimation {
@@ -293,7 +293,7 @@ struct PageIndicatorPreview: View {
                         page5 = max(0, page5 - 1)
                     }
                 }
-                
+
                 Button("Next") {
                     withAnimation {
                         page1 = min(4, page1 + 1)

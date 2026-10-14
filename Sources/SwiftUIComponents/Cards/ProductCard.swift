@@ -13,14 +13,14 @@ public struct ProductCard: View {
     let style: ProductCardStyle
     let onTap: (() -> Void)?
     let onAddToCart: (() -> Void)?
-    
+
     public enum ProductCardStyle {
         case vertical
         case horizontal
         case compact
         case featured
     }
-    
+
     public init(
         title: String,
         subtitle: String? = nil,
@@ -46,7 +46,7 @@ public struct ProductCard: View {
         self.onTap = onTap
         self.onAddToCart = onAddToCart
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -64,7 +64,7 @@ public struct ProductCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title), \(price)")
     }
-    
+
     private var imagePlaceholder: some View {
         ZStack {
             Color.platformGray5
@@ -73,7 +73,7 @@ public struct ProductCard: View {
                 .foregroundColor(.secondary)
         }
     }
-    
+
     @ViewBuilder
     private var badgeView: some View {
         if let badge = badge {
@@ -86,7 +86,7 @@ public struct ProductCard: View {
                 .cornerRadius(4)
         }
     }
-    
+
     @ViewBuilder
     private var ratingView: some View {
         if let rating = rating {
@@ -104,13 +104,13 @@ public struct ProductCard: View {
             }
         }
     }
-    
+
     private var priceView: some View {
         HStack(spacing: 8) {
             Text(price)
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.primary)
-            
+
             if let original = originalPrice {
                 Text(original)
                     .font(.system(size: 14))
@@ -119,7 +119,7 @@ public struct ProductCard: View {
             }
         }
     }
-    
+
     private var verticalView: some View {
         VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topLeading) {
@@ -127,25 +127,25 @@ public struct ProductCard: View {
                     .aspectRatio(1, contentMode: .fill)
                     .frame(height: 180)
                     .clipped()
-                
+
                 badgeView
                     .padding(8)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.system(size: 14, weight: .semibold))
                     .lineLimit(2)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                 }
-                
+
                 ratingView
-                
+
                 HStack {
                     priceView
                     Spacer()
@@ -164,33 +164,33 @@ public struct ProductCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
     }
-    
+
     private var horizontalView: some View {
         HStack(spacing: 12) {
             ZStack(alignment: .topLeading) {
                 imagePlaceholder
                     .frame(width: 120, height: 120)
                     .cornerRadius(8)
-                
+
                 badgeView
                     .padding(6)
             }
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.system(size: 15, weight: .semibold))
                     .lineLimit(2)
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 13))
                         .foregroundColor(.secondary)
                 }
-                
+
                 ratingView
-                
+
                 Spacer()
-                
+
                 HStack {
                     priceView
                     Spacer()
@@ -209,67 +209,67 @@ public struct ProductCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
     }
-    
+
     private var compactView: some View {
         HStack(spacing: 10) {
             imagePlaceholder
                 .frame(width: 60, height: 60)
                 .cornerRadius(8)
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 14, weight: .medium))
                     .lineLimit(1)
-                
+
                 Text(price)
                     .font(.system(size: 14, weight: .bold))
             }
-            
+
             Spacer()
         }
         .padding(10)
         .background(Color.platformBackground)
         .cornerRadius(10)
     }
-    
+
     private var featuredView: some View {
         ZStack(alignment: .bottom) {
             imagePlaceholder
                 .aspectRatio(16/9, contentMode: .fill)
                 .frame(height: 200)
                 .clipped()
-            
+
             LinearGradient(
                 colors: [.clear, .black.opacity(0.8)],
                 startPoint: .top,
                 endPoint: .bottom
             )
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     badgeView
                     Spacer()
                     ratingView
                 }
-                
+
                 Text(title)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
-                
+
                 HStack {
                     Text(price)
                         .font(.system(size: 22, weight: .bold))
                         .foregroundColor(.white)
-                    
+
                     if let original = originalPrice {
                         Text(original)
                             .font(.system(size: 16))
                             .foregroundColor(.white.opacity(0.7))
                             .strikethrough()
                     }
-                    
+
                     Spacer()
-                    
+
                     if onAddToCart != nil {
                         Button(action: { onAddToCart?() }) {
                             Text("Add to Cart")
@@ -305,7 +305,7 @@ public struct ProductCard: View {
                 onAddToCart: {}
             )
             .frame(width: 180)
-            
+
             ProductCard(
                 title: "Smart Watch Series 5",
                 subtitle: "Health & Fitness Tracker",
@@ -315,13 +315,13 @@ public struct ProductCard: View {
                 style: .horizontal,
                 onAddToCart: {}
             )
-            
+
             ProductCard(
                 title: "USB-C Cable",
                 price: "$19.99",
                 style: .compact
             )
-            
+
             ProductCard(
                 title: "MacBook Pro 16\"",
                 price: "$2,499",

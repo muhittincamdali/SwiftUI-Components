@@ -10,21 +10,21 @@ import SwiftUI
 /// ```
 public struct RatingInput: View {
     // MARK: - Types
-    
+
     /// The rating precision mode.
     public enum Precision: Sendable {
         case full
         case half
         case exact
     }
-    
+
     /// The symbol style for rating.
     public enum SymbolStyle {
         case star
         case heart
         case circle
         case custom(filled: Image, empty: Image)
-        
+
         var filledImage: Image {
             switch self {
             case .star: return Image(systemName: "star.fill")
@@ -33,7 +33,7 @@ public struct RatingInput: View {
             case .custom(let filled, _): return filled
             }
         }
-        
+
         var emptyImage: Image {
             switch self {
             case .star: return Image(systemName: "star")
@@ -42,7 +42,7 @@ public struct RatingInput: View {
             case .custom(_, let empty): return empty
             }
         }
-        
+
         var halfImage: Image {
             switch self {
             case .star: return Image(systemName: "star.leadinghalf.filled")
@@ -52,9 +52,9 @@ public struct RatingInput: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var rating: Double
     private let maxRating: Int
     private let precision: Precision
@@ -66,11 +66,11 @@ public struct RatingInput: View {
     private let isInteractive: Bool
     private let animation: Animation?
     private let onRatingChanged: ((Double) -> Void)?
-    
+
     @State private var hoverRating: Double?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new rating input.
     /// - Parameters:
     ///   - rating: Binding to the current rating value.
@@ -109,9 +109,9 @@ public struct RatingInput: View {
         self.animation = animation
         self.onRatingChanged = onRatingChanged
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         HStack(spacing: spacing) {
             ForEach(1...maxRating, id: \.self) { index in
@@ -127,20 +127,20 @@ public struct RatingInput: View {
         )
         .animation(animation, value: rating)
     }
-    
+
     // MARK: - Rating Symbol
-    
+
     @ViewBuilder
     private func ratingSymbol(for index: Int) -> some View {
         let displayRating = hoverRating ?? rating
         let fillAmount = fillAmount(for: index, rating: displayRating)
-        
+
         ZStack {
             symbolStyle.emptyImage
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(emptyColor)
-            
+
             if fillAmount > 0 {
                 if fillAmount >= 1 {
                     symbolStyle.filledImage
@@ -168,7 +168,7 @@ public struct RatingInput: View {
         }
         .frame(width: size, height: size)
     }
-    
+
     private func fillAmount(for index: Int, rating: Double) -> Double {
         if rating >= Double(index) {
             return 1
@@ -178,9 +178,9 @@ public struct RatingInput: View {
             return 0
         }
     }
-    
+
     // MARK: - Gestures
-    
+
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
@@ -198,9 +198,9 @@ public struct RatingInput: View {
                 hoverRating = nil
             }
     }
-    
+
     // MARK: - Helpers
-    
+
     /// Converts a horizontal touch position into a rating.
     ///
     /// Touching anywhere on symbol *n* selects *n* in `.full` mode; `.half` rounds up to the
@@ -222,7 +222,7 @@ public struct RatingInput: View {
         }
         return min(Double(maxRating), max(0, value))
     }
-    
+
     private func setRating(_ newRating: Double) {
         rating = newRating
         onRatingChanged?(newRating)
@@ -238,7 +238,7 @@ public struct RatingDisplay: View {
     private let size: CGFloat
     private let filledColor: Color
     private let showValue: Bool
-    
+
     public init(
         rating: Double,
         maxRating: Int = 5,
@@ -252,7 +252,7 @@ public struct RatingDisplay: View {
         self.filledColor = filledColor
         self.showValue = showValue
     }
-    
+
     public var body: some View {
         HStack(spacing: 4) {
             RatingInput(
@@ -262,7 +262,7 @@ public struct RatingDisplay: View {
                 size: size,
                 isInteractive: false
             )
-            
+
             if showValue {
                 Text(String(format: "%.1f", rating))
                     .font(.subheadline)
@@ -278,11 +278,11 @@ public struct RatingDisplay: View {
 /// A rating input using emoji faces.
 public struct EmojiRatingInput: View {
     @Binding var rating: Int
-    
+
     private let emojis: [String]
     private let size: CGFloat
     private let labels: [String]?
-    
+
     public init(
         rating: Binding<Int>,
         emojis: [String] = ["😢", "😕", "😐", "🙂", "😄"],
@@ -294,7 +294,7 @@ public struct EmojiRatingInput: View {
         self.size = size
         self.labels = labels
     }
-    
+
     public var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 12) {
@@ -312,7 +312,7 @@ public struct EmojiRatingInput: View {
                     .buttonStyle(.plain)
                 }
             }
-            
+
             if let labels, rating > 0 && rating <= labels.count {
                 Text(labels[rating - 1])
                     .font(.subheadline)
@@ -328,12 +328,12 @@ public struct EmojiRatingInput: View {
 /// A slider-based rating input.
 public struct SliderRatingInput: View {
     @Binding var rating: Double
-    
+
     private let range: ClosedRange<Double>
     private let step: Double
     private let showValue: Bool
     private let filledColor: Color
-    
+
     public init(
         rating: Binding<Double>,
         range: ClosedRange<Double> = 0...10,
@@ -347,26 +347,26 @@ public struct SliderRatingInput: View {
         self.showValue = showValue
         self.filledColor = filledColor
     }
-    
+
     public var body: some View {
         VStack(spacing: 8) {
             Slider(value: $rating, in: range, step: step)
                 .tint(filledColor)
-            
+
             if showValue {
                 HStack {
                     Text(String(format: "%.1f", range.lowerBound))
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    
+
                     Spacer()
-                    
+
                     Text(String(format: "%.1f", rating))
                         .font(.headline)
                         .foregroundStyle(filledColor)
-                    
+
                     Spacer()
-                    
+
                     Text(String(format: "%.1f", range.upperBound))
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -383,7 +383,7 @@ struct RatingInputPreview: View {
     @State private var rating3: Double = 2.5
     @State private var emojiRating: Int = 0
     @State private var sliderRating: Double = 7.5
-    
+
     var body: some View {
         VStack(spacing: 30) {
             VStack {
@@ -391,7 +391,7 @@ struct RatingInputPreview: View {
                     .font(.caption)
                 RatingInput(rating: $rating1)
             }
-            
+
             VStack {
                 Text("Half Precision + Hearts")
                     .font(.caption)
@@ -403,7 +403,7 @@ struct RatingInputPreview: View {
                     size: 32
                 )
             }
-            
+
             VStack {
                 Text("Exact Precision")
                     .font(.caption)
@@ -413,13 +413,13 @@ struct RatingInputPreview: View {
                     filledColor: .orange
                 )
             }
-            
+
             VStack {
                 Text("Display Only")
                     .font(.caption)
                 RatingDisplay(rating: 4.3, showValue: true)
             }
-            
+
             VStack {
                 Text("Emoji Rating")
                     .font(.caption)
@@ -428,7 +428,7 @@ struct RatingInputPreview: View {
                     labels: ["Terrible", "Bad", "Okay", "Good", "Great"]
                 )
             }
-            
+
             VStack {
                 Text("Slider Rating")
                     .font(.caption)

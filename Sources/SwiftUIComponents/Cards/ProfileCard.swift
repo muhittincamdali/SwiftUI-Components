@@ -9,25 +9,25 @@ public struct ProfileCard: View {
     let stats: [ProfileStat]?
     let style: ProfileCardStyle
     let onTap: (() -> Void)?
-    
+
     public struct ProfileStat: Identifiable {
         public let id = UUID()
         let value: String
         let label: String
-        
+
         public init(value: String, label: String) {
             self.value = value
             self.label = label
         }
     }
-    
+
     public enum ProfileCardStyle {
         case compact
         case standard
         case expanded
         case horizontal
     }
-    
+
     public init(
         name: String,
         subtitle: String? = nil,
@@ -45,7 +45,7 @@ public struct ProfileCard: View {
         self.style = style
         self.onTap = onTap
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -65,7 +65,7 @@ public struct ProfileCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Profile: \(name)")
     }
-    
+
     private var avatar: some View {
         ZStack {
             Circle()
@@ -74,14 +74,14 @@ public struct ProfileCard: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 ))
-            
+
             Text(avatarInitials ?? "")
                 .font(.system(size: avatarSize / 2.5, weight: .bold))
                 .foregroundColor(.white)
         }
         .frame(width: avatarSize, height: avatarSize)
     }
-    
+
     private var avatarSize: CGFloat {
         switch style {
         case .compact: return 40
@@ -90,22 +90,22 @@ public struct ProfileCard: View {
         case .horizontal: return 50
         }
     }
-    
+
     private var compactView: some View {
         HStack(spacing: 12) {
             avatar
-            
+
             VStack(alignment: .leading, spacing: 2) {
                 Text(name)
                     .font(.system(size: 14, weight: .semibold))
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             Spacer()
         }
         .padding(12)
@@ -113,20 +113,20 @@ public struct ProfileCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
-    
+
     private var standardView: some View {
         VStack(spacing: 12) {
             avatar
-            
+
             Text(name)
                 .font(.system(size: 18, weight: .bold))
-            
+
             if let subtitle = subtitle {
                 Text(subtitle)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
             }
-            
+
             if let stats = stats {
                 HStack(spacing: 24) {
                     ForEach(stats) { stat in
@@ -148,7 +148,7 @@ public struct ProfileCard: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 4)
     }
-    
+
     private var expandedView: some View {
         VStack(spacing: 0) {
             // Cover gradient
@@ -158,27 +158,27 @@ public struct ProfileCard: View {
                 endPoint: .bottomTrailing
             )
             .frame(height: 80)
-            
+
             // Avatar overlapping cover
             avatar
                 .overlay(Circle().stroke(Color.platformBackground, lineWidth: 4))
                 .offset(y: -40)
                 .padding(.bottom, -40)
-            
+
             VStack(spacing: 8) {
                 Text(name)
                     .font(.system(size: 20, weight: .bold))
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 14))
                         .foregroundColor(.secondary)
                 }
-                
+
                 if let stats = stats {
                     Divider()
                         .padding(.vertical, 12)
-                    
+
                     HStack {
                         ForEach(stats) { stat in
                             Spacer()
@@ -200,24 +200,24 @@ public struct ProfileCard: View {
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.1), radius: 15, x: 0, y: 5)
     }
-    
+
     private var horizontalView: some View {
         HStack(spacing: 16) {
             avatar
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(name)
                     .font(.system(size: 16, weight: .bold))
-                
+
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.system(size: 13))
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             Spacer()
-            
+
             if let stats = stats, let first = stats.first {
                 VStack(alignment: .trailing, spacing: 2) {
                     Text(first.value)
@@ -239,7 +239,7 @@ public struct ProfileCard: View {
     ScrollView {
         VStack(spacing: 20) {
             ProfileCard(name: "John Doe", subtitle: "@johndoe", style: .compact)
-            
+
             ProfileCard(
                 name: "Jane Smith",
                 subtitle: "iOS Developer",
@@ -250,7 +250,7 @@ public struct ProfileCard: View {
                 ],
                 style: .standard
             )
-            
+
             ProfileCard(
                 name: "Alex Johnson",
                 subtitle: "Product Designer",
@@ -261,7 +261,7 @@ public struct ProfileCard: View {
                 ],
                 style: .expanded
             )
-            
+
             ProfileCard(
                 name: "Sarah Wilson",
                 subtitle: "Marketing Lead",

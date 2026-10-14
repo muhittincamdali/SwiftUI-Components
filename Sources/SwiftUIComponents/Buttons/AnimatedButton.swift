@@ -7,10 +7,10 @@ public struct AnimatedButton: View {
     let action: () -> Void
     let animation: AnimationType
     let color: Color
-    
+
     @State private var isAnimating = false
     @State private var isPressed = false
-    
+
     public enum AnimationType {
         case bounce
         case shake
@@ -19,7 +19,7 @@ public struct AnimatedButton: View {
         case scale
         case glow
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -33,7 +33,7 @@ public struct AnimatedButton: View {
         self.color = color
         self.action = action
     }
-    
+
     public var body: some View {
         Button {
             triggerAnimation()
@@ -61,12 +61,12 @@ public struct AnimatedButton: View {
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
     }
-    
+
     private func triggerAnimation() {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
             isAnimating = true
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation {
                 isAnimating = false
@@ -78,7 +78,7 @@ public struct AnimatedButton: View {
 struct AnimationModifier: ViewModifier {
     let animation: AnimatedButton.AnimationType
     let isAnimating: Bool
-    
+
     func body(content: Content) -> some View {
         switch animation {
         case .bounce:
@@ -103,21 +103,21 @@ public struct RippleButton: View {
     let title: String
     let color: Color
     let action: () -> Void
-    
+
     @State private var ripples: [Ripple] = []
-    
+
     struct Ripple: Identifiable {
         let id = UUID()
         var scale: CGFloat = 0
         var opacity: Double = 0.5
     }
-    
+
     public init(_ title: String, color: Color = .accentColor, action: @escaping () -> Void) {
         self.title = title
         self.color = color
         self.action = action
     }
-    
+
     public var body: some View {
         Button {
             addRipple()
@@ -132,7 +132,7 @@ public struct RippleButton: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(color)
-                        
+
                         ForEach(ripples) { ripple in
                             Circle()
                                 .fill(Color.white.opacity(ripple.opacity))
@@ -144,18 +144,18 @@ public struct RippleButton: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-    
+
     private func addRipple() {
         let ripple = Ripple()
         ripples.append(ripple)
-        
+
         withAnimation(.easeOut(duration: 0.6)) {
             if let index = ripples.firstIndex(where: { $0.id == ripple.id }) {
                 ripples[index].scale = 2.5
                 ripples[index].opacity = 0
             }
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             ripples.removeAll { $0.id == ripple.id }
         }

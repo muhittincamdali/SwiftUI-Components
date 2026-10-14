@@ -9,19 +9,19 @@ public struct StatCard: View {
     let trend: Trend?
     let color: Color
     let style: StatCardStyle
-    
+
     public struct Trend {
         let value: Double
         let isPositive: Bool
         let label: String?
-        
+
         public init(value: Double, isPositive: Bool, label: String? = nil) {
             self.value = value
             self.isPositive = isPositive
             self.label = label
         }
     }
-    
+
     public enum StatCardStyle {
         case standard
         case minimal
@@ -29,7 +29,7 @@ public struct StatCard: View {
         case outlined
         case compact
     }
-    
+
     public init(
         title: String,
         value: String,
@@ -47,7 +47,7 @@ public struct StatCard: View {
         self.color = color
         self.style = style
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -66,7 +66,7 @@ public struct StatCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(value)")
     }
-    
+
     @ViewBuilder
     private var trendView: some View {
         if let trend = trend {
@@ -84,7 +84,7 @@ public struct StatCard: View {
             .foregroundColor(trend.isPositive ? .green : .red)
         }
     }
-    
+
     @ViewBuilder
     private var iconView: some View {
         if let icon = icon {
@@ -96,7 +96,7 @@ public struct StatCard: View {
                 .cornerRadius(10)
         }
     }
-    
+
     private var standardView: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -104,14 +104,14 @@ public struct StatCard: View {
                 Spacer()
                 trendView
             }
-            
+
             Text(title)
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
-            
+
             Text(value)
                 .font(.system(size: 28, weight: .bold))
-            
+
             if let subtitle = subtitle {
                 Text(subtitle)
                     .font(.system(size: 12))
@@ -124,17 +124,17 @@ public struct StatCard: View {
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
     }
-    
+
     private var minimalView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.system(size: 13))
                 .foregroundColor(.secondary)
-            
+
             HStack(alignment: .bottom, spacing: 8) {
                 Text(value)
                     .font(.system(size: 24, weight: .bold))
-                
+
                 trendView
             }
         }
@@ -143,7 +143,7 @@ public struct StatCard: View {
         .background(Color.platformGray6)
         .cornerRadius(12)
     }
-    
+
     private var gradientView: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -155,13 +155,13 @@ public struct StatCard: View {
                 trendView
                     .foregroundColor(.white.opacity(0.9))
             }
-            
+
             Spacer()
-            
+
             Text(title)
                 .font(.system(size: 14))
                 .foregroundColor(.white.opacity(0.8))
-            
+
             Text(value)
                 .font(.system(size: 32, weight: .bold))
         }
@@ -178,7 +178,7 @@ public struct StatCard: View {
         .cornerRadius(16)
         .shadow(color: color.opacity(0.4), radius: 10, x: 0, y: 4)
     }
-    
+
     private var outlinedView: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -186,10 +186,10 @@ public struct StatCard: View {
                 Spacer()
                 trendView
             }
-            
+
             Text(value)
                 .font(.system(size: 26, weight: .bold))
-            
+
             Text(title)
                 .font(.system(size: 13))
                 .foregroundColor(.secondary)
@@ -203,11 +203,11 @@ public struct StatCard: View {
         )
         .cornerRadius(14)
     }
-    
+
     private var compactView: some View {
         HStack(spacing: 12) {
             iconView
-            
+
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.system(size: 12))
@@ -215,9 +215,9 @@ public struct StatCard: View {
                 Text(value)
                     .font(.system(size: 18, weight: .bold))
             }
-            
+
             Spacer()
-            
+
             trendView
         }
         .padding(12)
@@ -231,12 +231,12 @@ public struct StatCard: View {
 public struct StatGrid: View {
     let stats: [StatCard]
     let columns: Int
-    
+
     public init(stats: [StatCard], columns: Int = 2) {
         self.stats = stats
         self.columns = columns
     }
-    
+
     public var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: columns), spacing: 12) {
             ForEach(0..<stats.count, id: \.self) { index in
@@ -257,7 +257,7 @@ public struct StatGrid: View {
                 color: .green,
                 style: .standard
             )
-            
+
             HStack(spacing: 12) {
                 StatCard(
                     title: "Users",
@@ -265,7 +265,7 @@ public struct StatGrid: View {
                     trend: .init(value: 8.2, isPositive: true),
                     style: .minimal
                 )
-                
+
                 StatCard(
                     title: "Bounce Rate",
                     value: "24.5%",
@@ -273,7 +273,7 @@ public struct StatGrid: View {
                     style: .minimal
                 )
             }
-            
+
             StatCard(
                 title: "Active Subscribers",
                 value: "12,847",
@@ -282,7 +282,7 @@ public struct StatGrid: View {
                 color: .purple,
                 style: .gradient
             )
-            
+
             StatCard(
                 title: "Conversion Rate",
                 value: "3.24%",
@@ -291,7 +291,7 @@ public struct StatGrid: View {
                 color: .orange,
                 style: .outlined
             )
-            
+
             StatCard(
                 title: "Orders",
                 value: "1,234",

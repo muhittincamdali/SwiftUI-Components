@@ -9,15 +9,15 @@ public struct GaugeChart: View {
     let style: GaugeStyle
     let colors: [Color]
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public enum GaugeStyle {
         case semicircle
         case threeQuarter
         case full
     }
-    
+
     public init(
         value: Double,
         maxValue: Double = 100,
@@ -35,7 +35,7 @@ public struct GaugeChart: View {
         self.colors = colors
         self.animate = animate
     }
-    
+
     private var startAngle: Double {
         switch style {
         case .semicircle: return 180
@@ -43,7 +43,7 @@ public struct GaugeChart: View {
         case .full: return 90
         }
     }
-    
+
     private var endAngle: Double {
         switch style {
         case .semicircle: return 360
@@ -51,32 +51,32 @@ public struct GaugeChart: View {
         case .full: return 450
         }
     }
-    
+
     private var totalAngle: Double {
         endAngle - startAngle
     }
-    
+
     private var currentAngle: Double {
         startAngle + (value / maxValue) * totalAngle * Double(animationProgress)
     }
-    
+
     /// Rotation for the needle so that it points at `arcAngle` (degrees, 0° = right, clockwise).
     /// The needle shape points up, which is 270° in arc coordinates, so it turns by `arcAngle - 270`,
     /// that is `arcAngle + 90` modulo 360.
     nonisolated static func needleRotation(arcAngle: Double) -> Double {
         arcAngle + 90
     }
-    
+
     public var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
             let lineWidth: CGFloat = size * 0.12
-            
+
             ZStack {
                 // Background arc
                 Arc(startAngle: .degrees(startAngle), endAngle: .degrees(endAngle))
                     .stroke(Color.platformGray5, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-                
+
                 // Gradient arc
                 Arc(startAngle: .degrees(startAngle), endAngle: .degrees(endAngle))
                     .stroke(
@@ -92,24 +92,24 @@ public struct GaugeChart: View {
                         Arc(startAngle: .degrees(startAngle), endAngle: .degrees(currentAngle))
                             .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                     )
-                
+
                 // Needle
                 GaugeNeedle()
                     .fill(Color.primary)
                     .frame(width: 4, height: size * 0.35)
                     .offset(y: -size * 0.15)
                     .rotationEffect(.degrees(Self.needleRotation(arcAngle: currentAngle)))
-                
+
                 // Center circle
                 Circle()
                     .fill(Color.primary)
                     .frame(width: size * 0.08, height: size * 0.08)
-                
+
                 // Labels
                 VStack(spacing: 4) {
                     Text(valueLabel ?? String(format: "%.0f", value * Double(animationProgress)))
                         .font(.system(size: size * 0.15, weight: .bold))
-                    
+
                     if let label = label {
                         Text(label)
                             .font(.system(size: size * 0.06))
@@ -137,12 +137,12 @@ public struct GaugeChart: View {
 struct Arc: Shape {
     let startAngle: Angle
     let endAngle: Angle
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2 - 20
-        
+
         path.addArc(
             center: center,
             radius: radius,
@@ -150,7 +150,7 @@ struct Arc: Shape {
             endAngle: endAngle,
             clockwise: false
         )
-        
+
         return path
     }
 }
@@ -158,12 +158,12 @@ struct Arc: Shape {
 struct GaugeNeedle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
+
         path.move(to: CGPoint(x: rect.midX - 2, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.midX + 2, y: rect.maxY))
         path.closeSubpath()
-        
+
         return path
     }
 }
@@ -176,9 +176,9 @@ public struct RadialProgress: View {
     let color: Color
     let showLabel: Bool
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public init(
         value: Double,
         maxValue: Double = 100,
@@ -194,23 +194,23 @@ public struct RadialProgress: View {
         self.showLabel = showLabel
         self.animate = animate
     }
-    
+
     private var progress: Double {
         value / maxValue
     }
-    
+
     public var body: some View {
         ZStack {
             // Background circle
             Circle()
                 .stroke(color.opacity(0.2), lineWidth: lineWidth)
-            
+
             // Progress arc
             Circle()
                 .trim(from: 0, to: progress * Double(animationProgress))
                 .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-            
+
             // Label
             if showLabel {
                 Text(String(format: "%.0f%%", progress * 100 * Double(animationProgress)))
@@ -236,16 +236,16 @@ public struct MultiRingProgress: View {
     let spacing: CGFloat
     let showLabels: Bool
     let animate: Bool
-    
+
     @State private var animationProgress: CGFloat = 0
-    
+
     public struct Ring: Identifiable {
         public let id = UUID()
         let value: Double
         let maxValue: Double
         let color: Color
         let label: String?
-        
+
         public init(value: Double, maxValue: Double = 100, color: Color, label: String? = nil) {
             self.value = value
             self.maxValue = maxValue
@@ -253,7 +253,7 @@ public struct MultiRingProgress: View {
             self.label = label
         }
     }
-    
+
     public init(
         rings: [Ring],
         lineWidth: CGFloat = 16,
@@ -267,22 +267,22 @@ public struct MultiRingProgress: View {
         self.showLabels = showLabels
         self.animate = animate
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             GeometryReader { geometry in
                 let size = min(geometry.size.width, geometry.size.height)
-                
+
                 ZStack {
                     ForEach(Array(rings.enumerated()), id: \.element.id) { index, ring in
                         let radius = size / 2 - (lineWidth / 2) - CGFloat(index) * (lineWidth + spacing)
                         let progress = ring.value / ring.maxValue
-                        
+
                         // Background
                         Circle()
                             .stroke(ring.color.opacity(0.2), lineWidth: lineWidth)
                             .frame(width: radius * 2, height: radius * 2)
-                        
+
                         // Progress
                         Circle()
                             .trim(from: 0, to: progress * Double(animationProgress))
@@ -295,7 +295,7 @@ public struct MultiRingProgress: View {
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
             .aspectRatio(1, contentMode: .fit)
-            
+
             // Legend
             if showLabels {
                 VStack(spacing: 8) {
@@ -304,15 +304,15 @@ public struct MultiRingProgress: View {
                             Circle()
                                 .fill(ring.color)
                                 .frame(width: 10, height: 10)
-                            
+
                             if let label = ring.label {
                                 Text(label)
                                     .font(.system(size: 12))
                                     .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             Text(String(format: "%.0f%%", (ring.value / ring.maxValue) * 100))
                                 .font(.system(size: 12, weight: .medium))
                         }
@@ -338,7 +338,7 @@ public struct MultiRingProgress: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Gauge Chart")
                     .font(.headline)
-                
+
                 GaugeChart(
                     value: 72,
                     maxValue: 100,
@@ -347,27 +347,27 @@ public struct MultiRingProgress: View {
                 )
                 .frame(height: 200)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Radial Progress")
                     .font(.headline)
-                
+
                 HStack(spacing: 20) {
                     RadialProgress(value: 75, color: .blue)
                         .frame(width: 100, height: 100)
-                    
+
                     RadialProgress(value: 45, color: .green)
                         .frame(width: 100, height: 100)
-                    
+
                     RadialProgress(value: 90, color: .orange)
                         .frame(width: 100, height: 100)
                 }
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Multi-Ring Progress")
                     .font(.headline)
-                
+
                 MultiRingProgress(rings: [
                     .init(value: 85, color: .red, label: "Move"),
                     .init(value: 65, color: .green, label: "Exercise"),

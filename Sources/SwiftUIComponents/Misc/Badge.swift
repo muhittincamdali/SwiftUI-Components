@@ -11,7 +11,7 @@ import SwiftUI
 /// ```
 public struct Badge: View {
     // MARK: - Types
-    
+
     /// The visual style of the badge.
     public enum Style {
         case filled
@@ -20,13 +20,13 @@ public struct Badge: View {
         case notification
         case dot
     }
-    
+
     /// The size of the badge.
     public enum Size {
         case small
         case medium
         case large
-        
+
         var font: Font {
             switch self {
             case .small: return .system(size: 10, weight: .semibold)
@@ -34,7 +34,7 @@ public struct Badge: View {
             case .large: return .system(size: 14, weight: .semibold)
             }
         }
-        
+
         var padding: EdgeInsets {
             switch self {
             case .small: return EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6)
@@ -42,7 +42,7 @@ public struct Badge: View {
             case .large: return EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10)
             }
         }
-        
+
         var dotSize: CGFloat {
             switch self {
             case .small: return 6
@@ -51,9 +51,9 @@ public struct Badge: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let text: String?
     private let count: Int?
     private let maxCount: Int
@@ -61,9 +61,9 @@ public struct Badge: View {
     private let size: Size
     private let color: Color
     private let icon: Image?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a text badge.
     public init(
         _ text: String,
@@ -80,7 +80,7 @@ public struct Badge: View {
         self.color = color
         self.icon = icon
     }
-    
+
     /// Creates a count badge.
     public init(
         count: Int,
@@ -97,7 +97,7 @@ public struct Badge: View {
         self.color = color
         self.icon = nil
     }
-    
+
     /// Creates a dot badge.
     public init(
         dot color: Color = .red,
@@ -111,9 +111,9 @@ public struct Badge: View {
         self.color = color
         self.icon = nil
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -124,24 +124,24 @@ public struct Badge: View {
             }
         }
     }
-    
+
     // MARK: - Dot Badge
-    
+
     private var dotBadge: some View {
         Circle()
             .fill(color)
             .frame(width: size.dotSize, height: size.dotSize)
     }
-    
+
     // MARK: - Content Badge
-    
+
     private var contentBadge: some View {
         HStack(spacing: 4) {
             if let icon {
                 icon
                     .font(size.font)
             }
-            
+
             if let displayText {
                 Text(displayText)
                     .font(size.font)
@@ -153,9 +153,9 @@ public struct Badge: View {
         .clipShape(clipShape)
         .overlay(borderOverlay)
     }
-    
+
     // MARK: - Display Text
-    
+
     private var displayText: String? {
         if let text {
             return text
@@ -170,9 +170,9 @@ public struct Badge: View {
         guard count > 0 else { return nil }
         return count > maxCount ? "\(maxCount)+" : "\(count)"
     }
-    
+
     // MARK: - Styling
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled, .notification:
@@ -183,7 +183,7 @@ public struct Badge: View {
             return .clear
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -195,14 +195,14 @@ public struct Badge: View {
             Color.clear
         }
     }
-    
+
     private var clipShape: some Shape {
         if style == .notification || (count != nil && text == nil) {
             return AnyShape(Capsule())
         }
         return AnyShape(RoundedRectangle(cornerRadius: 6))
     }
-    
+
     @ViewBuilder
     private var borderOverlay: some View {
         if style == .outlined {
@@ -219,7 +219,7 @@ public struct BadgeModifier: ViewModifier {
     let badge: Badge
     let alignment: Alignment
     let offset: CGSize
-    
+
     public func body(content: Content) -> some View {
         content.overlay(alignment: alignment) {
             badge
@@ -243,7 +243,7 @@ extension View {
             offset: offset
         ))
     }
-    
+
     /// Adds a count badge to the view.
     public func badge(
         count: Int,
@@ -257,7 +257,7 @@ extension View {
             offset: offset
         ))
     }
-    
+
     /// Adds a dot badge to the view.
     public func dotBadge(
         color: Color = .red,
@@ -283,7 +283,7 @@ public struct StatusBadge: View {
         case error
         case success
         case warning
-        
+
         var color: Color {
             switch self {
             case .active, .success: return .green
@@ -292,7 +292,7 @@ public struct StatusBadge: View {
             case .error: return .red
             }
         }
-        
+
         var label: String {
             switch self {
             case .active: return "Active"
@@ -304,15 +304,15 @@ public struct StatusBadge: View {
             }
         }
     }
-    
+
     private let status: Status
     private let showDot: Bool
-    
+
     public init(_ status: Status, showDot: Bool = true) {
         self.status = status
         self.showDot = showDot
     }
-    
+
     public var body: some View {
         HStack(spacing: 6) {
             if showDot {
@@ -320,7 +320,7 @@ public struct StatusBadge: View {
                     .fill(status.color)
                     .frame(width: 6, height: 6)
             }
-            
+
             Text(status.label)
                 .font(.caption)
                 .fontWeight(.medium)
@@ -341,27 +341,27 @@ public struct StatusBadge: View {
             Badge("Sale", style: .outlined, color: .green)
             Badge("Hot", style: .subtle, color: .orange)
         }
-        
+
         HStack(spacing: 12) {
             Badge(count: 5)
             Badge(count: 99)
             Badge(count: 150, maxCount: 99)
         }
-        
+
         HStack(spacing: 20) {
             Image(systemName: "bell")
                 .font(.title2)
                 .badge(count: 3)
-            
+
             Image(systemName: "envelope")
                 .font(.title2)
                 .dotBadge()
-            
+
             Image(systemName: "cart")
                 .font(.title2)
                 .badge("2", color: .green)
         }
-        
+
         HStack(spacing: 12) {
             StatusBadge(.active)
             StatusBadge(.pending)

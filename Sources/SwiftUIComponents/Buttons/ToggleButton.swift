@@ -9,7 +9,7 @@ public struct ToggleButton: View {
     let offIcon: String?
     let onColor: Color
     let offColor: Color
-    
+
     public init(
         isOn: Binding<Bool>,
         onLabel: String = "On",
@@ -27,7 +27,7 @@ public struct ToggleButton: View {
         self.onColor = onColor
         self.offColor = offColor
     }
-    
+
     public var body: some View {
         Button {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -62,7 +62,7 @@ public struct ToggleButtonGroup<T: Hashable>: View {
     @Binding var selection: T
     let options: [(value: T, label: String)]
     let color: Color
-    
+
     public init(
         selection: Binding<T>,
         options: [(value: T, label: String)],
@@ -72,7 +72,7 @@ public struct ToggleButtonGroup<T: Hashable>: View {
         self.options = options
         self.color = color
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             ForEach(options.indices, id: \.self) { index in
@@ -106,7 +106,7 @@ public struct ToggleButtonGroup<T: Hashable>: View {
     struct PreviewWrapper: View {
         @State private var isOn = false
         @State private var selection = "Day"
-        
+
         var body: some View {
             VStack(spacing: 30) {
                 ToggleButton(
@@ -116,7 +116,7 @@ public struct ToggleButtonGroup<T: Hashable>: View {
                     onIcon: "checkmark",
                     offIcon: "plus"
                 )
-                
+
                 ToggleButton(
                     isOn: $isOn,
                     onLabel: "Liked",
@@ -126,7 +126,7 @@ public struct ToggleButtonGroup<T: Hashable>: View {
                     onColor: .pink,
                     offColor: .gray
                 )
-                
+
                 ToggleButtonGroup(
                     selection: $selection,
                     options: [

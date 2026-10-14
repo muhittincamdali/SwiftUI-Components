@@ -12,7 +12,7 @@ import SwiftUI
 /// ```
 public struct PinInput: View {
     // MARK: - Types
-    
+
     /// Visual style for the PIN boxes.
     public enum BoxStyle {
         case outlined
@@ -20,12 +20,12 @@ public struct PinInput: View {
         case underlined
         case rounded
     }
-    
+
     /// The keyboard type for input.
     public enum InputType {
         case numeric
         case alphanumeric
-        
+
         var keyboardKind: KeyboardKind {
             switch self {
             case .numeric: return .number
@@ -33,9 +33,9 @@ public struct PinInput: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     @Binding private var code: String
     private let length: Int
     private let boxStyle: BoxStyle
@@ -52,12 +52,12 @@ public struct PinInput: View {
     private let showError: Bool
     private let errorMessage: String?
     private let onComplete: ((String) -> Void)?
-    
+
     @FocusState private var isFocused: Bool
     @State private var shake: Bool = false
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new PIN input.
     /// - Parameters:
     ///   - code: Binding to the entered code string.
@@ -111,15 +111,15 @@ public struct PinInput: View {
         self.errorMessage = errorMessage
         self.onComplete = onComplete
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         VStack(spacing: 8) {
             ZStack {
                 // Hidden text field for input
                 hiddenTextField
-                
+
                 // Visible boxes
                 HStack(spacing: spacing) {
                     ForEach(0..<length, id: \.self) { index in
@@ -132,7 +132,7 @@ public struct PinInput: View {
                 shake ? .default.repeatCount(3, autoreverses: true).speed(6) : .default,
                 value: shake
             )
-            
+
             // Error message
             if showError, let message = errorMessage {
                 Text(message)
@@ -142,9 +142,9 @@ public struct PinInput: View {
             }
         }
     }
-    
+
     // MARK: - Hidden Text Field
-    
+
     private var hiddenTextField: some View {
         TextField("", text: $code)
             .keyboard(inputType.keyboardKind)
@@ -157,12 +157,12 @@ public struct PinInput: View {
                 if newValue.count > length {
                     code = String(newValue.prefix(length))
                 }
-                
+
                 // Filter based on input type
                 if inputType == .numeric {
                     code = newValue.filter { $0.isNumber }
                 }
-                
+
                 // Check completion
                 if code.count == length {
                     onComplete?(code)
@@ -172,24 +172,24 @@ public struct PinInput: View {
                 isFocused = true
             }
     }
-    
+
     // MARK: - PIN Box
-    
+
     private func pinBox(at index: Int) -> some View {
         let character = characterAt(index)
         let isCurrent = code.count == index
         let isFilled = index < code.count
-        
+
         return ZStack {
             boxBackground(isCurrent: isCurrent, isFilled: isFilled)
-            
+
             if let char = character {
                 Text(isSecure ? secureCharacter : String(char))
                     .font(font)
                     .foregroundStyle(textColor)
                     .transition(.scale.combined(with: .opacity))
             }
-            
+
             // Cursor for current position
             if isCurrent && isFocused {
                 Rectangle()
@@ -205,16 +205,16 @@ public struct PinInput: View {
         }
         .animation(.easeInOut(duration: 0.15), value: character != nil)
     }
-    
+
     @State private var cursorOpacity: Double = 1.0
-    
+
     // MARK: - Box Background
-    
+
     @ViewBuilder
     private func boxBackground(isCurrent: Bool, isFilled: Bool) -> some View {
         let borderColor = showError ? errorColor : (isCurrent ? activeColor : inactiveColor)
         let fillColor = showError ? errorColor.opacity(0.1) : (isFilled ? activeColor.opacity(0.1) : Color.clear)
-        
+
         switch boxStyle {
         case .outlined:
             RoundedRectangle(cornerRadius: 8)
@@ -223,7 +223,7 @@ public struct PinInput: View {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(fillColor)
                 )
-        
+
         case .filled:
             RoundedRectangle(cornerRadius: 8)
                 .fill(isFilled ? activeColor.opacity(0.15) : Color.platformGray6)
@@ -231,7 +231,7 @@ public struct PinInput: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(borderColor, lineWidth: isCurrent ? 2 : 0)
                 )
-        
+
         case .underlined:
             VStack {
                 Spacer()
@@ -239,7 +239,7 @@ public struct PinInput: View {
                     .fill(borderColor)
                     .frame(height: isCurrent ? 2 : 1)
             }
-        
+
         case .rounded:
             Circle()
                 .stroke(borderColor, lineWidth: isCurrent ? 2 : 1)
@@ -249,15 +249,15 @@ public struct PinInput: View {
                 )
         }
     }
-    
+
     // MARK: - Helpers
-    
+
     private func characterAt(_ index: Int) -> Character? {
         guard index < code.count else { return nil }
         let stringIndex = code.index(code.startIndex, offsetBy: index)
         return code[stringIndex]
     }
-    
+
     /// Triggers the shake animation for error feedback.
     public func triggerShake() {
         shake = true
@@ -276,11 +276,11 @@ public struct TimedPinInput: View {
     let resendInterval: Int
     let onComplete: (String) -> Void
     let onResend: () -> Void
-    
+
     @State private var remainingTime: Int
     @State private var timerActive: Bool = true
     @State private var countdownRun = 0
-    
+
     public init(
         code: Binding<String>,
         length: Int = 6,
@@ -295,7 +295,7 @@ public struct TimedPinInput: View {
         self.onComplete = onComplete
         self.onResend = onResend
     }
-    
+
     public var body: some View {
         VStack(spacing: 24) {
             PinInput(
@@ -303,11 +303,11 @@ public struct TimedPinInput: View {
                 length: length,
                 onComplete: onComplete
             )
-            
+
             HStack {
                 Text("Didn't receive code?")
                     .foregroundStyle(.secondary)
-                
+
                 if timerActive {
                     Text("Resend in \(remainingTime)s")
                         .foregroundStyle(.blue)
@@ -345,9 +345,9 @@ public struct PasscodeInput: View {
     @Binding var passcode: String
     let length: Int
     let onComplete: (String) -> Void
-    
+
     @State private var showError: Bool = false
-    
+
     public init(
         passcode: Binding<String>,
         length: Int = 4,
@@ -357,7 +357,7 @@ public struct PasscodeInput: View {
         self.length = length
         self.onComplete = onComplete
     }
-    
+
     public var body: some View {
         VStack(spacing: 40) {
             // Dots indicator
@@ -375,7 +375,7 @@ public struct PasscodeInput: View {
                 showError ? .default.repeatCount(3, autoreverses: true).speed(6) : .default,
                 value: showError
             )
-            
+
             // Numeric keypad
             VStack(spacing: 16) {
                 ForEach(0..<3, id: \.self) { row in
@@ -386,13 +386,13 @@ public struct PasscodeInput: View {
                         }
                     }
                 }
-                
+
                 HStack(spacing: 24) {
                     Color.clear
                         .frame(width: 72, height: 72)
-                    
+
                     keypadButton("0")
-                    
+
                     Button {
                         if !passcode.isEmpty {
                             passcode.removeLast()
@@ -407,12 +407,12 @@ public struct PasscodeInput: View {
             }
         }
     }
-    
+
     private func keypadButton(_ digit: String) -> some View {
         Button {
             guard passcode.count < length else { return }
             passcode += digit
-            
+
             if passcode.count == length {
                 onComplete(passcode)
             }
@@ -426,7 +426,7 @@ public struct PasscodeInput: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     /// Triggers error animation and clears passcode.
     public func triggerError() {
         showError = true
@@ -443,7 +443,7 @@ struct PinInputPreview: View {
     @State private var code2 = "123"
     @State private var code3 = ""
     @State private var passcode = ""
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 40) {
@@ -452,7 +452,7 @@ struct PinInputPreview: View {
                         .font(.caption)
                     PinInput(code: $code1, length: 6)
                 }
-                
+
                 VStack {
                     Text("Secure + Filled Style")
                         .font(.caption)
@@ -463,7 +463,7 @@ struct PinInputPreview: View {
                         isSecure: true
                     )
                 }
-                
+
                 VStack {
                     Text("Underlined Style")
                         .font(.caption)
@@ -474,9 +474,9 @@ struct PinInputPreview: View {
                         activeColor: .green
                     )
                 }
-                
+
                 Divider()
-                
+
                 VStack {
                     Text("Passcode Keypad")
                         .font(.caption)

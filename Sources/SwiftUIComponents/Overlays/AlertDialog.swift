@@ -9,25 +9,25 @@ public struct AlertDialog: View {
     let primaryButton: AlertButton?
     let secondaryButton: AlertButton?
     let style: AlertStyle
-    
+
     public struct AlertButton {
         let title: String
         let style: ButtonStyle
         let action: () -> Void
-        
+
         public enum ButtonStyle {
             case primary
             case secondary
             case destructive
         }
-        
+
         public init(_ title: String, style: ButtonStyle = .primary, action: @escaping () -> Void) {
             self.title = title
             self.style = style
             self.action = action
         }
     }
-    
+
     public enum AlertStyle {
         case standard
         case success
@@ -35,7 +35,7 @@ public struct AlertDialog: View {
         case error
         case info
     }
-    
+
     public init(
         title: String,
         message: String,
@@ -53,7 +53,7 @@ public struct AlertDialog: View {
         self.secondaryButton = secondaryButton
         self.style = style
     }
-    
+
     private var styleIcon: String {
         switch style {
         case .standard: return icon ?? "questionmark.circle.fill"
@@ -63,7 +63,7 @@ public struct AlertDialog: View {
         case .info: return "info.circle.fill"
         }
     }
-    
+
     private var styleColor: Color {
         switch style {
         case .standard: return iconColor
@@ -73,7 +73,7 @@ public struct AlertDialog: View {
         case .info: return .blue
         }
     }
-    
+
     public var body: some View {
         VStack(spacing: 20) {
             // Icon
@@ -81,24 +81,24 @@ public struct AlertDialog: View {
                 Circle()
                     .fill(styleColor.opacity(0.15))
                     .frame(width: 64, height: 64)
-                
+
                 Image(systemName: styleIcon)
                     .font(.system(size: 28))
                     .foregroundColor(styleColor)
             }
-            
+
             // Title & Message
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 20, weight: .bold))
                     .multilineTextAlignment(.center)
-                
+
                 Text(message)
                     .font(.system(size: 15))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
-            
+
             // Buttons
             VStack(spacing: 10) {
                 if let primary = primaryButton {
@@ -112,7 +112,7 @@ public struct AlertDialog: View {
                             .cornerRadius(10)
                     }
                 }
-                
+
                 if let secondary = secondaryButton {
                     Button(action: secondary.action) {
                         Text(secondary.title)
@@ -132,7 +132,7 @@ public struct AlertDialog: View {
         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
         .padding(.horizontal, 40)
     }
-    
+
     private func buttonForeground(for style: AlertButton.ButtonStyle) -> Color {
         switch style {
         case .primary: return .white
@@ -140,7 +140,7 @@ public struct AlertDialog: View {
         case .destructive: return .white
         }
     }
-    
+
     private func buttonBackground(for style: AlertButton.ButtonStyle) -> Color {
         switch style {
         case .primary: return styleColor
@@ -159,7 +159,7 @@ public struct ConfirmationDialog: View {
     let isDestructive: Bool
     let onConfirm: () -> Void
     let onCancel: () -> Void
-    
+
     public init(
         title: String,
         message: String,
@@ -177,19 +177,19 @@ public struct ConfirmationDialog: View {
         self.onConfirm = onConfirm
         self.onCancel = onCancel
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 18, weight: .bold))
-                
+
                 Text(message)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
-            
+
             HStack(spacing: 12) {
                 Button(action: onCancel) {
                     Text(cancelTitle)
@@ -200,7 +200,7 @@ public struct ConfirmationDialog: View {
                         .background(Color.platformGray5)
                         .cornerRadius(8)
                 }
-                
+
                 Button(action: onConfirm) {
                     Text(confirmTitle)
                         .font(.system(size: 15, weight: .semibold))
@@ -228,7 +228,7 @@ public struct InputDialog: View {
     @Binding var text: String
     let onSubmit: (String) -> Void
     let onCancel: () -> Void
-    
+
     public init(
         title: String,
         message: String? = nil,
@@ -244,13 +244,13 @@ public struct InputDialog: View {
         self.onSubmit = onSubmit
         self.onCancel = onCancel
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 18, weight: .bold))
-                
+
                 if let message = message {
                     Text(message)
                         .font(.system(size: 14))
@@ -258,13 +258,13 @@ public struct InputDialog: View {
                         .multilineTextAlignment(.center)
                 }
             }
-            
+
             TextField(placeholder, text: $text)
                 .font(.system(size: 16))
                 .padding(12)
                 .background(Color.platformGray6)
                 .cornerRadius(8)
-            
+
             HStack(spacing: 12) {
                 Button(action: onCancel) {
                     Text("Cancel")
@@ -275,7 +275,7 @@ public struct InputDialog: View {
                         .background(Color.platformGray5)
                         .cornerRadius(8)
                 }
-                
+
                 Button {
                     onSubmit(text)
                 } label: {
@@ -301,7 +301,7 @@ public struct InputDialog: View {
 #Preview("Alert Dialogs") {
     ZStack {
         Color.platformGray6.ignoresSafeArea()
-        
+
         VStack(spacing: 32) {
             AlertDialog(
                 title: "Success!",
@@ -309,7 +309,7 @@ public struct InputDialog: View {
                 primaryButton: .init("Continue") {},
                 style: .success
             )
-            
+
             ConfirmationDialog(
                 title: "Delete Item?",
                 message: "This action cannot be undone.",

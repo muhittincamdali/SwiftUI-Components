@@ -6,7 +6,7 @@ public struct SocialButton: View {
     let title: String?
     let action: () -> Void
     let style: SocialStyle
-    
+
     public enum SocialProvider: CaseIterable {
         case apple
         case google
@@ -14,7 +14,7 @@ public struct SocialButton: View {
         case twitter
         case github
         case linkedin
-        
+
         var icon: String {
             switch self {
             case .apple: return "apple.logo"
@@ -25,7 +25,7 @@ public struct SocialButton: View {
             case .linkedin: return "link"
             }
         }
-        
+
         var color: Color {
             switch self {
             case .apple: return .primary
@@ -36,7 +36,7 @@ public struct SocialButton: View {
             case .linkedin: return Color(red: 0.0, green: 0.47, blue: 0.71)
             }
         }
-        
+
         var name: String {
             switch self {
             case .apple: return "Apple"
@@ -48,13 +48,13 @@ public struct SocialButton: View {
             }
         }
     }
-    
+
     public enum SocialStyle {
         case filled
         case outlined
         case iconOnly
     }
-    
+
     public init(
         _ provider: SocialProvider,
         title: String? = nil,
@@ -66,13 +66,13 @@ public struct SocialButton: View {
         self.style = style
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Image(systemName: provider.icon)
                     .font(.system(size: 20))
-                
+
                 if style != .iconOnly {
                     Text(title ?? "Continue with \(provider.name)")
                         .fontWeight(.semibold)
@@ -88,14 +88,14 @@ public struct SocialButton: View {
         .accessibilityLabel("Sign in with \(provider.name)")
         .accessibilityAddTraits(.isButton)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
         case .outlined, .iconOnly: return provider.color
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -117,7 +117,7 @@ public struct SocialButton: View {
         SocialButton(.apple) {}
         SocialButton(.google) {}
         SocialButton(.facebook, style: .outlined) {}
-        
+
         HStack(spacing: 12) {
             ForEach(SocialButton.SocialProvider.allCases, id: \.self) { provider in
                 SocialButton(provider, style: .iconOnly) {}

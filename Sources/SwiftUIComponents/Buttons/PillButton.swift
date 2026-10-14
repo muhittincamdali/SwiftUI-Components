@@ -8,26 +8,26 @@ public struct PillButton: View {
     let action: () -> Void
     let style: PillStyle
     let size: PillSize
-    
+
     @State private var isPressed = false
-    
+
     public enum IconPosition {
         case leading
         case trailing
     }
-    
+
     public enum PillStyle {
         case filled(Color)
         case outlined(Color)
         case gradient([Color])
         case soft(Color)
     }
-    
+
     public enum PillSize {
         case small
         case medium
         case large
-        
+
         var horizontalPadding: CGFloat {
             switch self {
             case .small: return 12
@@ -35,7 +35,7 @@ public struct PillButton: View {
             case .large: return 28
             }
         }
-        
+
         var verticalPadding: CGFloat {
             switch self {
             case .small: return 6
@@ -43,7 +43,7 @@ public struct PillButton: View {
             case .large: return 14
             }
         }
-        
+
         var fontSize: CGFloat {
             switch self {
             case .small: return 12
@@ -52,7 +52,7 @@ public struct PillButton: View {
             }
         }
     }
-    
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -68,17 +68,17 @@ public struct PillButton: View {
         self.size = size
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 6) {
                 if iconPosition == .leading, let icon = icon {
                     Image(systemName: icon)
                 }
-                
+
                 Text(title)
                     .font(.system(size: size.fontSize, weight: .semibold))
-                
+
                 if iconPosition == .trailing, let icon = icon {
                     Image(systemName: icon)
                 }
@@ -94,7 +94,7 @@ public struct PillButton: View {
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled: return .white
@@ -103,7 +103,7 @@ public struct PillButton: View {
         case .soft(let color): return color
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -127,13 +127,13 @@ public struct PillButton: View {
             PillButton("Medium", size: .medium) {}
             PillButton("Large", size: .large) {}
         }
-        
+
         // Style variants
         PillButton("Filled", icon: "star.fill", style: .filled(.blue)) {}
         PillButton("Outlined", icon: "heart", style: .outlined(.pink)) {}
         PillButton("Gradient", icon: "sparkles", style: .gradient([.purple, .pink])) {}
         PillButton("Soft", icon: "bookmark", style: .soft(.green)) {}
-        
+
         // Icon position
         PillButton("Next", icon: "arrow.right", iconPosition: .trailing, style: .filled(.orange)) {}
     }

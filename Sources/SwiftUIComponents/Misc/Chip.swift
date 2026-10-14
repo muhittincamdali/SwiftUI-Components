@@ -11,20 +11,20 @@ import SwiftUI
 /// ```
 public struct Chip: View {
     // MARK: - Types
-    
+
     /// The visual style of the chip.
     public enum Style {
         case filled
         case outlined
         case subtle
     }
-    
+
     /// The size of the chip.
     public enum Size {
         case small
         case medium
         case large
-        
+
         var font: Font {
             switch self {
             case .small: return .caption
@@ -32,7 +32,7 @@ public struct Chip: View {
             case .large: return .body
             }
         }
-        
+
         var padding: EdgeInsets {
             switch self {
             case .small: return EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
@@ -40,7 +40,7 @@ public struct Chip: View {
             case .large: return EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
             }
         }
-        
+
         var iconSize: CGFloat {
             switch self {
             case .small: return 10
@@ -49,9 +49,9 @@ public struct Chip: View {
             }
         }
     }
-    
+
     // MARK: - Properties
-    
+
     private let text: String
     private let style: Style
     private let size: Size
@@ -61,9 +61,9 @@ public struct Chip: View {
     private let isDismissible: Bool
     private let onTap: (() -> Void)?
     private let onDismiss: (() -> Void)?
-    
+
     // MARK: - Initialization
-    
+
     /// Creates a new chip.
     public init(
         _ text: String,
@@ -86,9 +86,9 @@ public struct Chip: View {
         self.onTap = onTap
         self.onDismiss = onDismiss
     }
-    
+
     // MARK: - Body
-    
+
     public var body: some View {
         Button {
             onTap?()
@@ -98,11 +98,11 @@ public struct Chip: View {
                     icon
                         .font(.system(size: size.iconSize))
                 }
-                
+
                 Text(text)
                     .font(size.font)
                     .fontWeight(.medium)
-                
+
                 if isDismissible {
                     Button {
                         onDismiss?()
@@ -121,9 +121,9 @@ public struct Chip: View {
         .buttonStyle(.plain)
         .disabled(onTap == nil)
     }
-    
+
     // MARK: - Styling
-    
+
     private var foregroundColor: Color {
         switch style {
         case .filled:
@@ -134,7 +134,7 @@ public struct Chip: View {
             return color
         }
     }
-    
+
     @ViewBuilder
     private var background: some View {
         switch style {
@@ -150,7 +150,7 @@ public struct Chip: View {
             color.opacity(0.1)
         }
     }
-    
+
     @ViewBuilder
     private var borderOverlay: some View {
         if style == .outlined {
@@ -168,20 +168,20 @@ public struct ChipGroup: View {
         public let id = UUID()
         public let text: String
         public let icon: Image?
-        
+
         public init(text: String, icon: Image? = nil) {
             self.text = text
             self.icon = icon
         }
     }
-    
+
     private let items: [ChipItem]
     private let style: Chip.Style
     private let size: Chip.Size
     private let color: Color
     private let allowsMultipleSelection: Bool
     @Binding private var selectedItems: Set<UUID>
-    
+
     public init(
         items: [ChipItem],
         selectedItems: Binding<Set<UUID>>,
@@ -197,7 +197,7 @@ public struct ChipGroup: View {
         self.color = color
         self.allowsMultipleSelection = allowsMultipleSelection
     }
-    
+
     public var body: some View {
         FlowLayout(spacing: 8) {
             ForEach(items) { item in
@@ -214,7 +214,7 @@ public struct ChipGroup: View {
             }
         }
     }
-    
+
     private func toggleSelection(_ id: UUID) {
         if allowsMultipleSelection {
             if selectedItems.contains(id) {
@@ -241,7 +241,7 @@ public struct DismissibleChipGroup: View {
     private let style: Chip.Style
     private let size: Chip.Size
     private let color: Color
-    
+
     public init(
         items: Binding<[String]>,
         style: Chip.Style = .filled,
@@ -253,7 +253,7 @@ public struct DismissibleChipGroup: View {
         self.size = size
         self.color = color
     }
-    
+
     public var body: some View {
         FlowLayout(spacing: 8) {
             ForEach(items, id: \.self) { item in
@@ -277,7 +277,7 @@ public struct DismissibleChipGroup: View {
 struct ChipPreview: View {
     @State private var selectedItems: Set<UUID> = []
     @State private var tags = ["Swift", "SwiftUI", "iOS", "Xcode", "Apple"]
-    
+
     let items: [ChipGroup.ChipItem] = [
         .init(text: "All"),
         .init(text: "Music", icon: Image(systemName: "music.note")),
@@ -285,7 +285,7 @@ struct ChipPreview: View {
         .init(text: "Books", icon: Image(systemName: "book")),
         .init(text: "Podcasts", icon: Image(systemName: "mic"))
     ]
-    
+
     var body: some View {
         VStack(spacing: 30) {
             HStack(spacing: 8) {
@@ -293,7 +293,7 @@ struct ChipPreview: View {
                 Chip("Outlined", style: .outlined)
                 Chip("Subtle", style: .subtle)
             }
-            
+
             ChipGroup(
                 items: items,
                 selectedItems: $selectedItems,
@@ -301,7 +301,7 @@ struct ChipPreview: View {
                 allowsMultipleSelection: false
             )
             .padding(.horizontal)
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Dismissible:").font(.caption)
                 DismissibleChipGroup(items: $tags, color: .purple)

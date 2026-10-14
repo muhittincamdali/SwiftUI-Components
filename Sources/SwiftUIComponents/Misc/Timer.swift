@@ -6,18 +6,18 @@ public struct CountdownTimer: View {
     let targetDate: Date
     let style: TimerStyle
     let onComplete: (() -> Void)?
-    
+
     @State private var timeRemaining: TimeInterval = 0
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     @State private var cancellable: Cancellable?
-    
+
     public enum TimerStyle {
         case standard
         case compact
         case large
         case cards
     }
-    
+
     public init(
         targetDate: Date,
         style: TimerStyle = .standard,
@@ -27,7 +27,7 @@ public struct CountdownTimer: View {
         self.style = style
         self.onComplete = onComplete
     }
-    
+
     private var components: (days: Int, hours: Int, minutes: Int, seconds: Int) {
         let total = max(0, Int(timeRemaining))
         let days = total / 86400
@@ -36,7 +36,7 @@ public struct CountdownTimer: View {
         let seconds = total % 60
         return (days, hours, minutes, seconds)
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -60,7 +60,7 @@ public struct CountdownTimer: View {
             cancellable?.cancel()
         }
     }
-    
+
     private func updateTimeRemaining() {
         timeRemaining = targetDate.timeIntervalSinceNow
         if timeRemaining <= 0 {
@@ -68,7 +68,7 @@ public struct CountdownTimer: View {
             onComplete?()
         }
     }
-    
+
     private var standardView: some View {
         HStack(spacing: 20) {
             if components.days > 0 {
@@ -79,12 +79,12 @@ public struct CountdownTimer: View {
             timeUnit(value: components.seconds, label: "Sec")
         }
     }
-    
+
     private var compactView: some View {
         Text(String(format: "%02d:%02d:%02d", components.hours, components.minutes, components.seconds))
             .font(.system(size: 24, weight: .bold, design: .monospaced))
     }
-    
+
     private var largeView: some View {
         VStack(spacing: 8) {
             HStack(spacing: 4) {
@@ -99,7 +99,7 @@ public struct CountdownTimer: View {
                 Text(String(format: "%02d", components.seconds))
             }
             .font(.system(size: 48, weight: .bold, design: .monospaced))
-            
+
             HStack(spacing: 28) {
                 if components.days > 0 {
                     Text("Days")
@@ -112,7 +112,7 @@ public struct CountdownTimer: View {
             .foregroundColor(.secondary)
         }
     }
-    
+
     private var cardsView: some View {
         HStack(spacing: 8) {
             if components.days > 0 {
@@ -123,7 +123,7 @@ public struct CountdownTimer: View {
             timeCard(value: components.seconds, label: "Sec")
         }
     }
-    
+
     private func timeUnit(value: Int, label: String) -> some View {
         VStack(spacing: 4) {
             Text(String(format: "%02d", value))
@@ -133,7 +133,7 @@ public struct CountdownTimer: View {
                 .foregroundColor(.secondary)
         }
     }
-    
+
     private func timeCard(value: Int, label: String) -> some View {
         VStack(spacing: 4) {
             Text(String(format: "%02d", value))
@@ -156,34 +156,34 @@ public struct Stopwatch: View {
     @State private var laps: [TimeInterval] = []
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 0.01, on: .main, in: .common)
     @State private var cancellable: Cancellable?
-    
+
     let showLaps: Bool
     let style: StopwatchStyle
-    
+
     public enum StopwatchStyle {
         case standard
         case compact
         case analog
     }
-    
+
     public init(showLaps: Bool = true, style: StopwatchStyle = .standard) {
         self.showLaps = showLaps
         self.style = style
     }
-    
+
     private var formattedTime: String {
         let minutes = Int(elapsedTime) / 60
         let seconds = Int(elapsedTime) % 60
         let centiseconds = Int((elapsedTime.truncatingRemainder(dividingBy: 1)) * 100)
         return String(format: "%02d:%02d.%02d", minutes, seconds, centiseconds)
     }
-    
+
     public var body: some View {
         VStack(spacing: 24) {
             // Time display
             Text(formattedTime)
                 .font(.system(size: style == .compact ? 32 : 56, weight: .thin, design: .monospaced))
-            
+
             // Controls
             HStack(spacing: 40) {
                 // Reset/Lap button
@@ -203,7 +203,7 @@ public struct Stopwatch: View {
                         .clipShape(Circle())
                 }
                 .disabled(!isRunning && elapsedTime == 0)
-                
+
                 // Start/Stop button
                 Button {
                     isRunning.toggle()
@@ -224,7 +224,7 @@ public struct Stopwatch: View {
                         .clipShape(Circle())
                 }
             }
-            
+
             // Laps
             if showLaps && !laps.isEmpty {
                 ScrollView {
@@ -238,7 +238,7 @@ public struct Stopwatch: View {
                                     .font(.system(size: 16, design: .monospaced))
                             }
                             .padding(.vertical, 10)
-                            
+
                             if index > 0 {
                                 Divider()
                             }
@@ -253,7 +253,7 @@ public struct Stopwatch: View {
             cancellable?.cancel()
         }
     }
-    
+
     private func formatTime(_ time: TimeInterval) -> String {
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60
@@ -266,52 +266,52 @@ public struct Stopwatch: View {
 public struct ProgressTimer: View {
     let duration: TimeInterval
     let onComplete: (() -> Void)?
-    
+
     @State private var progress: Double = 0
     @State private var isRunning = false
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 0.1, on: .main, in: .common)
     @State private var cancellable: Cancellable?
-    
+
     public init(duration: TimeInterval, onComplete: (() -> Void)? = nil) {
         self.duration = duration
         self.onComplete = onComplete
     }
-    
+
     private var remainingTime: TimeInterval {
         duration * (1 - progress)
     }
-    
+
     private var formattedRemaining: String {
         let total = Int(remainingTime)
         let minutes = total / 60
         let seconds = total % 60
         return String(format: "%d:%02d", minutes, seconds)
     }
-    
+
     public var body: some View {
         VStack(spacing: 20) {
             // Circular progress
             ZStack {
                 Circle()
                     .stroke(Color.platformGray5, lineWidth: 12)
-                
+
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(.linear(duration: 0.1), value: progress)
-                
+
                 VStack(spacing: 4) {
                     Text(formattedRemaining)
                         .font(.system(size: 36, weight: .medium, design: .monospaced))
-                    
+
                     Text(isRunning ? "Running" : "Paused")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
             }
             .frame(width: 200, height: 200)
-            
+
             // Controls
             HStack(spacing: 20) {
                 Button {
@@ -326,7 +326,7 @@ public struct ProgressTimer: View {
                         .background(Color.platformGray5)
                         .clipShape(Circle())
                 }
-                
+
                 Button {
                     isRunning.toggle()
                     if isRunning {
@@ -365,28 +365,28 @@ public struct ProgressTimer: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Countdown Timer")
                     .font(.headline)
-                
+
                 CountdownTimer(
                     targetDate: Date().addingTimeInterval(3600 * 24 + 3661),
                     style: .cards
                 )
             }
-            
+
             Divider()
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Stopwatch")
                     .font(.headline)
-                
+
                 Stopwatch()
             }
-            
+
             Divider()
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Progress Timer")
                     .font(.headline)
-                
+
                 ProgressTimer(duration: 60)
             }
         }

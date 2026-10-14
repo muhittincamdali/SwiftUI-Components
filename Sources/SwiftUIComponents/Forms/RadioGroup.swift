@@ -5,13 +5,13 @@ public struct RadioButton: View {
     let isSelected: Bool
     let label: String?
     let action: () -> Void
-    
+
     public init(isSelected: Bool, label: String? = nil, action: @escaping () -> Void) {
         self.isSelected = isSelected
         self.label = label
         self.action = action
     }
-    
+
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 10) {
@@ -19,7 +19,7 @@ public struct RadioButton: View {
                     Circle()
                         .stroke(isSelected ? Color.accentColor : Color.platformGray3, lineWidth: 2)
                         .frame(width: 22, height: 22)
-                    
+
                     if isSelected {
                         Circle()
                             .fill(Color.accentColor)
@@ -27,7 +27,7 @@ public struct RadioButton: View {
                             .transition(.scale)
                     }
                 }
-                
+
                 if let label = label {
                     Text(label)
                         .font(.system(size: 15))
@@ -48,14 +48,14 @@ public struct RadioGroup<T: Hashable>: View {
     @Binding var selection: T
     let options: [(value: T, label: String)]
     let style: RadioGroupStyle
-    
+
     public enum RadioGroupStyle {
         case vertical
         case horizontal
         case segmented
         case cards
     }
-    
+
     public init(
         selection: Binding<T>,
         options: [(value: T, label: String)],
@@ -65,7 +65,7 @@ public struct RadioGroup<T: Hashable>: View {
         self.options = options
         self.style = style
     }
-    
+
     public var body: some View {
         Group {
             switch style {
@@ -81,7 +81,7 @@ public struct RadioGroup<T: Hashable>: View {
                         }
                     }
                 }
-                
+
             case .horizontal:
                 HStack(spacing: 20) {
                     ForEach(options.indices, id: \.self) { index in
@@ -94,7 +94,7 @@ public struct RadioGroup<T: Hashable>: View {
                         }
                     }
                 }
-                
+
             case .segmented:
                 HStack(spacing: 0) {
                     ForEach(options.indices, id: \.self) { index in
@@ -117,7 +117,7 @@ public struct RadioGroup<T: Hashable>: View {
                 }
                 .background(Color.platformGray6)
                 .cornerRadius(10)
-                
+
             case .cards:
                 VStack(spacing: 10) {
                     ForEach(options.indices, id: \.self) { index in
@@ -132,18 +132,18 @@ public struct RadioGroup<T: Hashable>: View {
                                     Circle()
                                         .stroke(selection == option.value ? Color.accentColor : Color.platformGray3, lineWidth: 2)
                                         .frame(width: 22, height: 22)
-                                    
+
                                     if selection == option.value {
                                         Circle()
                                             .fill(Color.accentColor)
                                             .frame(width: 12, height: 12)
                                     }
                                 }
-                                
+
                                 Text(option.label)
                                     .font(.system(size: 15, weight: .medium))
                                     .foregroundColor(.primary)
-                                
+
                                 Spacer()
                             }
                             .padding(14)
@@ -168,13 +168,13 @@ public struct RadioGroup<T: Hashable>: View {
 public struct DetailedRadioGroup<T: Hashable>: View {
     @Binding var selection: T
     let options: [DetailedOption]
-    
+
     public struct DetailedOption {
         let value: T
         let title: String
         let description: String
         let icon: String?
-        
+
         public init(value: T, title: String, description: String, icon: String? = nil) {
             self.value = value
             self.title = title
@@ -182,18 +182,18 @@ public struct DetailedRadioGroup<T: Hashable>: View {
             self.icon = icon
         }
     }
-    
+
     public init(selection: Binding<T>, options: [DetailedOption]) {
         self._selection = selection
         self.options = options
     }
-    
+
     public var body: some View {
         VStack(spacing: 10) {
             ForEach(options.indices, id: \.self) { index in
                 let option = options[index]
                 let isSelected = selection == option.value
-                
+
                 Button {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         selection = option.value
@@ -206,25 +206,25 @@ public struct DetailedRadioGroup<T: Hashable>: View {
                                 .foregroundColor(isSelected ? .accentColor : .secondary)
                                 .frame(width: 40)
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text(option.title)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(.primary)
-                            
+
                             Text(option.description)
                                 .font(.system(size: 13))
                                 .foregroundColor(.secondary)
                                 .lineLimit(2)
                         }
-                        
+
                         Spacer()
-                        
+
                         ZStack {
                             Circle()
                                 .stroke(isSelected ? Color.accentColor : Color.platformGray3, lineWidth: 2)
                                 .frame(width: 22, height: 22)
-                            
+
                             if isSelected {
                                 Circle()
                                     .fill(Color.accentColor)
@@ -252,7 +252,7 @@ public struct DetailedRadioGroup<T: Hashable>: View {
     struct PreviewWrapper: View {
         @State private var selectedOption = "option1"
         @State private var selectedPlan = "pro"
-        
+
         var body: some View {
             ScrollView {
                 VStack(spacing: 24) {
@@ -260,7 +260,7 @@ public struct DetailedRadioGroup<T: Hashable>: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Vertical")
                             .font(.headline)
-                        
+
                         RadioGroup(
                             selection: $selectedOption,
                             options: [
@@ -271,14 +271,14 @@ public struct DetailedRadioGroup<T: Hashable>: View {
                             style: .vertical
                         )
                     }
-                    
+
                     Divider()
-                    
+
                     // Segmented
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Segmented")
                             .font(.headline)
-                        
+
                         RadioGroup(
                             selection: $selectedOption,
                             options: [
@@ -289,14 +289,14 @@ public struct DetailedRadioGroup<T: Hashable>: View {
                             style: .segmented
                         )
                     }
-                    
+
                     Divider()
-                    
+
                     // Cards
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Cards")
                             .font(.headline)
-                        
+
                         RadioGroup(
                             selection: $selectedPlan,
                             options: [
@@ -307,14 +307,14 @@ public struct DetailedRadioGroup<T: Hashable>: View {
                             style: .cards
                         )
                     }
-                    
+
                     Divider()
-                    
+
                     // Detailed
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Detailed")
                             .font(.headline)
-                        
+
                         DetailedRadioGroup(
                             selection: $selectedPlan,
                             options: [
