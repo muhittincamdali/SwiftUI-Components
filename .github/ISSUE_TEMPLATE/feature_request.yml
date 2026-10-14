@@ -1,28 +1,12 @@
-name: Feature Request
-description: Suggest an idea for this project
-title: "[Feature]: "
+name: Feature request
+description: Suggest a new component or an option for an existing one
 labels: ["enhancement"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for suggesting a feature! Please fill out the information below.
-
   - type: textarea
     id: problem
     attributes:
-      label: Problem Statement
-      description: Is your feature request related to a problem? Please describe.
-      placeholder: A clear and concise description of what the problem is.
-    validations:
-      required: true
-
-  - type: textarea
-    id: solution
-    attributes:
-      label: Proposed Solution
-      description: Describe the solution you'd like
-      placeholder: A clear and concise description of what you want to happen.
+      label: What do you want to build?
+      description: Describe the screen or interaction you are trying to create.
     validations:
       required: true
 
@@ -30,33 +14,10 @@ body:
     id: api
     attributes:
       label: Proposed API
-      description: If applicable, show how you envision the API
+      description: How would you like to call it?
       render: swift
 
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives Considered
-      description: Describe any alternative solutions or features you've considered.
-
-  - type: dropdown
-    id: category
-    attributes:
-      label: Category
-      options:
-        - Navigation Pattern
-        - Deep Linking
-        - State Management
-        - Animation/Transition
-        - API Improvement
-        - Documentation
-        - Other
-    validations:
-      required: true
-
-  - type: checkboxes
-    id: contribution
-    attributes:
-      label: Contribution
-      options:
-        - label: I would be willing to submit a PR for this feature
+      label: Alternatives considered
