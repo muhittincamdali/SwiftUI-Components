@@ -188,6 +188,7 @@ public final class BannerManager: ObservableObject {
     @Published public var isShowing: Bool = false
     
     private var dismissTask: Task<Void, Never>?
+    private var clearTask: Task<Void, Never>?
     
     public struct BannerData: Identifiable {
         public let id = UUID()
@@ -212,11 +213,13 @@ public final class BannerManager: ObservableObject {
         }
     }
     
-    private init() {}
+    /// Creates a manager. Most apps use ``shared``; separate instances are useful in tests.
+    public init() {}
     
-    /// Shows a banner.
+    /// Shows a banner, replacing any banner that is currently visible.
     public func show(_ data: BannerData) {
-        dismiss()
+        dismissTask?.cancel()
+        clearTask?.cancel()
         
         currentBanner = data
         
@@ -225,11 +228,10 @@ public final class BannerManager: ObservableObject {
         }
         
         if let duration = data.duration {
-            dismissTask = Task {
-                try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
-                if !Task.isCancelled {
-                    dismiss()
-                }
+            dismissTask = Task { [weak self] in
+                try? await Task.sleep(for: .seconds(duration))
+                guard let self, !Task.isCancelled else { return }
+                self.dismiss()
             }
         }
     }
@@ -252,7 +254,11 @@ public final class BannerManager: ObservableObject {
             isShowing = false
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        // Clear after the exit animation, unless a new banner was shown meanwhile.
+        clearTask?.cancel()
+        clearTask = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(250))
+            guard let self, !Task.isCancelled, !self.isShowing else { return }
             self.currentBanner = nil
         }
     }

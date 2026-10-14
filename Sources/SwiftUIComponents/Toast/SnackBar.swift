@@ -139,6 +139,7 @@ public final class SnackBarManager: ObservableObject {
     
     private var queue: [SnackBarData] = []
     private var dismissTask: Task<Void, Never>?
+    private var clearTask: Task<Void, Never>?
     
     public struct SnackBarData: Identifiable {
         public let id = UUID()
@@ -160,9 +161,14 @@ public final class SnackBarManager: ObservableObject {
         }
     }
     
-    private init() {}
+    /// Creates a manager. Most apps use ``shared``; separate instances are useful in tests.
+    public init() {}
+    
+    /// Number of snackbars waiting behind the current one.
+    public var pendingCount: Int { queue.count }
     
     /// Shows a snackbar.
+    /// If one is already visible, the new one is queued and shown after it.
     public func show(_ data: SnackBarData) {
         queue.append(data)
         processQueue()
@@ -184,7 +190,11 @@ public final class SnackBarManager: ObservableObject {
             isShowing = false
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        // Clear after the exit animation, unless another snackbar was shown meanwhile.
+        clearTask?.cancel()
+        clearTask = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(300))
+            guard let self, !Task.isCancelled, !self.isShowing else { return }
             self.currentSnackBar = nil
             self.processQueue()
         }
@@ -193,6 +203,7 @@ public final class SnackBarManager: ObservableObject {
     private func processQueue() {
         guard !isShowing, !queue.isEmpty else { return }
         
+        clearTask?.cancel()
         let data = queue.removeFirst()
         currentSnackBar = data
         
@@ -200,11 +211,10 @@ public final class SnackBarManager: ObservableObject {
             isShowing = true
         }
         
-        dismissTask = Task {
-            try? await Task.sleep(nanoseconds: UInt64(data.duration * 1_000_000_000))
-            if !Task.isCancelled {
-                dismiss()
-            }
+        dismissTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(data.duration))
+            guard let self, !Task.isCancelled else { return }
+            self.dismiss()
         }
     }
 }
