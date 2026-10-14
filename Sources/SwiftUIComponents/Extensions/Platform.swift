@@ -133,6 +133,24 @@ extension View {
     }
 }
 
+// MARK: - Repeating Work
+
+/// Repeats work on the main actor inside a SwiftUI `.task`, so it stops when the view disappears.
+enum Ticker {
+    /// Calls `tick` every `interval` seconds until it returns `false` or the task is cancelled.
+    @MainActor
+    static func run(every interval: TimeInterval, _ tick: @MainActor () -> Bool) async {
+        while true {
+            do {
+                try await Task.sleep(for: .seconds(interval))
+            } catch {
+                return
+            }
+            if !tick() { return }
+        }
+    }
+}
+
 // MARK: - Fonts
 
 #if canImport(UIKit)

@@ -351,28 +351,30 @@ public struct VerticalMarqueeText: View {
             .foregroundStyle(textColor)
             .offset(y: offset)
             .opacity(opacity)
-            .onAppear {
-                startAnimation()
+            .task {
+                await rotateTexts()
             }
     }
     
-    private func startAnimation() {
+    private func rotateTexts() async {
         guard texts.count > 1 else { return }
         
-        Timer.scheduledTimer(withTimeInterval: displayDuration, repeats: true) { _ in
-            withAnimation(.easeInOut(duration: transitionDuration)) {
-                offset = -20
-                opacity = 0
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + transitionDuration) {
-                currentIndex = (currentIndex + 1) % texts.count
-                offset = 20
-                
+        while !Task.isCancelled {
+            do {
+                try await Task.sleep(for: .seconds(displayDuration))
                 withAnimation(.easeInOut(duration: transitionDuration)) {
-                    offset = 0
-                    opacity = 1
+                    offset = -20
+                    opacity = 0
                 }
+                try await Task.sleep(for: .seconds(transitionDuration))
+            } catch {
+                return
+            }
+            currentIndex = (currentIndex + 1) % texts.count
+            offset = 20
+            withAnimation(.easeInOut(duration: transitionDuration)) {
+                offset = 0
+                opacity = 1
             }
         }
     }

@@ -279,6 +279,7 @@ public struct TimedPinInput: View {
     
     @State private var remainingTime: Int
     @State private var timerActive: Bool = true
+    @State private var countdownRun = 0
     
     public init(
         code: Binding<String>,
@@ -315,7 +316,7 @@ public struct TimedPinInput: View {
                         onResend()
                         remainingTime = resendInterval
                         timerActive = true
-                        startTimer()
+                        countdownRun += 1
                     }
                     .foregroundStyle(.blue)
                     .fontWeight(.medium)
@@ -323,18 +324,15 @@ public struct TimedPinInput: View {
             }
             .font(.subheadline)
         }
-        .onAppear {
-            startTimer()
-        }
-    }
-    
-    private func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            if remainingTime > 0 {
-                remainingTime -= 1
-            } else {
+        .task(id: countdownRun) {
+            await Ticker.run(every: 1) {
+                if remainingTime > 1 {
+                    remainingTime -= 1
+                    return true
+                }
+                remainingTime = 0
                 timerActive = false
-                timer.invalidate()
+                return false
             }
         }
     }

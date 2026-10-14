@@ -11,7 +11,6 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
     
     @State private var currentIndex = 0
     @State private var offset: CGFloat = 0
-    @State private var timer: Timer?
     
     public init(
         items: [Item],
@@ -76,20 +75,14 @@ public struct Carousel<Item: Identifiable, Content: View>: View {
                 }
             }
         }
-        .onAppear {
-            if autoScroll {
-                startAutoScroll()
-            }
-        }
-        .onDisappear {
-            timer?.invalidate()
-        }
-    }
-    
-    private func startAutoScroll() {
-        timer = Timer.scheduledTimer(withTimeInterval: autoScrollInterval, repeats: true) { _ in
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                currentIndex = (currentIndex + 1) % items.count
+        .task {
+            guard autoScroll else { return }
+            await Ticker.run(every: autoScrollInterval) {
+                guard items.count > 1 else { return true }
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    currentIndex = (currentIndex + 1) % items.count
+                }
+                return true
             }
         }
     }

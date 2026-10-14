@@ -224,9 +224,10 @@ public struct InlineLoader: View {
                 }
             }
         }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { _ in
+        .task {
+            await Ticker.run(every: 0.4) {
                 phase = (phase + 1) % 3
+                return true
             }
         }
     }
@@ -256,9 +257,10 @@ public struct LoadingText: View {
         }
         .font(font)
         .foregroundStyle(color)
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+        .task {
+            await Ticker.run(every: 0.5) {
                 dotCount = (dotCount + 1) % 4
+                return true
             }
         }
     }

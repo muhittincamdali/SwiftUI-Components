@@ -78,7 +78,12 @@ public struct TypewriterText: View {
         }
         .onAppear {
             startTyping()
-            startCursorBlink()
+        }
+        .task {
+            await Ticker.run(every: cursorBlinkSpeed) {
+                cursorVisible.toggle()
+                return true
+            }
         }
     }
     
@@ -108,12 +113,7 @@ public struct TypewriterText: View {
             typeNextCharacter()
         }
     }
-    
-    private func startCursorBlink() {
-        Timer.scheduledTimer(withTimeInterval: cursorBlinkSpeed, repeats: true) { _ in
-            cursorVisible.toggle()
-        }
-    }
+
 }
 
 // MARK: - Advanced Typewriter
