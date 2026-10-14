@@ -33,6 +33,15 @@ struct NumericConversionTests {
         #expect(ticks == 0)
     }
 
+    @Test("slider step is kept only when Slider can use it", arguments: [
+        (0.0...100.0, 1.0 as Double?, 1.0 as Double?), (0.0...100.0, 100.0, 100.0), (0.0...100.0, nil, nil),
+        (0.0...100.0, 0.0, nil), (0.0...100.0, -5.0, nil), (0.0...100.0, .nan, nil),
+        (0.0...100.0, .infinity, nil), (0.0...100.0, 200.0, nil), (5.0...5.0, 0.5, nil),
+    ])
+    func sliderStep(range: ClosedRange<Double>, step: Double?, expected: Double?) {
+        #expect(range.sliderStep(step) == expected)
+    }
+
     @Test("noise texture draws a bounded number of dots", arguments: [
         (CGSize(width: 100, height: 100), 1_000),
         (CGSize(width: 10_000, height: 10_000), 4_000),

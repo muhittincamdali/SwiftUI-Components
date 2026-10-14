@@ -32,3 +32,15 @@ extension Duration {
         return .seconds(seconds)
     }
 }
+
+extension ClosedRange where Bound == Double {
+    /// `step` when `Slider(value:in:step:)` can use it with this range, otherwise nil.
+    ///
+    /// SwiftUI's `Slider` stops the process ("max stride must be positive") for a step that is
+    /// zero, negative, NaN or infinite, and for one larger than the range, which includes any step
+    /// on a range such as `5...5`. A slider given nil moves continuously instead.
+    func sliderStep(_ step: Double?) -> Double? {
+        guard let step, step.isFinite, step > 0, step <= upperBound - lowerBound else { return nil }
+        return step
+    }
+}

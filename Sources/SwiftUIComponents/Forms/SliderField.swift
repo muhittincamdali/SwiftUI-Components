@@ -56,7 +56,7 @@ public struct SliderField: View {
             Group {
                 switch style {
                 case .standard:
-                    if let step = step {
+                    if let step = range.sliderStep(step) {
                         Slider(value: $value, in: range, step: step)
                     } else {
                         Slider(value: $value, in: range)

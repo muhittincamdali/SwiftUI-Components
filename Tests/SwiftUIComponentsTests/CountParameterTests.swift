@@ -45,6 +45,21 @@ struct CountParameterTests {
         #expect(image.height > 0)
     }
 
+    /// SwiftUI's `Slider` stops the process ("max stride must be positive") for a step that is
+    /// not positive, not finite or larger than the range.
+    @MainActor
+    @Test("sliders render with steps Slider cannot use", arguments: [0, -5, Double.nan, .infinity, 200])
+    func rendersWithAnUnusableStep(step: Double) throws {
+        let views = VStack {
+            SliderField(value: .constant(5), range: 0...100, step: step)
+            SliderRatingInput(rating: .constant(5), range: 0...10, step: step)
+            SliderRatingInput(rating: .constant(5), range: 5...5)
+        }
+        let renderer = ImageRenderer(content: views.frame(width: 390))
+        let image = try #require(renderer.cgImage)
+        #expect(image.height > 0)
+    }
+
     /// A limit below what the layout needs used to slice past the array or build `1...0`.
     @MainActor
     @Test("views render with limits below their minimum", arguments: [-1, 0, 1, 2])

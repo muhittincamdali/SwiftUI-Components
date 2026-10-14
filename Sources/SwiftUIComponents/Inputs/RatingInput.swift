@@ -351,8 +351,14 @@ public struct SliderRatingInput: View {
 
     public var body: some View {
         VStack(spacing: 8) {
-            Slider(value: $rating, in: range, step: step)
-                .tint(filledColor)
+            Group {
+                if let step = range.sliderStep(step) {
+                    Slider(value: $rating, in: range, step: step)
+                } else {
+                    Slider(value: $rating, in: range)
+                }
+            }
+            .tint(filledColor)
 
             if showValue {
                 HStack {
