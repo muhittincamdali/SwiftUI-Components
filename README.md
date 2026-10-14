@@ -1,28 +1,49 @@
-# SwiftUI Components
+<!-- brand:start -->
 
-[![CI](https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg)](https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml)
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-light.svg" alt="SwiftUI Components: Ready-made SwiftUI views for iOS and macOS: buttons, cards, charts, forms and more."></picture></p>
 
-A Swift package of ready-made SwiftUI views — buttons, cards, charts, form inputs, lists,
-overlays, loaders and toasts — for iOS 17+ and macOS 14+. No dependencies.
+<!-- lang-selector:start -->
+<p align="center"><a href="README.md">English</a> · <a href="README.tr.md">Türkçe</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.ko.md">한국어</a> · <a href="README.es.md">Español</a> · <a href="README.de.md">Deutsch</a> · <a href="README.fr.md">Français</a> · <a href="README.pt-BR.md">Português (Brasil)</a> · <a href="README.ru.md">Русский</a></p>
+<!-- lang-selector:end -->
 
-Every component is a plain SwiftUI `View` configured through its initializer, so you can use
-one or two of them without adopting a theme system or an architecture.
+<p align="center">
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="Latest version: v1.0.0"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="Supported platforms: iOS 17+ · macOS 14+"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="Language version: Swift 6.0+"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="License: MIT"></picture></a>
+</p>
 
-| Light                                                  | Dark                                                 |
-| ------------------------------------------------------ | ---------------------------------------------------- |
-| ![Buttons, light](docs/images/buttons-light.png)       | ![Buttons, dark](docs/images/buttons-dark.png)       |
-| ![Cards, light](docs/images/cards-light.png)           | ![Cards, dark](docs/images/cards-dark.png)           |
-| ![Charts, light](docs/images/charts-light.png)         | ![Charts, dark](docs/images/charts-dark.png)         |
-| ![Indicators, light](docs/images/indicators-light.png) | ![Indicators, dark](docs/images/indicators-dark.png) |
+<p align="center">
+<a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-start-en-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-start-en-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-start-en-light.svg" alt="Get started"></picture></a>
+<a href="https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-docs-en-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-docs-en-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-docs-en-light.svg" alt="Documentation"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/tree/main/Examples"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-examples-en-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-examples-en-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/button-examples-en-light.svg" alt="Examples"></picture></a>
+</p>
 
-The screenshots are rendered on the iOS simulator from
-[`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
-by [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh).
+<!-- brand:end -->
 
-## What's included
+A Swift package of ready-made SwiftUI views for iOS 17+ and macOS 14+: buttons, cards, charts,
+form inputs, lists, overlays, loaders and toasts. It is for app developers who want a working
+component today instead of building it from scratch. Every component is a plain SwiftUI
+`View` configured through its initializer, so you can use one or two of them without adopting
+a theme system or an architecture. The package has no dependencies.
 
-The package has 220 public view types and 12 view modifiers (counted from the sources),
-grouped by folder:
+## Highlights
+
+- **220 views, 12 modifiers** — counted from the sources and grouped in 13 folders, from
+  `PrimaryButton` to `CreditCardInput` and `GaugeChart`.
+- **iOS and macOS from one code base** — UIKit-only details fall back to the closest AppKit
+  behaviour; the [platform notes](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)
+  list each one.
+- **Swift 6 language mode** — the package builds with strict concurrency checking and no
+  warnings.
+- **Tested logic** — card-number detection and the Luhn check, expiry dates, phone formatting,
+  `FlowLayout` line breaking, chart geometry, pagination and the toast queues are covered by
+  56 Swift Testing tests that run on macOS and an iPhone simulator.
+- **Samples that compile** — every code sample below comes from the
+  [example app](Examples/ComponentGallery), which CI builds for iOS and macOS.
+
+### What's included
 
 | Category         | Examples                                                                                                                                        |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -43,44 +64,94 @@ grouped by folder:
 Layout and modifiers: `FlowLayout` (wrapping layout), `.surface()`, `.shimmer()`,
 `.toast(isPresenting:message:)`, `.snackBarHost()`, `.bannerHost()`.
 
-## Requirements
+## Quick start
 
-- iOS 17 or macOS 14
-- `swift-tools-version` 6.0; the package builds in the Swift 6 language mode. Developed with
-  Xcode 27; CI uses the default Xcode of GitHub's `macos-26` runner
+**1. Add the package**
 
-A few UIKit-only details (haptics, keyboard type, wheel pickers, paged `TabView`) fall back to
-the nearest AppKit behaviour on macOS. The DocC article _Platform Differences_ lists them.
+In Xcode, choose **File › Add Package Dependencies…** and enter the repository URL:
+
+```text
+https://github.com/muhittincamdali/SwiftUI-Components.git
+```
+
+Paste it into the search field at the top right of the window. Set **Dependency Rule** to
+**Branch** and type `main`, then click **Add Package**. In the next window, choose your app
+target next to **SwiftUIComponents** and click **Add Package** again.
+
+**2. Import the module**
+
+```swift
+import SwiftUIComponents
+```
+
+Put this line at the top of the Swift file where you use a component, below `import SwiftUI`.
+
+**3. Use it**
+
+In a new Xcode app (**File › New › Project… › App**), replace everything in `ContentView.swift`
+with:
+
+```swift
+import SwiftUI
+import SwiftUIComponents
+
+struct ContentView: View {
+    @State private var rating = 3.0
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Rate this app")
+                .font(.headline)
+            RatingInput(rating: $rating)
+            PrimaryButton("Send rating") {
+                print("Rating: \(rating)")
+            }
+        }
+        .padding()
+    }
+}
+```
+
+Press **Run** (⌘R). The app shows five stars and a blue button; tap a star to change the
+rating, and tap the button to print it in Xcode's console.
 
 ## Installation
 
-Swift Package Manager, in Xcode via **File > Add Package Dependencies…** with
-`https://github.com/muhittincamdali/SwiftUI-Components.git`, or in `Package.swift`:
+### Swift Package Manager
+
+In Xcode, choose **File › Add Package Dependencies…** and enter the repository URL:
+
+```text
+https://github.com/muhittincamdali/SwiftUI-Components.git
+```
+
+Or add it to the `dependencies` in your `Package.swift`:
 
 ```swift
 dependencies: [
     .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
 ],
 targets: [
-    .target(
-        name: "MyApp",
-        dependencies: [.product(name: "SwiftUIComponents", package: "SwiftUI-Components")]
-    )
+    .target(name: "YourApp", dependencies: [
+        .product(name: "SwiftUIComponents", package: "SwiftUI-Components")
+    ])
 ]
 ```
+
+Use the `main` branch for now. The only release, 1.0.0 (February 2026), predates the current
+components: in June 2026 they were replaced with placeholder code, and in October 2026 they
+were restored, made to build for iOS and macOS in the Swift 6 language mode, and fixed where
+the new tests found bugs. [CHANGELOG.md](CHANGELOG.md) has the details.
 
 ## Usage
 
 The samples below are copied from
-[`Tests/SwiftUIComponentsTests/ReadmeExamples.swift`](Tests/SwiftUIComponentsTests/ReadmeExamples.swift),
-so they are compiled on every test run.
+[`Examples/ComponentGallery/ComponentGallery/ReadmeSamples.swift`](Examples/ComponentGallery/ComponentGallery/ReadmeSamples.swift).
+The example app and the test suite both compile that file.
 
 ### Buttons
 
 ```swift
-import SwiftUI
-import SwiftUIComponents
-
 struct CheckoutButtons: View {
     @State private var payState: LoadingButton.LoadingState = .idle
 
@@ -192,29 +263,74 @@ struct TopicPicker: View {
 }
 ```
 
+## Demo
+
+| Light                                                  | Dark                                                 |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| ![Buttons, light](docs/images/buttons-light.png)       | ![Buttons, dark](docs/images/buttons-dark.png)       |
+| ![Cards, light](docs/images/cards-light.png)           | ![Cards, dark](docs/images/cards-dark.png)           |
+| ![Charts, light](docs/images/charts-light.png)         | ![Charts, dark](docs/images/charts-dark.png)         |
+| ![Indicators, light](docs/images/indicators-light.png) | ![Indicators, dark](docs/images/indicators-dark.png) |
+
+The screenshots are rendered on the iOS simulator from
+[`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
+by [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh).
+
+To try the components yourself, open `ComponentGallery.xcodeproj` in
+[`Examples/ComponentGallery`](Examples/ComponentGallery) with Xcode, choose an iPhone simulator
+or **My Mac**, and press **Run**. The app has one screen per sample
+above; [Examples/README.md](Examples/README.md) has the details.
+
 ## Documentation
 
-API documentation is written as a DocC catalog in
-[`Sources/SwiftUIComponents/SwiftUIComponents.docc`](Sources/SwiftUIComponents/SwiftUIComponents.docc).
-Build it in Xcode with **Product > Build Documentation**, or from the command line:
+Reference documentation and articles:
+
+- [API reference](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/)
+  (DocC, published to GitHub Pages from `main`)
+- Build it locally in Xcode with **Product › Build Documentation**, or from the command line:
 
 ```sh
-xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=iOS'
+xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=macOS'
 ```
 
-## How it is built and tested
+## Guides
+
+- [Getting Started](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/gettingstarted)
+  — add the package, place a component, show snackbars and paginate a list
+  ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/GettingStarted.md)).
+- [Collecting Card Details](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/collectingcarddetails)
+  — a payment form with validation, and what the checks do and do not cover
+  ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/CollectingCardDetails.md)).
+- [Platform Differences](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/platformdifferences)
+  — what changes on macOS
+  ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)).
+
+## Requirements
+
+| Platform  | Minimum version       |
+| --------- | --------------------- |
+| iOS       | 17                    |
+| macOS     | 14                    |
+| Toolchain | Swift 6.0 · Xcode 16+ |
+
+CI builds with the default Xcode of GitHub's `macos-26` runner image. The package is developed
+with Xcode 27.
+
+## Architecture
 
 - `Sources/SwiftUIComponents/<Category>/` holds one file per component family. Components keep
-  their state in `@State`/`@Binding`; the only reference types are `SnackBarManager`,
+  their state in `@State` and `@Binding`; the only reference types are `SnackBarManager`,
   `BannerManager` and `PaginatedListViewModel`, all `@MainActor`.
-- Logic that can be tested without a screen — card-number detection and formatting, the Luhn
-  and expiry checks, phone formatting, rating hit-testing, highlight matching, `FlowLayout`
-  line breaking, chart geometry, pagination and the toast queues — lives in static functions
-  or the manager classes and is covered by Swift Testing suites in `Tests/`.
-- `RenderTests` renders the gallery pages with `ImageRenderer` in light and dark mode, which
-  catches views that crash or collapse to an empty size. Most individual views do not have
-  their own tests.
-- CI runs `swift test` on macOS and `xcodebuild test` on an iPhone simulator.
+- `Extensions/Platform.swift` maps the few UIKit-only APIs (system colors, haptics, keyboard
+  type, capitalization, wheel pickers, paged `TabView`) to AppKit or to no-ops, so the
+  components themselves contain almost no `#if os(...)`.
+- Logic that can be tested without a screen lives in static functions or in the manager
+  classes and is covered by Swift Testing suites in `Tests/`. `RenderTests` and
+  `GaugeNeedleTests` render views with `ImageRenderer`: the gallery pages in light and dark
+  mode (which catches views that crash or collapse to an empty size) and the gauge needle
+  direction. Most individual views do not have their own tests.
+- CI runs `swift test` on macOS, `xcodebuild test` on an iPhone simulator, builds the example
+  app for iOS and macOS, and publishes the DocC documentation.
 
 Run the tests locally:
 
@@ -224,17 +340,17 @@ xcodebuild test -scheme SwiftUIComponents \
   -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
-## History
+## Roadmap
 
-The components were first published in February 2026. A June 2026 cleanup replaced them with
-placeholder code; they were restored in October 2026, made to compile for iOS and macOS in the
-Swift 6 language mode, and several bugs found while adding tests were fixed. See
-[CHANGELOG.md](CHANGELOG.md).
+- Tag a release of the restored components, so the package can be added with a version rule
+  instead of the `main` branch.
+- Add the package to the Swift Package Index; `.spi.yml` is already in the repository.
+- Write tests for more individual views, starting with the form inputs.
 
 ## Contributing
 
-Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome. Read the [contributing guide](https://github.com/muhittincamdali/SwiftUI-Components/blob/main/CONTRIBUTING.md) and the [code of conduct](https://github.com/muhittincamdali/.github/blob/main/CODE_OF_CONDUCT.md) before opening a pull request. Report security issues privately as described in the [security policy](https://github.com/muhittincamdali/.github/blob/main/SECURITY.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Released under the MIT license. See [LICENSE](LICENSE).
