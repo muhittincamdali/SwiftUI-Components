@@ -63,6 +63,9 @@ changed in a breaking way.
 - Zero or negative counts no longer stop the app in `DotLoader`, `SkeletonView`,
   `PageIndicator`, `ScrollingPageIndicator`, `CheckboxGroup`, `TimeSlotPicker`, `StatGrid`,
   `OTPField`, `SecurePINField`, `PinInput` and `PasscodeInput`.
+- A `maxRating` below 1 in `RatingInput` and `RatingDisplay`, and a `maxItems` or `maxVisible`
+  below 3 in `BreadcrumbView` and `DropdownBreadcrumb`, no longer stop the app; they are raised
+  to those minimums.
 - `TexturedGlassCard` drew one noise dot per ten square points without limit; it now draws at
   most 4,000.
 

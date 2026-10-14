@@ -40,4 +40,22 @@ struct CountParameterTests {
         let image = try #require(renderer.cgImage)
         #expect(image.height > 0)
     }
+
+    /// A limit below what the layout needs used to slice past the array or build `1...0`.
+    @MainActor
+    @Test("views render with limits below their minimum", arguments: [-1, 0, 1, 2])
+    func rendersBelowTheMinimumLimit(limit: Int) throws {
+        let crumbs = ["Home", "Products", "Phones", "Cases"].map { BreadcrumbView.Crumb(title: $0) }
+        let views = VStack {
+            RatingInput(rating: .constant(1), maxRating: limit)
+            RatingDisplay(rating: 1, maxRating: limit)
+            DropdownBreadcrumb(crumbs: Array(crumbs.prefix(2)), maxVisible: limit)
+            DropdownBreadcrumb(crumbs: crumbs, maxVisible: limit)
+            BreadcrumbView(crumbs: crumbs, maxItems: limit)
+            BreadcrumbView(path: ["Home", "Settings"], maxItems: limit)
+        }
+        let renderer = ImageRenderer(content: views.frame(width: 390))
+        let image = try #require(renderer.cgImage)
+        #expect(image.height > 0)
+    }
 }

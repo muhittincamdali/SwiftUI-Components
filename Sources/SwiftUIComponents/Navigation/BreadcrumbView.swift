@@ -1,5 +1,10 @@
 import SwiftUI
 
+/// A truncated path needs room for the first crumb, the overflow marker and the current crumb.
+/// Smaller limits are raised to this so the path never drops the current crumb or slices
+/// past the end of the array.
+private let minimumTruncatedCrumbs = 3
+
 /// A breadcrumb navigation component showing the current path.
 ///
 /// `BreadcrumbView` displays a hierarchical navigation path
@@ -47,6 +52,8 @@ public struct BreadcrumbView: View {
     // MARK: - Initialization
 
     /// Creates a breadcrumb from strings.
+    ///
+    /// `maxItems` counts the "..." marker and is at least 3.
     public init(
         path: [String],
         style: Style = .chevron,
@@ -67,10 +74,12 @@ public struct BreadcrumbView: View {
         self.inactiveColor = inactiveColor
         self.separatorColor = separatorColor
         self.truncateMiddle = truncateMiddle
-        self.maxItems = maxItems
+        self.maxItems = max(minimumTruncatedCrumbs, maxItems)
     }
 
     /// Creates a breadcrumb from crumb objects.
+    ///
+    /// `maxItems` counts the "..." marker and is at least 3.
     public init(
         crumbs: [Crumb],
         style: Style = .chevron,
@@ -88,7 +97,7 @@ public struct BreadcrumbView: View {
         self.inactiveColor = inactiveColor
         self.separatorColor = separatorColor
         self.truncateMiddle = truncateMiddle
-        self.maxItems = maxItems
+        self.maxItems = max(minimumTruncatedCrumbs, maxItems)
     }
 
     // MARK: - Body
@@ -228,13 +237,14 @@ public struct DropdownBreadcrumb: View {
     private let maxVisible: Int
     private let font: Font
 
+    /// `maxVisible` counts the overflow menu and is at least 3.
     public init(
         crumbs: [BreadcrumbView.Crumb],
         maxVisible: Int = 3,
         font: Font = .subheadline
     ) {
         self.crumbs = crumbs
-        self.maxVisible = maxVisible
+        self.maxVisible = max(minimumTruncatedCrumbs, maxVisible)
         self.font = font
     }
 
