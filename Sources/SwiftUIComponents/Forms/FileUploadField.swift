@@ -1,30 +1,71 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
-/// A file upload field with drag and drop support
+/// A field that lets the user pick files, or drop them on the drop zone, and lists them.
+///
+/// Picked files are added to `selectedFiles` with `progress` 0 and `isUploaded` `false`. Upload
+/// each file's ``UploadedFile/url`` yourself and update its `progress` and `isUploaded` through
+/// the binding. Files over the limits are not added; `onRejected` reports them.
+///
+/// ```swift
+/// FileUploadField(selectedFiles: $files, maxFiles: 3, allowedTypes: ["pdf", "png"]) { name, reason in
+///     print("\(name) was not added: \(reason)")
+/// }
+/// ```
 public struct FileUploadField: View {
     @Binding var selectedFiles: [UploadedFile]
     let maxFiles: Int
     let allowedTypes: [String]
     let maxFileSize: Int // in MB
     let style: UploadStyle
+    let onRejected: ((String, Rejection) -> Void)?
 
     @State private var isDragging = false
+    @State private var isImporting = false
 
     public struct UploadedFile: Identifiable {
         public let id = UUID()
-        let name: String
-        let size: Int
-        let type: String
-        var progress: Double
-        var isUploaded: Bool
+        /// The file name, such as `"report.pdf"`.
+        public let name: String
+        /// The size in bytes.
+        public let size: Int
+        /// The lowercased file extension, such as `"pdf"`.
+        public let type: String
+        /// Where the picked or dropped file is; `nil` for files you create yourself. A file from
+        /// the picker can be outside your app's sandbox: call
+        /// `startAccessingSecurityScopedResource()` on the URL before you read it.
+        public let url: URL?
+        /// The upload progress from 0 to 1, shown while `isUploaded` is `false`.
+        public var progress: Double
+        public var isUploaded: Bool
 
-        public init(name: String, size: Int, type: String, progress: Double = 0, isUploaded: Bool = false) {
+        public init(
+            name: String,
+            size: Int,
+            type: String,
+            url: URL? = nil,
+            progress: Double = 0,
+            isUploaded: Bool = false
+        ) {
             self.name = name
             self.size = size
             self.type = type
+            self.url = url
             self.progress = progress
             self.isUploaded = isUploaded
         }
+    }
+
+    /// Why a picked or dropped file was not added.
+    public enum Rejection: Equatable, Sendable {
+        /// `maxFiles` files are already selected.
+        case tooManyFiles
+        /// The file's extension is not in `allowedTypes`.
+        case unsupportedType
+        /// The file is larger than `maxFileSize` megabytes.
+        case tooLarge
+        /// The file's size could not be read.
+        case unreadable
     }
 
     public enum UploadStyle {
@@ -38,13 +79,15 @@ public struct FileUploadField: View {
         maxFiles: Int = 5,
         allowedTypes: [String] = ["pdf", "doc", "docx", "jpg", "png"],
         maxFileSize: Int = 10,
-        style: UploadStyle = .dropzone
+        style: UploadStyle = .dropzone,
+        onRejected: ((String, Rejection) -> Void)? = nil
     ) {
         self._selectedFiles = selectedFiles
         self.maxFiles = maxFiles
         self.allowedTypes = allowedTypes
         self.maxFileSize = maxFileSize
         self.style = style
+        self.onRejected = onRejected
     }
 
     public var body: some View {
@@ -67,7 +110,16 @@ public struct FileUploadField: View {
                 }
             }
         }
+        .fileImporter(
+            isPresented: $isImporting,
+            allowedContentTypes: Self.contentTypes(for: allowedTypes),
+            allowsMultipleSelection: true
+        ) { result in
+            if case .success(let urls) = result { add(urls) }
+        }
     }
+
+    private var isFull: Bool { selectedFiles.count >= maxFiles }
 
     private var dropzoneView: some View {
         VStack(spacing: 12) {
@@ -84,11 +136,11 @@ public struct FileUploadField: View {
                     .foregroundColor(.secondary)
 
                 Button("Browse Files") {
-                    // File picker action
-                    addDemoFile()
+                    isImporting = true
                 }
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.accentColor)
+                .disabled(isFull)
             }
 
             Text("Max \(maxFiles) files • \(allowedTypes.joined(separator: ", ").uppercased()) • Up to \(maxFileSize)MB each")
@@ -106,11 +158,17 @@ public struct FileUploadField: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(isDragging ? Color.accentColor.opacity(0.05) : Color.platformGray6.opacity(0.5))
         )
+        .dropDestination(for: URL.self) { urls, _ in
+            add(urls)
+            return !urls.isEmpty
+        } isTargeted: { isTargeted in
+            isDragging = isTargeted
+        }
     }
 
     private var buttonView: some View {
         Button {
-            addDemoFile()
+            isImporting = true
         } label: {
             HStack {
                 Image(systemName: "plus.circle.fill")
@@ -139,13 +197,13 @@ public struct FileUploadField: View {
             )
         }
         .buttonStyle(PlainButtonStyle())
-        .disabled(selectedFiles.count >= maxFiles)
+        .disabled(isFull)
     }
 
     private var compactView: some View {
         HStack {
             Button {
-                addDemoFile()
+                isImporting = true
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "paperclip")
@@ -156,7 +214,7 @@ public struct FileUploadField: View {
                 .foregroundColor(.accentColor)
             }
             .buttonStyle(PlainButtonStyle())
-            .disabled(selectedFiles.count >= maxFiles)
+            .disabled(isFull)
 
             Spacer()
 
@@ -196,7 +254,7 @@ public struct FileUploadField: View {
 
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Color.accentColor)
-                                .frame(width: geometry.size.width * file.progress, height: 4)
+                                .frame(width: geometry.size.width * Self.clampedProgress(file.progress), height: 4)
                         }
                     }
                     .frame(height: 4)
@@ -259,16 +317,80 @@ public struct FileUploadField: View {
         }
     }
 
-    private func addDemoFile() {
-        guard selectedFiles.count < maxFiles else { return }
-        let demo = UploadedFile(
-            name: "document_\(selectedFiles.count + 1).pdf",
-            size: Int.random(in: 100_000...5_000_000),
-            type: "pdf",
-            progress: 1.0,
-            isUploaded: true
-        )
-        selectedFiles.append(demo)
+    /// Adds the files that pass the limits and reports the others to `onRejected`.
+    private func add(_ urls: [URL]) {
+        var count = selectedFiles.count
+        for url in urls {
+            let isScoped = url.startAccessingSecurityScopedResource()
+            let size = try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize
+            if isScoped { url.stopAccessingSecurityScopedResource() }
+
+            let name = url.lastPathComponent
+            if let reason = Self.rejection(
+                name: name,
+                size: size,
+                currentCount: count,
+                maxFiles: maxFiles,
+                allowedTypes: allowedTypes,
+                maxFileSize: maxFileSize
+            ) {
+                onRejected?(name, reason)
+                continue
+            }
+            selectedFiles.append(UploadedFile(
+                name: name,
+                size: size ?? 0,
+                type: url.pathExtension.lowercased(),
+                url: url
+            ))
+            count += 1
+        }
+    }
+}
+
+// MARK: - Rules
+
+extension FileUploadField {
+    /// The bytes in one of the megabytes `maxFileSize` counts, matching the sizes the rows show.
+    nonisolated static let bytesPerMegabyte = 1_048_576.0
+
+    /// Why a file called `name` of `size` bytes cannot join `currentCount` selected files, or
+    /// `nil` when it can. Extensions compare without case and without a leading dot; an empty
+    /// `allowedTypes` allows every type.
+    nonisolated static func rejection(
+        name: String,
+        size: Int?,
+        currentCount: Int,
+        maxFiles: Int,
+        allowedTypes: [String],
+        maxFileSize: Int
+    ) -> Rejection? {
+        guard currentCount < maxFiles else { return .tooManyFiles }
+        let fileExtension = URL(fileURLWithPath: name).pathExtension.lowercased()
+        let allowed = allowedTypes.map(normalizedExtension)
+        if !allowed.isEmpty, !allowed.contains(fileExtension) { return .unsupportedType }
+        guard let size, size >= 0 else { return .unreadable }
+        // In `Double`, so a large `maxFileSize` cannot overflow the multiplication.
+        guard Double(size) <= Double(max(maxFileSize, 0)) * bytesPerMegabyte else { return .tooLarge }
+        return nil
+    }
+
+    /// The types the file picker offers. Unknown extensions are skipped; when none is known the
+    /// picker offers every file and ``rejection(name:size:currentCount:maxFiles:allowedTypes:maxFileSize:)``
+    /// still checks the extension.
+    nonisolated static func contentTypes(for allowedTypes: [String]) -> [UTType] {
+        let types = allowedTypes.compactMap { UTType(filenameExtension: normalizedExtension($0)) }
+        return types.isEmpty ? [.item] : types
+    }
+
+    nonisolated static func normalizedExtension(_ type: String) -> String {
+        let trimmed = type.trimmingCharacters(in: .whitespaces).lowercased()
+        return trimmed.hasPrefix(".") ? String(trimmed.dropFirst()) : trimmed
+    }
+
+    /// `progress` within 0...1; NaN becomes 0.
+    nonisolated static func clampedProgress(_ progress: Double) -> Double {
+        progress.isNaN ? 0 : min(max(progress, 0), 1)
     }
 }
 
