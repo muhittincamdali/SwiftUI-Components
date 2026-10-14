@@ -1,0 +1,31 @@
+# Managed by the repository kit (muhittincamdali/.github): links, wording and README translations.
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "4 22 * * 3"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  links:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/links.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+
+  hygiene:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/hygiene.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+
+  translations:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/readme-i18n-sync.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+    with:
+      languages: tr zh-CN ja ko es de fr pt-BR ru
+      strict: true

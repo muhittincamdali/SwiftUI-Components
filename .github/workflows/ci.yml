@@ -1,58 +1,18 @@
+# Managed by the repository kit (muhittincamdali/.github). Edit the inputs, keep the structure.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+  workflow_dispatch:
 
-permissions:
-  contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+permissions: {}
 
 jobs:
-  macos:
-    name: macOS - swift build & test
-    runs-on: macos-26
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Toolchain
-        run: |
-          xcodebuild -version
-          swift --version
-
-      - name: Build
-        run: swift build
-
-      - name: Test
-        run: swift test
-
-  ios:
-    name: iOS Simulator - xcodebuild test
-    runs-on: macos-26
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Pick an iPhone simulator
-        id: simulator
-        run: |
-          udid="$(xcrun simctl list devices available --json \
-            | jq -r '[.devices[][] | select(.name | startswith("iPhone"))][0].udid')"
-          if [ -z "$udid" ] || [ "$udid" = "null" ]; then
-            echo "No iPhone simulator available" >&2
-            exit 1
-          fi
-          echo "udid=$udid" >> "$GITHUB_OUTPUT"
-
-      - name: Test
-        run: |
-          xcodebuild test \
-            -scheme SwiftUIComponents \
-            -destination "id=${{ steps.simulator.outputs.udid }}" \
-            -quiet
+  swift:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+    with:
+      platforms: '["iOS","macOS"]'

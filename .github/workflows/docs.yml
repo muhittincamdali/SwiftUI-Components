@@ -1,0 +1,21 @@
+# Managed by the repository kit (muhittincamdali/.github). Pages source must be "GitHub Actions".
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  docc:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: muhittincamdali/.github/.github/workflows/docc-pages.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+    with:
+      targets: SwiftUIComponents
+      deploy: ${{ github.event_name != 'pull_request' }}
