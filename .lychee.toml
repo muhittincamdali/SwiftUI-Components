@@ -33,6 +33,16 @@ exclude = [
   '^https://github\.com/[^/]+/[^/]+/compare/',
 ]
 
+# The READMEs link to this repository's own files on main (graphics in .github/brand, screenshots
+# in docs/images, Package.swift, LICENSE, folders). A pull request cannot change main, so the
+# checked-out files stand in for them: on main they are the same files, on a pull request they are
+# the ones it adds or removes. The path is the workspace of GitHub-hosted runners; a local run
+# passes the same two --remap options with its own path.
+remap = [
+  '^https://raw\.githubusercontent\.com/muhittincamdali/SwiftUI-Components/main/(.*)$ file:///home/runner/work/SwiftUI-Components/SwiftUI-Components/$1',
+  '^https://github\.com/muhittincamdali/SwiftUI-Components/(?:blob|tree)/main/(.*)$ file:///home/runner/work/SwiftUI-Components/SwiftUI-Components/$1',
+]
+
 exclude_path = [
   "node_modules",
   ".build",
