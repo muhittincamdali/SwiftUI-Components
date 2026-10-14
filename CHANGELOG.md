@@ -29,7 +29,8 @@ for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
   for four gallery pages in light and dark mode.
 - README screenshots rendered on the iOS simulator, and `scripts/generate-screenshots.sh`.
 - DocC catalog with an overview, a getting-started article, an article on collecting card
-  details and platform notes, published to GitHub Pages by the `Documentation` workflow.
+  details and platform notes, published to GitHub Pages by the `Documentation` workflow. The
+  site leaves out the SwiftUI `View` members each view inherits.
 - `Examples/ComponentGallery`, an iOS and macOS app with one screen per README sample; the
   README samples are compiled by the app and by the tests.
 - README translations into Turkish, Simplified Chinese, Japanese, Korean, Spanish, German,

@@ -19,3 +19,6 @@ jobs:
     with:
       targets: SwiftUIComponents
       deploy: ${{ github.event_name != 'pull_request' }}
+      # Each view would otherwise get a page for every View modifier it inherits (about 850),
+      # which makes the site too large for GitHub Pages.
+      skip-synthesized-members: true
