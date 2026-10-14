@@ -115,14 +115,22 @@ struct ToastManagerTests {
     private static let exitAnimation: Duration = .milliseconds(300)
 
     /// Polls until `condition` holds, so a slow CI machine only makes the test slower, not red.
+    ///
+    /// The rendering suite runs at the same time and holds the main actor for seconds per page on
+    /// a CI simulator. The manager's clear task and this loop both wait for the main actor then, so
+    /// the deadline can pass while the clear task is still queued behind the render. After the
+    /// deadline the loop therefore waits once more, long enough for an exit animation, and only
+    /// fails if the condition still does not hold.
     private func waitUntil(
-        timeout: Duration = .seconds(5),
+        timeout: Duration = .seconds(30),
         _ condition: () -> Bool,
         sourceLocation: SourceLocation = #_sourceLocation
     ) async throws {
         let deadline = ContinuousClock.now + timeout
         while !condition() {
-            guard ContinuousClock.now < deadline else {
+            if ContinuousClock.now >= deadline {
+                try await Task.sleep(for: Self.exitAnimation)
+                if condition() { return }
                 Issue.record("Condition not met within \(timeout)", sourceLocation: sourceLocation)
                 return
             }
