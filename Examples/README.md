@@ -8,7 +8,7 @@ local package reference to `../..`), so it always shows the current code.
 
 Run it:
 
-1. Open `Examples/ComponentGallery/ComponentGallery.xcodeproj` in Xcode 16 or later.
+1. Open `Examples/ComponentGallery/ComponentGallery.xcodeproj` in Xcode 26 or later.
 2. Choose the **ComponentGallery** scheme and an iPhone simulator or **My Mac** as the run
    destination.
 3. Press **Run** (⌘R).
