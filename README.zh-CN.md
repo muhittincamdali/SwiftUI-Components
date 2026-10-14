@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
+<!-- i18n-source: README.md@6aae1c1c3f9765280535dc0d3594a29f8b6eedf7 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg" alt="SwiftUI Components: 适用于 iOS 和 macOS 的现成 SwiftUI 视图：按钮、卡片、图表、表单等。"></picture></p>

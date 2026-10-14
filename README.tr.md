@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
+<!-- i18n-source: README.md@6aae1c1c3f9765280535dc0d3594a29f8b6eedf7 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg" alt="SwiftUI Components: iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası."></picture></p>
