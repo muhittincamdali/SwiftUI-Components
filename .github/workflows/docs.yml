@@ -15,7 +15,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    uses: muhittincamdali/.github/.github/workflows/docc-pages.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+    uses: muhittincamdali/.github/.github/workflows/docc-pages.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
     with:
       targets: SwiftUIComponents
       deploy: ${{ github.event_name != 'pull_request' }}

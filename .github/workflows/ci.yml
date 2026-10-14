@@ -13,7 +13,7 @@ jobs:
   swift:
     permissions:
       contents: read
-    uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@5d3c4432dae8895b16ce3caa2f78398966953212 # v1
+    uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
     with:
       platforms: '["iOS","macOS"]'
       scheme: SwiftUIComponents
