@@ -14,6 +14,10 @@ let package = Package(
         .target(
             name: "SwiftUIComponents",
             path: "Sources/SwiftUIComponents"
+        ),
+        .testTarget(
+            name: "SwiftUIComponentsTests",
+            dependencies: ["SwiftUIComponents"]
         )
     ]
 )
