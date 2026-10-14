@@ -201,7 +201,7 @@ public struct FormLabel: View {
                     .font(.headline)
 
                 ExpandableText(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    "SwiftUI lays out a view in three steps: the parent proposes a size, the child picks its own size, and the parent places the child. Text follows the same rule, so a long paragraph in a narrow column wraps onto more lines instead of widening the column. ExpandableText measures the paragraph twice, with and without the line limit, and shows the Read more button only when the limit cut something off."
                 )
             }
 
@@ -211,7 +211,7 @@ public struct FormLabel: View {
                 Text("Reading Time")
                     .font(.headline)
 
-                ReadingTimeText("This is a sample article text that would take some time to read.")
+                ReadingTimeText("ReadingTimeText divides the word count by the reading speed, 200 words per minute unless you pass another value, and never shows less than one minute.")
             }
 
             Divider()
