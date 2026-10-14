@@ -82,7 +82,8 @@ if let match = recognizer.recognize(points), match.score > 0.8 {
 }
 ```
 
-Templates are `Codable`, so shapes recorded in the app can be saved and loaded. The pad keeps at
+Templates are `Codable`, so shapes recorded in the app can be saved and loaded; decoding
+throws unless the saved stroke has 64 finite points and a length. The pad keeps at
 most 2,048 points per stroke, dropping every second point when it reaches the limit, so holding
 a finger down does not grow memory or recognition time without bound.
 

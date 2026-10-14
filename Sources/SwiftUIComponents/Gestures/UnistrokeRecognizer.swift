@@ -32,6 +32,32 @@ public struct UnistrokeRecognizer: Sendable {
             self.name = name
             self.points = normalized
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case name, points
+        }
+
+        /// Decodes a template saved by ``UnistrokeRecognizer``. Throws `DecodingError` unless
+        /// the stroke has the 64 points of a normalized stroke, all finite, and a length.
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let points = try container.decode([CGPoint].self, forKey: .points)
+            // Saved data can be edited or truncated; the recognizer compares point by point
+            // and assumes every template went through `Stroke.normalize`.
+            let length = Stroke.pathLength(points)
+            guard points.count == Stroke.sampleCount,
+                  points.allSatisfy({ $0.x.isFinite && $0.y.isFinite }),
+                  length > 0, length.isFinite
+            else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .points,
+                    in: container,
+                    debugDescription: "A template needs \(Stroke.sampleCount) finite points with a nonzero path length."
+                )
+            }
+            self.name = try container.decode(String.self, forKey: .name)
+            self.points = points
+        }
     }
 
     /// The best template for a drawing.

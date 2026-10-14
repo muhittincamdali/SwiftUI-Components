@@ -214,6 +214,27 @@ struct UnistrokeRecognizerTests {
         #expect(custom.templates.isEmpty)
     }
 
+    /// JSON point arrays for templates that did not come from `Stroke.normalize`: empty, too
+    /// short, 64 points with no length, and 64 points with a NaN coordinate.
+    static let malformedTemplatePoints: [String] = {
+        let samePoint: [String] = Array(repeating: "[5, 5]", count: 64)
+        let line: [String] = (1...63).map { "[\($0), 0]" }
+        return ["[]", "[[0, 0]]", "[[0, 0], [10, 0]]",
+                "[" + samePoint.joined(separator: ",") + "]",
+                #"[["nan", 0],"# + line.joined(separator: ",") + "]"]
+    }()
+
+    /// Saved templates can be edited or cut short; only a normalized stroke may be decoded.
+    @Test("rejects saved templates that are not a normalized stroke", arguments: malformedTemplatePoints)
+    func rejectsMalformedTemplates(points: String) {
+        let json = #"{"name": "broken", "points": "# + points + "}"
+        let decoder = JSONDecoder()
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "inf", negativeInfinity: "-inf", nan: "nan")
+        #expect(throws: DecodingError.self) {
+            try decoder.decode(UnistrokeRecognizer.Template.self, from: Data(json.utf8))
+        }
+    }
+
     @Test func builtInTemplatesCoverEveryShape() {
         let names = Set(UnistrokeRecognizer.builtInTemplates.map(\.name))
         #expect(names == Set(UnistrokeRecognizer.BuiltInShape.allCases.map(\.rawValue)))
