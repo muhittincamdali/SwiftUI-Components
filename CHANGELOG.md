@@ -26,7 +26,12 @@ for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
 - Swift Testing suites for the logic above, pagination, the toast managers, and render tests
   for four gallery pages in light and dark mode.
 - README screenshots rendered on the iOS simulator, and `scripts/generate-screenshots.sh`.
-- DocC catalog with an overview, a getting-started article and platform notes.
+- DocC catalog with an overview, a getting-started article, an article on collecting card
+  details and platform notes, published to GitHub Pages by the `Documentation` workflow.
+- `Examples/ComponentGallery`, an iOS and macOS app with one screen per README sample; the
+  README samples are compiled by the app and by the tests.
+- README translations into Turkish, Simplified Chinese, Japanese, Korean, Spanish, German,
+  French, Brazilian Portuguese and Russian, and a generated banner, badges and buttons.
 - `.spi.yml` for the Swift Package Index.
 
 ### Changed
@@ -38,8 +43,12 @@ for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
 - `TextInputField(keyboardType:)` now takes a `KeyboardKind` instead of `UIKeyboardType`.
 - `FlowLayout` is a single public type in `Layout/FlowLayout.swift` (three copies existed).
 - `HighlightedText` builds an `AttributedString`, so highlight backgrounds actually render.
-- CI runs `swift test` on macOS and `xcodebuild test` on an iPhone simulator, with
-  SHA-pinned actions and no `continue-on-error`.
+- CI runs through the shared workflows in `muhittincamdali/.github`: `swift test` on macOS
+  and `xcodebuild` builds for iOS and macOS, DocC to GitHub Pages, link, wording and
+  translation checks. Repository workflows run `xcodebuild test` on an iPhone simulator and
+  build the example app. All actions are pinned to commit SHAs, with no `continue-on-error`.
+- The code of conduct, security policy and issue forms come from `muhittincamdali/.github`
+  instead of local copies.
 
 ### Fixed
 
