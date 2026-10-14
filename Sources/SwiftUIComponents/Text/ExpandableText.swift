@@ -110,7 +110,7 @@ public struct ReadingTimeText: View {
 
     public init(_ text: String, wordsPerMinute: Int = 200, showIcon: Bool = true) {
         self.text = text
-        self.wordsPerMinute = wordsPerMinute
+        self.wordsPerMinute = max(1, wordsPerMinute)
         self.showIcon = showIcon
     }
 

@@ -20,7 +20,7 @@ struct CountParameterTests {
     }
 
     /// Each of these used to stop the process with `0..<count`, `Array(repeating:count:)`,
-    /// or a `prefix`/`suffix` of negative length.
+    /// a `prefix`/`suffix` of negative length, or a division by zero.
     @MainActor
     @Test("views render with zero and negative counts", arguments: [0, -1])
     func rendersWithoutACount(count: Int) throws {
@@ -38,6 +38,7 @@ struct CountParameterTests {
             PasscodeInput(passcode: .constant(""), length: count) { _ in }
             AvatarGroup(avatars: [.init(initials: "AB"), .init(initials: "CD")], maxVisible: count)
             LiveSparklineChart(data: .constant([1, 3, 2]), maxPoints: count)
+            ReadingTimeText("Three short words", wordsPerMinute: count)
         }
         let renderer = ImageRenderer(content: views.frame(width: 390))
         let image = try #require(renderer.cgImage)

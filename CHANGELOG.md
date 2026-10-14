@@ -71,6 +71,7 @@ changed in a breaking way.
   to those minimums.
 - A negative `maxVisible` in `AvatarGroup` or `maxPoints` in `LiveSparklineChart` no longer
   stops the app; it is treated as 0.
+- `ReadingTimeText` with a `wordsPerMinute` of 0 divided by zero; the speed is now at least 1.
 - `TexturedGlassCard` drew one noise dot per ten square points without limit; it now draws at
   most 4,000.
 
