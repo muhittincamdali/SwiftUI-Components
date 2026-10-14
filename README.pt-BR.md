@@ -52,7 +52,7 @@ usar um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não
 - **Lógica testada**: detecção do número do cartão e verificação de Luhn, datas de validade,
   formatação de telefone, validadores, esquemas JSON, fluxos em etapas, reconhecimento de deslizes e
   formas, taxas de contraste, quebra de linha do `FlowLayout`, geometria dos gráficos, paginação e
-  as filas de avisos são cobertas por 150 testes do Swift Testing que rodam no macOS e em um
+  as filas de avisos são cobertas por 153 testes do Swift Testing que rodam no macOS e em um
   simulador de iPhone.
 - **Exemplos de uso que compilam**: todo exemplo da seção “Uso” vem do
   [app de exemplo](Examples/ComponentGallery), que a CI compila para iOS e macOS.

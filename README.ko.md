@@ -46,7 +46,7 @@ iOS 17 이상과 macOS 14 이상에서 바로 쓸 수 있는 SwiftUI 뷰를 모�
 - **Swift 6 언어 모드** — 엄격한 동시성 검사 아래에서 경고 없이 빌드됩니다.
 - **테스트된 로직** — 카드 번호 판별과 Luhn 검사, 유효 기간, 전화번호 형식, 검증기, JSON 스키마,
   단계 흐름, 스와이프와 도형 인식, 명암비, `FlowLayout` 줄바꿈, 차트 기하 계산, 페이지네이션, 토스트
-  대기열을 macOS와 iPhone 시뮬레이터에서 실행되는 Swift Testing 테스트 150개로 확인합니다.
+  대기열을 macOS와 iPhone 시뮬레이터에서 실행되는 Swift Testing 테스트 153개로 확인합니다.
 - **컴파일되는 사용 예제** — ‘사용법’ 섹션의 모든 예제는 CI가 iOS와 macOS용으로 빌드하는
   [예제 앱](Examples/ComponentGallery)에서 가져왔습니다.
 

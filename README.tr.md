@@ -51,7 +51,7 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 - **Test edilen mantık** — kart numarası tanıma ve Luhn denetimi, son kullanma tarihleri, telefon
   biçimlendirme, doğrulayıcılar, JSON şemaları, adım akışları, kaydırma ve şekil tanıma, kontrast
   oranları, `FlowLayout` satır kırma, grafik geometrisi, sayfalama ve bildirim kuyrukları, macOS'ta
-  ve bir iPhone simülatöründe çalışan 150 Swift Testing testiyle kapsanıyor.
+  ve bir iPhone simülatöründe çalışan 153 Swift Testing testiyle kapsanıyor.
 - **Derlenen kullanım örnekleri** — “Kullanım” bölümündeki her örnek, CI'ın iOS ve macOS
   için derlediği [örnek uygulamadan](Examples/ComponentGallery) alınmıştır.
 

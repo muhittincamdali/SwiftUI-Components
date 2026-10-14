@@ -55,7 +55,7 @@ système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
   d’expiration, le formatage des numéros de téléphone, les validateurs, les schémas JSON, les
   parcours par étapes, la reconnaissance des balayages et des formes, les rapports de contraste, le
   retour à la ligne de `FlowLayout`, la géométrie des graphiques, la pagination et les files de
-  notifications sont couverts par 150 tests Swift Testing exécutés sur macOS et sur un simulateur
+  notifications sont couverts par 153 tests Swift Testing exécutés sur macOS et sur un simulateur
   d’iPhone.
 - **Des exemples d’utilisation qui compilent** : chaque exemple de la section « Utilisation »
   provient de l’[app d’exemple](Examples/ComponentGallery), que la CI compile pour iOS et macOS.

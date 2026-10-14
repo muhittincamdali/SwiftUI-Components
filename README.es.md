@@ -54,7 +54,7 @@ ni una arquitectura. El paquete no tiene dependencias.
   de caducidad, el formato de teléfonos, los validadores, los esquemas JSON, los flujos por pasos,
   el reconocimiento de deslizamientos y formas, las relaciones de contraste, el salto de línea de
   `FlowLayout`, la geometría de los gráficos, la paginación y las colas de avisos están cubiertos
-  por 150 pruebas de Swift Testing que se ejecutan en macOS y en un simulador de iPhone.
+  por 153 pruebas de Swift Testing que se ejecutan en macOS y en un simulador de iPhone.
 - **Ejemplos de uso que compilan**: cada ejemplo de la sección «Uso» procede de la
   [app de ejemplo](Examples/ComponentGallery), que la CI compila para iOS y macOS.
 

@@ -51,7 +51,7 @@ Du kannst also ein oder zwei davon verwenden, ohne ein Theme-System oder eine Ar
 - **Getestete Logik** – Kartennummernerkennung und Luhn-Prüfung, Ablaufdaten,
   Telefonnummernformatierung, Validatoren, JSON-Schemas, Schrittfolgen, Wisch- und Formerkennung,
   Kontrastverhältnisse, der Zeilenumbruch von `FlowLayout`, Diagrammgeometrie, Paginierung und die
-  Toast-Warteschlangen sind durch 150 Swift-Testing-Tests abgedeckt, die auf macOS und einem
+  Toast-Warteschlangen sind durch 153 Swift-Testing-Tests abgedeckt, die auf macOS und einem
   iPhone-Simulator laufen.
 - **Verwendungsbeispiele, die kompilieren** – jedes Beispiel im Abschnitt „Verwendung“
   stammt aus der [Beispiel-App](Examples/ComponentGallery), die die CI für iOS und macOS baut.
