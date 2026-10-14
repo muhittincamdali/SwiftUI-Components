@@ -118,7 +118,7 @@ public struct PageIndicator: View {
 
     private var numbersIndicator: some View {
         HStack(spacing: 4) {
-            Text("\(currentPage + 1)")
+            Text("\(Self.pageNumber(currentPage: currentPage, totalPages: totalPages))")
                 .font(.subheadline.monospacedDigit())
                 .fontWeight(.bold)
                 .foregroundStyle(activeColor)
@@ -143,12 +143,24 @@ public struct PageIndicator: View {
 
                 Capsule()
                     .fill(activeColor)
-                    .frame(width: geometry.size.width * CGFloat(currentPage + 1) / CGFloat(totalPages))
+                    .frame(width: geometry.size.width * progressFraction)
                     .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentPage)
             }
         }
         .frame(height: dotSize / 2)
         .frame(width: CGFloat(totalPages) * (dotSize + spacing) * 2)
+    }
+
+    /// The share of the track the progress style fills, 0 when there are no pages.
+    private var progressFraction: CGFloat {
+        guard totalPages > 0 else { return 0 }
+        return CGFloat(Self.pageNumber(currentPage: currentPage, totalPages: totalPages)) / CGFloat(totalPages)
+    }
+
+    /// The one-based number of `currentPage`, kept in `0...totalPages`. The page comes from the
+    /// app, and `currentPage + 1` stops the process when it is `Int.max`.
+    nonisolated static func pageNumber(currentPage: Int, totalPages: Int) -> Int {
+        min(max(currentPage, -1), totalPages - 1) + 1
     }
 
     // MARK: - Worm Indicator

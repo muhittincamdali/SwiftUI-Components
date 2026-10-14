@@ -19,6 +19,28 @@ struct CountParameterTests {
         #expect(ScrollingPageIndicator.visibleRange(currentPage: current, totalPages: total, visibleDots: visible) == expected)
     }
 
+    @Test("page number stays inside the pages for any input", arguments: [
+        (3, 10, 4), (9, 10, 10), (Int.max, 10, 10), (-1, 10, 0), (Int.min, 10, 0),
+        (0, 0, 0), (Int.max, Int.max, Int.max),
+    ])
+    func pageNumber(current: Int, total: Int, expected: Int) {
+        #expect(PageIndicator.pageNumber(currentPage: current, totalPages: total) == expected)
+    }
+
+    /// `currentPage + 1` stopped the process for a page of `Int.max` in these two styles.
+    @MainActor
+    @Test("page indicators render with any current page", arguments: [Int.max, Int.min, 3])
+    func rendersAnyCurrentPage(page: Int) throws {
+        let views = VStack {
+            PageIndicator(currentPage: .constant(page), totalPages: 10, style: .numbers)
+            PageIndicator(currentPage: .constant(page), totalPages: 10, style: .progress)
+            PageIndicator(currentPage: .constant(page), totalPages: 0, style: .progress)
+        }
+        let renderer = ImageRenderer(content: views.frame(width: 390))
+        let image = try #require(renderer.cgImage)
+        #expect(image.height > 0)
+    }
+
     /// Each of these used to stop the process with `0..<count`, `Array(repeating:count:)`,
     /// a `prefix`/`suffix` of negative length, or a division by zero.
     @MainActor
