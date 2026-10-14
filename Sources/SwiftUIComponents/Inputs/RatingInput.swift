@@ -12,7 +12,7 @@ public struct RatingInput: View {
     // MARK: - Types
     
     /// The rating precision mode.
-    public enum Precision {
+    public enum Precision: Sendable {
         case full
         case half
         case exact
@@ -184,23 +184,12 @@ public struct RatingInput: View {
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
-                let starWidth = size + spacing
-                let totalWidth = starWidth * CGFloat(maxRating) - spacing
-                let x = max(0, min(value.location.x, totalWidth))
-                
-                var newRating = (x / starWidth) + 0.5
-                
-                switch precision {
-                case .full:
-                    newRating = round(newRating)
-                case .half:
-                    newRating = round(newRating * 2) / 2
-                case .exact:
-                    break
-                }
-                
-                newRating = max(0, min(Double(maxRating), newRating))
-                hoverRating = newRating
+                hoverRating = Self.rating(
+                    atX: value.location.x,
+                    symbolWidth: size + spacing,
+                    maxRating: maxRating,
+                    precision: precision
+                )
             }
             .onEnded { _ in
                 if let hover = hoverRating {
@@ -211,6 +200,28 @@ public struct RatingInput: View {
     }
     
     // MARK: - Helpers
+    
+    /// Converts a horizontal touch position into a rating.
+    ///
+    /// Touching anywhere on symbol *n* selects *n* in `.full` mode; `.half` rounds up to the
+    /// next half symbol; `.exact` maps the position linearly. The result is clamped to
+    /// `0...maxRating`.
+    nonisolated static func rating(
+        atX x: CGFloat,
+        symbolWidth: CGFloat,
+        maxRating: Int,
+        precision: Precision
+    ) -> Double {
+        guard symbolWidth > 0, maxRating > 0 else { return 0 }
+        let raw = Double(max(0, x) / symbolWidth)
+        let value: Double
+        switch precision {
+        case .full: value = raw.rounded(.up)
+        case .half: value = (raw * 2).rounded(.up) / 2
+        case .exact: value = raw
+        }
+        return min(Double(maxRating), max(0, value))
+    }
     
     private func setRating(_ newRating: Double) {
         rating = newRating
