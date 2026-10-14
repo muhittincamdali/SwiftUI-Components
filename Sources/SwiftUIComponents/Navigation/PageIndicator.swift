@@ -45,7 +45,7 @@ public struct PageIndicator: View {
         interactive: Bool = true
     ) {
         self._currentPage = currentPage
-        self.totalPages = totalPages
+        self.totalPages = max(0, totalPages)
         self.style = style
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
@@ -200,7 +200,7 @@ public struct ScrollingPageIndicator: View {
         dotSize: CGFloat = 8
     ) {
         self._currentPage = currentPage
-        self.totalPages = totalPages
+        self.totalPages = max(0, totalPages)
         self.visibleDots = visibleDots
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
@@ -226,15 +226,13 @@ public struct ScrollingPageIndicator: View {
 
     /// The window of page indices to draw, centred on `currentPage` and clamped to the page count.
     nonisolated static func visibleRange(currentPage: Int, totalPages: Int, visibleDots: Int) -> Range<Int> {
-        let half = visibleDots / 2
-        var start = max(0, currentPage - half)
-        let end = min(totalPages, start + visibleDots)
-
-        if end - start < visibleDots {
-            start = max(0, end - visibleDots)
-        }
-
-        return start..<end
+        guard totalPages > 0 else { return 0..<0 }
+        let dots = min(max(visibleDots, 1), totalPages)
+        let current = min(max(currentPage, 0), totalPages - 1)
+        // Centre the window on the current page, then slide it back inside the page range.
+        // Every value stays within 0...totalPages, so no sum can overflow.
+        let start = min(max(0, current - dots / 2), totalPages - dots)
+        return start..<(start + dots)
     }
 
     private func scaleForIndex(_ index: Int) -> CGFloat {

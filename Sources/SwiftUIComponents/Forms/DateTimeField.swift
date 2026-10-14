@@ -107,7 +107,7 @@ public struct TimeSlotPicker: View {
     ) {
         self._selectedSlot = selectedSlot
         self.slots = slots
-        self.columns = columns
+        self.columns = max(1, columns)
     }
 
     public var body: some View {

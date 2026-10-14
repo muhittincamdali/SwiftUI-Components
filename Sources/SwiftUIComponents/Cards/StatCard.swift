@@ -234,7 +234,7 @@ public struct StatGrid: View {
 
     public init(stats: [StatCard], columns: Int = 2) {
         self.stats = stats
-        self.columns = columns
+        self.columns = max(1, columns)
     }
 
     public var body: some View {
