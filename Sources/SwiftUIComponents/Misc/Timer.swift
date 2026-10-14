@@ -29,7 +29,7 @@ public struct CountdownTimer: View {
     }
 
     private var components: (days: Int, hours: Int, minutes: Int, seconds: Int) {
-        let total = max(0, Int(timeRemaining))
+        let total = max(0, Int(saturating: timeRemaining))
         let days = total / 86400
         let hours = (total % 86400) / 3600
         let minutes = (total % 3600) / 60
@@ -172,9 +172,9 @@ public struct Stopwatch: View {
     }
 
     private var formattedTime: String {
-        let minutes = Int(elapsedTime) / 60
-        let seconds = Int(elapsedTime) % 60
-        let centiseconds = Int((elapsedTime.truncatingRemainder(dividingBy: 1)) * 100)
+        let minutes = Int(saturating: elapsedTime) / 60
+        let seconds = Int(saturating: elapsedTime) % 60
+        let centiseconds = Int(saturating: elapsedTime.truncatingRemainder(dividingBy: 1) * 100)
         return String(format: "%02d:%02d.%02d", minutes, seconds, centiseconds)
     }
 
@@ -255,9 +255,9 @@ public struct Stopwatch: View {
     }
 
     private func formatTime(_ time: TimeInterval) -> String {
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        let centiseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+        let minutes = Int(saturating: time) / 60
+        let seconds = Int(saturating: time) % 60
+        let centiseconds = Int(saturating: time.truncatingRemainder(dividingBy: 1) * 100)
         return String(format: "%02d:%02d.%02d", minutes, seconds, centiseconds)
     }
 }
@@ -282,7 +282,7 @@ public struct ProgressTimer: View {
     }
 
     private var formattedRemaining: String {
-        let total = Int(remainingTime)
+        let total = max(0, Int(saturating: remainingTime))
         let minutes = total / 60
         let seconds = total % 60
         return String(format: "%d:%02d", minutes, seconds)

@@ -212,7 +212,7 @@ public final class SnackBarManager: ObservableObject {
         }
 
         dismissTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(data.duration))
+            try? await Task.sleep(for: .clampedSeconds(data.duration))
             guard let self, !Task.isCancelled else { return }
             self.dismiss()
         }

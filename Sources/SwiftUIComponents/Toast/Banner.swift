@@ -229,7 +229,7 @@ public final class BannerManager: ObservableObject {
 
         if let duration = data.duration {
             dismissTask = Task { [weak self] in
-                try? await Task.sleep(for: .seconds(duration))
+                try? await Task.sleep(for: .clampedSeconds(duration))
                 guard let self, !Task.isCancelled else { return }
                 self.dismiss()
             }

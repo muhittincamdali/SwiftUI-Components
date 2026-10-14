@@ -208,12 +208,23 @@ public struct TexturedGlassCard<Content: View>: View {
 // MARK: - Noise View
 
 /// A procedural noise texture view.
-private struct NoiseView: View {
+struct NoiseView: View {
     let opacity: Double
+
+    /// The most dots one frame draws, so a full-screen card stays as cheap as a small one.
+    nonisolated static let maximumDotCount = 4_000
+
+    /// One dot per ten square points, up to ``maximumDotCount``.
+    nonisolated static func dotCount(for size: CGSize) -> Int {
+        // `CGFloat.random(in:)` below needs a finite, non-empty range on both axes.
+        guard size.width.isFinite, size.height.isFinite, size.width > 0, size.height > 0 else { return 0 }
+        let count = Int(saturating: size.width * size.height * 0.1)
+        return min(max(count, 0), maximumDotCount)
+    }
 
     var body: some View {
         Canvas { context, size in
-            for _ in 0..<Int(size.width * size.height * 0.1) {
+            for _ in 0..<Self.dotCount(for: size) {
                 let x = CGFloat.random(in: 0..<size.width)
                 let y = CGFloat.random(in: 0..<size.height)
                 let gray = Double.random(in: 0...1)
