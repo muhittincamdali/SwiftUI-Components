@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@6aae1c1c3f9765280535dc0d3594a29f8b6eedf7 status=reviewed -->
+<!-- i18n-source: README.md@f9ea8cfd6c57a4c3a58efdefc90078b858041d3f status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg" alt="SwiftUI Components: Des vues SwiftUI prêtes à l’emploi pour iOS et macOS : boutons, cartes, graphiques, formulaires et plus."></picture></p>
@@ -55,7 +55,7 @@ système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
   d’expiration, le formatage des numéros de téléphone, les validateurs, les schémas JSON, les
   parcours par étapes, la reconnaissance des balayages et des formes, les rapports de contraste, le
   retour à la ligne de `FlowLayout`, la géométrie des graphiques, la pagination et les files de
-  notifications sont couverts par 153 tests Swift Testing exécutés sur macOS et sur un simulateur
+  notifications sont couverts par 155 tests Swift Testing exécutés sur macOS et sur un simulateur
   d’iPhone.
 - **Des exemples d’utilisation qui compilent** : chaque exemple de la section « Utilisation »
   provient de l’[app d’exemple](Examples/ComponentGallery), que la CI compile pour iOS et macOS.
