@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
+<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg" alt="SwiftUI Components: iOS と macOS 向けの既製 SwiftUI ビュー。ボタン、カード、チャート、フォームなど。"></picture></p>
@@ -25,14 +25,16 @@
 
 <!-- brand:end -->
 
-iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビューをまとめた Swift パッケージです。ボタン、カード、チャート、フォーム入力、リスト、オーバーレイ、ローディング表示、トーストを含みます。コンポーネントを一から作るのではなく、動くものを今すぐ使いたいアプリ開発者に向けています。どのコンポーネントもイニシャライザで設定する普通の SwiftUI `View` なので、テーマシステムや特定のアーキテクチャを導入しなくても、必要な 1 つか 2 つだけを使えます。パッケージに依存関係はありません。
+iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビューをまとめた Swift パッケージです。ボタン、カード、チャート、検証付きのフォーム入力、ジェスチャー、リスト、オーバーレイ、ローディング表示、トーストを含みます。コンポーネントを一から作るのではなく、動くものを今すぐ使いたいアプリ開発者に向けています。どのコンポーネントもイニシャライザで設定する普通の SwiftUI `View` なので、テーマシステムや特定のアーキテクチャを導入しなくても、必要な 1 つか 2 つだけを使えます。パッケージに依存関係はありません。
 
 ## 主な特長
 
-- **220 個のビューと 12 個の modifier**：ソースコードから数えた数で、13 のフォルダに分かれています。`PrimaryButton` から `CreditCardInput`、`GaugeChart` まで揃っています。
+- **223 個のビュー、12 個のビュー modifier、5 個のジェスチャー modifier**：ソースコードから数えた数で、16 のフォルダに分かれています。`PrimaryButton` から `CreditCardInput`、`SchemaForm`、`ShapeDrawingPad` まで揃っています。
+- **自分でチェックするフォーム**：組み合わせ可能なバリデータ、最初の編集のあとに表示されるエラー、デバウンスされたサーバー側のチェック、JSON から描画するフォーム、複数ステップのフロー。JSON スキーマ内のパターンは、アプリを固まらせかねない形がないか検査されます。
+- **アクセシブルなジェスチャー**：スワイプ、画面端からのスワイプ、スワイプの連続操作、ピンチ・回転・ドラッグ、図形の描画に対応し、どれにも VoiceOver や Switch Control を使う人向けのアクセシビリティアクションがあります。
 - **1 つのコードベースで iOS と macOS に対応**：UIKit にしかない部分は最も近い AppKit の動作に置き換わります。[プラットフォームの違い](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)に一覧があります。
 - **Swift 6 言語モード**：厳格な並行性チェックのもとで、警告なしにビルドできます。
-- **テスト済みのロジック**：カード番号の判定と Luhn チェック、有効期限、電話番号の整形、`FlowLayout` の折り返し、チャートの図形計算、ページング、トーストのキューを、macOS と iPhone シミュレータで実行する 56 個の Swift Testing テストで確認しています。
+- **テスト済みのロジック**：カード番号の判定と Luhn チェック、有効期限、電話番号の整形、バリデータ、JSON スキーマ、ステップのフロー、スワイプと図形の認識、コントラスト比、`FlowLayout` の折り返し、チャートの図形計算、ページング、トーストのキューを、macOS と iPhone シミュレータで実行する 144 個の Swift Testing テストで確認しています。
 - **コンパイルされる使用例**：「使い方」のコード例はすべて、CI が iOS と macOS 向けにビルドする [サンプルアプリ](Examples/ComponentGallery)から取っています。
 
 ### 含まれるもの
@@ -42,7 +44,7 @@ iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビュー
 | ボタン (25)     | `PrimaryButton`, `SecondaryButton`, `LoadingButton`, `GradientButton`, `PillButton`, `FloatingActionButton`, `SplitButton`, `ToggleButtonGroup` |
 | カード (27)     | `CardView`, `StatCard`, `PricingCard`, `ProfileCard`, `ProductCard`, `FlipCard`, `ExpandableCard`, `TestimonialCarousel`                        |
 | チャート (19)    | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `GaugeChart`, `RingChart`, `SparklineChart`                                     |
-| フォーム (21)    | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `MultiSelectField`, `SliderField`, `RangeSlider`, `OTPField`, `DateField`        |
+| フォーム (23)    | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `SliderField`, `OTPField`, `FileUploadField`, `SchemaForm`, `MultiStepForm`      |
 | 入力 (13)      | `CreditCardInput`, `PhoneInput`, `PinInput`, `TimedPinInput`, `RatingInput`, `SearchBar`, `TagInput`                                            |
 | リスト (18)     | `InfiniteScrollList` + `PaginatedListViewModel`, `ExpandableList`, `TreeView`, `SwipeableRow`, `ReorderableList`                                |
 | ローディング (16)  | `ProgressRing`, `SkeletonView`, `ShimmerView`, `DotLoader`, `PulseLoader`, `StateView`, `AsyncContentView`                                      |
@@ -52,8 +54,13 @@ iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビュー
 | トースト (4)     | `ToastView`, `SnackBar` + `SnackBarManager`, `Banner` + `BannerManager`                                                                         |
 | その他 (27)     | `Avatar`, `Badge`, `Chip`, `Tag`, `Carousel`, `Accordion`, `CountdownTimer`, `Stopwatch`                                                        |
 | 空の状態 (1)     | `EmptyStateView`                                                                                                                                |
+| ジェスチャー (1)   | `ShapeDrawingPad`、および下記の modifier と `UnistrokeRecognizer`                                                                                       |
 
 レイアウトと modifier：`FlowLayout`（折り返しレイアウト）、`.surface()`、`.shimmer()`、`.toast(isPresenting:message:)`、`.snackBarHost()`、`.bannerHost()`。
+
+ジェスチャーの modifier：`.onSwipe(_:perform:)`、`.onEdgeSwipe(from:accessibilityActionName:perform:)`、`.onSwipeSequence(_:within:perform:)`、`.transformable(_:scaleRange:)`、`.boundedDrag(offset:in:)`。
+
+検証（ビューではないもの）：`Validator`、`ValidatedValue`、`AsyncValidation`、`FormSchema`、`StepFlow`、`ColorContrast`（WCAG のコントラスト比）。
 
 ## クイックスタート
 
@@ -243,6 +250,138 @@ struct TopicPicker: View {
 }
 ```
 
+### 検証付きフォーム
+
+```swift
+struct SignUpForm: View {
+    @State private var email = ValidatedValue("", .required().and(.email()))
+    @State private var password = ValidatedValue("", .required().and(.minLength(8)))
+
+    var body: some View {
+        VStack(spacing: 16) {
+            FormField(label: "Email", errorMessage: email.visibleError) {
+                TextInputField(text: $email.value, placeholder: "you@example.com", keyboardType: .email)
+            }
+            FormField(label: "Password", errorMessage: password.visibleError) {
+                PasswordField(password: $password.value)
+            }
+            PrimaryButton("Create account") {
+                let emailIsValid = email.validate()     // shows the errors of untouched fields
+                let passwordIsValid = password.validate()
+                if emailIsValid && passwordIsValid {
+                    print("Signing up \(email.value)")
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`ValidatedValue` は、ユーザーがフィールドを編集するか、ボタンをタップした後にだけエラーを表示します。バリデータは `.and(_:)` で組み合わせられます。テキスト用のバリデータには `required`、`minLength`、`email`、`url`、`phone`、`digits`、`matches`（正規表現）があり、`AsyncValidation` は「このユーザー名は使用済みか」のようなサーバー側のチェックをデバウンスします。
+
+### JSON から作るフォーム
+
+フィールドをデータとして記述します。たとえば、サーバーからのレスポンスに含めます。
+
+```swift
+let contactFormJSON = """
+{
+  "title": "Contact us",
+  "fields": [
+    { "id": "email", "label": "Email", "kind": "email", "required": true },
+    { "id": "topic", "label": "Topic", "kind": "choice", "options": ["Sales", "Support"], "required": true },
+    { "id": "message", "label": "Message", "kind": "multiline", "minLength": 10 }
+  ]
+}
+"""
+```
+
+デコードします。このとき、ID の重複、成り立たない制限、アプリを固まらせかねない正規表現を含むスキーマは拒否されます。
+
+```swift
+func loadContactSchema() throws -> FormSchema {
+    try FormSchema.decode(from: Data(contactFormJSON.utf8)) // throws for malformed JSON
+}
+```
+
+続いて表示し、値は自分の state に保持します。
+
+```swift
+struct ContactForm: View {
+    let schema: FormSchema
+    @State private var values: [String: FormValue]
+    @State private var submitted = false
+
+    init(schema: FormSchema) {
+        self.schema = schema
+        _values = State(initialValue: schema.initialValues())
+    }
+
+    var body: some View {
+        VStack(spacing: 20) {
+            SchemaForm(schema: schema, values: $values, showsAllErrors: submitted)
+            PrimaryButton("Send") {
+                submitted = true
+                if schema.errors(in: values).isEmpty {
+                    print(values) // ["email": .text("ada@example.com"), ...]
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`MultiStepForm` と `StepFlow` を使うと、長いフォームを複数のステップに分けられ、現在のステップが有効になるまで **Next** は無効のままになります。
+
+### ジェスチャー
+
+```swift
+struct GestureDemo: View {
+    @State private var card = 1
+    @State private var zoom = TransformState.identity
+    @State private var drawing = "Draw a circle, a check mark or a star"
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Card \(card) · swipe left or right")
+                .frame(maxWidth: .infinity, minHeight: 100)
+                .background(.blue.opacity(0.15), in: .rect(cornerRadius: 16))
+                .onSwipe([.left, .right]) { direction in
+                    card += direction == .left ? 1 : -1
+                }
+
+            Image(systemName: "map")
+                .font(.system(size: 64))
+                .transformable($zoom, scaleRange: 1...5) // pinch, rotate, drag; double tap resets
+
+            ShapeDrawingPad { match in
+                drawing = match.map { "That looks like a \($0.name)" } ?? "Not sure, try again"
+            }
+            .frame(height: 200)
+            .background(.blue.opacity(0.06), in: .rect(cornerRadius: 16))
+            Text(drawing)
+        }
+        .padding()
+    }
+}
+```
+
+どのジェスチャーにもアクセシビリティアクションがあります。VoiceOver ユーザーにはアクションのローターに **Swipe left** と **Swipe right** が表示され、地図はシステムのズーム操作で拡大でき、`ShapeDrawingPad(accessibilityAlternatives:)` は図形ごとに名前付きのアクションを追加します。残りのケースは `onEdgeSwipe`、`onSwipeSequence`、`boundedDrag` が担当します。
+
+### コントラストの確認
+
+```swift
+func contrastCheck() {
+    let ratio = ColorContrast.ratio(.white, Color(red: 0, green: 0.443, blue: 0.890)) // #0071E3
+    let level = ColorContrast.level(for: ratio) // .aa: fine for body text
+    print(ratio, level)
+}
+```
+
+`ColorContrast` は、2 つの色の WCAG 2 コントラスト比と、満たしているレベル（AA、大きい文字向けの AA、または AAA）を計算します。
+
 ## デモ
 
 | ライト                                               | ダーク                                              |
@@ -253,6 +392,13 @@ struct TopicPicker: View {
 | ![インジケーター, ライト](docs/images/indicators-light.png) | ![インジケーター, ダーク](docs/images/indicators-dark.png) |
 
 スクリーンショットは [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh) が iOS シミュレータ上で [`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift) から描画したものです。
+
+「使い方」のフォームとジェスチャーを、[`scripts/capture-example-screens.sh`](scripts/capture-example-screens.sh) でサンプルアプリから iPhone シミュレータ上でキャプチャしたものです。
+
+| 検証付きフォーム                                               | JSON から作るフォーム                                                    | ジェスチャー                                                 |
+| ------------------------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------ |
+| ![検証付きフォーム, ライト](docs/images/example-signUp-light.png) | ![JSON から作るフォーム, ライト](docs/images/example-contactForm-light.png) | ![ジェスチャー, ライト](docs/images/example-gestures-light.png) |
+| ![検証付きフォーム, ダーク](docs/images/example-signUp-dark.png)  | ![JSON から作るフォーム, ダーク](docs/images/example-contactForm-dark.png)  | ![ジェスチャー, ダーク](docs/images/example-gestures-dark.png)  |
 
 自分で試すには、[`Examples/ComponentGallery`](Examples/ComponentGallery) にある `ComponentGallery.xcodeproj` を Xcode で開き、iPhone シミュレータか **My Mac** を選んで **Run** を押します。アプリには上のサンプルごとに画面があります。詳しくは [Examples/README.md](Examples/README.md) を参照してください。
 
@@ -271,6 +417,8 @@ xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=mac
 
 - [Getting Started](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/gettingstarted)：パッケージの追加、コンポーネントの配置、スナックバーの表示、リストのページング（[ソース](Sources/SwiftUIComponents/SwiftUIComponents.docc/GettingStarted.md)）。
 - [Collecting Card Details](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/collectingcarddetails)：検証付きの支払いフォームと、チェックで分かること・分からないこと（[ソース](Sources/SwiftUIComponents/SwiftUIComponents.docc/CollectingCardDetails.md)）。
+- [Validating Forms](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/validatingforms)：バリデータ、適切なタイミングでのエラー表示、サーバー側のチェック、JSON から作るフォーム、複数ステップのフォーム（[ソース](Sources/SwiftUIComponents/SwiftUIComponents.docc/ValidatingForms.md)）。
+- [Adding Gestures](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/addinggestures)：スワイプ、ピンチ・回転・ドラッグ、図形の認識と、それらのアクセシビリティアクション（[ソース](Sources/SwiftUIComponents/SwiftUIComponents.docc/AddingGestures.md)）。
 - [Platform Differences](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/platformdifferences)：macOS で変わる点（[ソース](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)）。
 
 記事は英語です。
@@ -287,7 +435,8 @@ CI は GitHub の `macos-26` runner イメージに入っている既定の Xcod
 
 ## アーキテクチャ
 
-- `Sources/SwiftUIComponents/<Category>/` には、コンポーネントのファミリーごとに 1 つのファイルがあります。コンポーネントは状態を `@State` と `@Binding` に持ちます。参照型は `SnackBarManager`、`BannerManager`、`PaginatedListViewModel` の 3 つだけで、いずれも `@MainActor` です。
+- `Sources/SwiftUIComponents/<Category>/` には、コンポーネントのファミリーごとに 1 つのファイルがあります。コンポーネントは状態を `@State` と `@Binding` に持ちます。参照型は `SnackBarManager`、`BannerManager`、`PaginatedListViewModel`、`AsyncValidation` の 4 つだけで、いずれも `@MainActor` です。
+- 検証とジェスチャーの判定は、ビューのコードを含まない値型（`Validator`、`FormSchema`、`StepFlow`、`SwipeDirection`、`SwipeSequenceMatcher`、`TransformState`、`UnistrokeRecognizer`）で行うため、modifier は薄いままで、ルールは単体テストで確認できます。
 - `Extensions/Platform.swift` は、UIKit にしかない少数の API（システムカラー、触覚フィードバック、キーボードの種類、自動大文字化、ホイールピッカー、ページ式の `TabView`）を AppKit の機能か何もしない処理に対応させます。そのため、コンポーネント自体にはほとんど `#if os(...)` がありません。
 - 画面なしでテストできるロジックは static 関数かマネージャークラスに置き、`Tests/` の Swift Testing スイートで確認しています。`RenderTests` と `GaugeNeedleTests` は `ImageRenderer` でビューを描画します。ギャラリーの各ページをライトモードとダークモードで描画し（クラッシュするビューやサイズがゼロになるビューを検出）、ゲージの針の向きも確認します。個々のビューの多くには専用のテストがありません。
 - CI は macOS で `swift test` を、iPhone シミュレータで `xcodebuild test` を実行し、サンプルアプリを iOS と macOS 向けにビルドして、DocC ドキュメントを公開します。
@@ -304,6 +453,7 @@ xcodebuild test -scheme SwiftUIComponents \
 
 - パッケージを Swift Package Index に登録する。`.spi.yml` はすでにリポジトリにあります。
 - フォーム入力から始めて、個々のビューのテストを増やす。
+- `FormSchema` に条件付きフィールドを追加する（別のフィールドの値に応じてフィールドを表示する）。
 
 ## コントリビューション
 

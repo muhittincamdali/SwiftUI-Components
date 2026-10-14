@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
+<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg" alt="SwiftUI Components: Des vues SwiftUI prêtes à l’emploi pour iOS et macOS : boutons, cartes, graphiques, formulaires et plus."></picture></p>
@@ -25,28 +25,38 @@
 
 <!-- brand:end -->
 
-Un paquet Swift de vues SwiftUI prêtes à l’emploi pour iOS 17+ et macOS 14+ : boutons, cartes,
-graphiques, champs de formulaire, listes, superpositions, indicateurs de chargement et
-notifications. Il s’adresse aux développeurs d’apps qui veulent un composant qui fonctionne dès
-aujourd’hui plutôt que de l’écrire de zéro. Chaque composant est une `View` SwiftUI ordinaire,
-configurée par son initialiseur : vous pouvez donc en utiliser un ou deux sans adopter de système
-de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
+Un paquet Swift de vues SwiftUI prêtes à l’emploi pour iOS 17+ et macOS 14+ : boutons, cartes,
+graphiques, champs de formulaire avec validation, gestes, listes, superpositions, indicateurs de
+chargement et notifications. Il s’adresse aux développeurs d’apps qui veulent un composant qui
+fonctionne dès aujourd’hui plutôt que de l’écrire de zéro. Chaque composant est une `View` SwiftUI
+ordinaire, configurée par son initialiseur : vous pouvez donc en utiliser un ou deux sans adopter de
+système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
 
 ## Points forts
 
-- **220 vues, 12 modifiers** : comptés dans le code source et répartis dans 13 dossiers, de
-  `PrimaryButton` à `CreditCardInput` et `GaugeChart`.
-- **iOS et macOS avec le même code** : les détails propres à UIKit se rabattent sur le
-  comportement AppKit le plus proche ; les
+- **223 vues, 12 modifiers de vue et 5 modifiers de geste** : comptés dans le code source et
+  répartis dans 16 dossiers, de `PrimaryButton` à `CreditCardInput`, `SchemaForm` et
+  `ShapeDrawingPad`.
+- **Des formulaires qui se vérifient eux-mêmes** : validateurs composables, erreurs qui
+  n’apparaissent qu’après la première modification, vérifications côté serveur avec debounce,
+  formulaires générés depuis du JSON et parcours en plusieurs étapes. Les motifs d’un schéma JSON
+  sont contrôlés pour écarter ceux qui figeraient l’app.
+- **Des gestes accessibles** : balayages, balayages depuis le bord, séquences de balayages,
+  pincement-rotation-glissement et tracé de formes, chacun avec une action d’accessibilité pour les
+  utilisateurs de VoiceOver et de Switch Control.
+- **iOS et macOS avec le même code** : les détails propres à UIKit se rabattent sur le
+  comportement AppKit le plus proche ; les
   [notes sur les plateformes](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)
   les listent un par un.
-- **Mode de langage Swift 6** : le paquet compile avec la vérification stricte de la concurrence
+- **Mode de langage Swift 6** : le paquet compile avec la vérification stricte de la concurrence
   et sans avertissement.
-- **Logique testée** : la détection du numéro de carte et le contrôle de Luhn, les dates
-  d’expiration, le formatage des numéros de téléphone, le retour à la ligne de `FlowLayout`, la
-  géométrie des graphiques, la pagination et les files de notifications sont couverts par 56 tests
-  Swift Testing exécutés sur macOS et sur un simulateur d’iPhone.
-- **Des exemples d’utilisation qui compilent** : chaque exemple de la section « Utilisation »
+- **Logique testée** : la détection du numéro de carte et le contrôle de Luhn, les dates
+  d’expiration, le formatage des numéros de téléphone, les validateurs, les schémas JSON, les
+  parcours par étapes, la reconnaissance des balayages et des formes, les rapports de contraste, le
+  retour à la ligne de `FlowLayout`, la géométrie des graphiques, la pagination et les files de
+  notifications sont couverts par 144 tests Swift Testing exécutés sur macOS et sur un simulateur
+  d’iPhone.
+- **Des exemples d’utilisation qui compilent** : chaque exemple de la section « Utilisation »
   provient de l’[app d’exemple](Examples/ComponentGallery), que la CI compile pour iOS et macOS.
 
 ### Contenu
@@ -56,7 +66,7 @@ de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
 | Boutons (25)        | `PrimaryButton`, `SecondaryButton`, `LoadingButton`, `GradientButton`, `PillButton`, `FloatingActionButton`, `SplitButton`, `ToggleButtonGroup` |
 | Cartes (27)         | `CardView`, `StatCard`, `PricingCard`, `ProfileCard`, `ProductCard`, `FlipCard`, `ExpandableCard`, `TestimonialCarousel`                        |
 | Graphiques (19)     | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `GaugeChart`, `RingChart`, `SparklineChart`                                     |
-| Formulaires (21)    | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `MultiSelectField`, `SliderField`, `RangeSlider`, `OTPField`, `DateField`        |
+| Formulaires (23)    | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `SliderField`, `OTPField`, `FileUploadField`, `SchemaForm`, `MultiStepForm`      |
 | Saisies (13)        | `CreditCardInput`, `PhoneInput`, `PinInput`, `TimedPinInput`, `RatingInput`, `SearchBar`, `TagInput`                                            |
 | Listes (18)         | `InfiniteScrollList` + `PaginatedListViewModel`, `ExpandableList`, `TreeView`, `SwipeableRow`, `ReorderableList`                                |
 | Chargement (16)     | `ProgressRing`, `SkeletonView`, `ShimmerView`, `DotLoader`, `PulseLoader`, `StateView`, `AsyncContentView`                                      |
@@ -66,9 +76,17 @@ de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
 | Notifications (4)   | `ToastView`, `SnackBar` + `SnackBarManager`, `Banner` + `BannerManager`                                                                         |
 | Divers (27)         | `Avatar`, `Badge`, `Chip`, `Tag`, `Carousel`, `Accordion`, `CountdownTimer`, `Stopwatch`                                                        |
 | États vides (1)     | `EmptyStateView`                                                                                                                                |
+| Gestes (1)          | `ShapeDrawingPad`, plus les modifiers ci-dessous et `UnistrokeRecognizer`                                                                       |
 
-Mise en page et modifiers : `FlowLayout` (mise en page avec retour à la ligne), `.surface()`,
+Mise en page et modifiers : `FlowLayout` (mise en page avec retour à la ligne), `.surface()`,
 `.shimmer()`, `.toast(isPresenting:message:)`, `.snackBarHost()`, `.bannerHost()`.
+
+Modifiers de gestes : `.onSwipe(_:perform:)`, `.onEdgeSwipe(from:accessibilityActionName:perform:)`,
+`.onSwipeSequence(_:within:perform:)`, `.transformable(_:scaleRange:)` et
+`.boundedDrag(offset:in:)`.
+
+Validation (ce ne sont pas des vues) : `Validator`, `ValidatedValue`, `AsyncValidation`,
+`FormSchema`, `StepFlow` et `ColorContrast` (rapports de contraste WCAG).
 
 ## Démarrage rapide
 
@@ -97,7 +115,7 @@ Placez cette ligne en haut du fichier Swift où vous utilisez un composant, sous
 **3. L’utiliser**
 
 Dans une nouvelle app Xcode (**File › New › Project… › App**), remplacez tout le contenu de
-`ContentView.swift` par :
+`ContentView.swift` par :
 
 ```swift
 import SwiftUI
@@ -120,7 +138,7 @@ struct ContentView: View {
 }
 ```
 
-Appuyez sur **Run** (⌘R). L’app affiche cinq étoiles et un bouton bleu ; touchez une étoile pour
+Appuyez sur **Run** (⌘R). L’app affiche cinq étoiles et un bouton bleu ; touchez une étoile pour
 changer la note, puis le bouton pour l’afficher dans la console de Xcode.
 
 ## Installation
@@ -147,7 +165,7 @@ targets: [
 ```
 
 La version 2.0.0 (octobre 2026) est la première à contenir les composants actuels. La version
-précédente, 1.0.0 (février 2026), leur est antérieure : en juin 2026, ils ont été remplacés par
+précédente, 1.0.0 (février 2026), leur est antérieure : en juin 2026, ils ont été remplacés par
 du code provisoire, puis, en octobre 2026, restaurés, rendus compilables pour iOS et macOS en mode
 de langage Swift 6 et corrigés là où les nouveaux tests ont trouvé des bugs.
 [CHANGELOG.md](CHANGELOG.md) liste les changements, y compris ceux qui cassent la compatibilité.
@@ -230,7 +248,7 @@ struct PaymentForm: View {
 }
 ```
 
-Les fonctions de formatage et de validation sont publiques si vous en avez besoin ailleurs :
+Les fonctions de formatage et de validation sont publiques si vous en avez besoin ailleurs :
 
 ```swift
 let type = CreditCardInput.CardType.detect(from: "3782 822463 10005") // .amex
@@ -253,7 +271,7 @@ struct InboxScreen: View {
 }
 ```
 
-Les snackbars sont mis en file d’attente et affichés un par un ; `BannerManager` fonctionne de la
+Les snackbars sont mis en file d’attente et affichés un par un ; `BannerManager` fonctionne de la
 même façon avec `.bannerHost()`, sauf qu’une nouvelle bannière remplace celle qui est affichée.
 
 ### Mise en page fluide
@@ -272,6 +290,148 @@ struct TopicPicker: View {
 }
 ```
 
+### Formulaire validé
+
+```swift
+struct SignUpForm: View {
+    @State private var email = ValidatedValue("", .required().and(.email()))
+    @State private var password = ValidatedValue("", .required().and(.minLength(8)))
+
+    var body: some View {
+        VStack(spacing: 16) {
+            FormField(label: "Email", errorMessage: email.visibleError) {
+                TextInputField(text: $email.value, placeholder: "you@example.com", keyboardType: .email)
+            }
+            FormField(label: "Password", errorMessage: password.visibleError) {
+                PasswordField(password: $password.value)
+            }
+            PrimaryButton("Create account") {
+                let emailIsValid = email.validate()     // shows the errors of untouched fields
+                let passwordIsValid = password.validate()
+                if emailIsValid && passwordIsValid {
+                    print("Signing up \(email.value)")
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`ValidatedValue` n’affiche une erreur qu’après que l’utilisateur a modifié le champ ou touché le
+bouton, et les validateurs se combinent avec `.and(_:)`. Les validateurs de texte comprennent
+`required`, `minLength`, `email`, `url`, `phone`, `digits` et `matches` (une expression régulière) ;
+`AsyncValidation` applique un debounce à une vérification côté serveur, comme « ce nom d’utilisateur
+est-il déjà pris ? ».
+
+### Formulaire depuis JSON
+
+Décrivez les champs sous forme de données, par exemple dans une réponse de votre serveur :
+
+```swift
+let contactFormJSON = """
+{
+  "title": "Contact us",
+  "fields": [
+    { "id": "email", "label": "Email", "kind": "email", "required": true },
+    { "id": "topic", "label": "Topic", "kind": "choice", "options": ["Sales", "Support"], "required": true },
+    { "id": "message", "label": "Message", "kind": "multiline", "minLength": 10 }
+  ]
+}
+"""
+```
+
+Décodez-le ; cela rejette aussi un schéma contenant des identifiants en double, des limites
+impossibles ou une expression régulière capable de figer l’app :
+
+```swift
+func loadContactSchema() throws -> FormSchema {
+    try FormSchema.decode(from: Data(contactFormJSON.utf8)) // throws for malformed JSON
+}
+```
+
+Affichez-le ensuite et gardez les valeurs dans votre propre état :
+
+```swift
+struct ContactForm: View {
+    let schema: FormSchema
+    @State private var values: [String: FormValue]
+    @State private var submitted = false
+
+    init(schema: FormSchema) {
+        self.schema = schema
+        _values = State(initialValue: schema.initialValues())
+    }
+
+    var body: some View {
+        VStack(spacing: 20) {
+            SchemaForm(schema: schema, values: $values, showsAllErrors: submitted)
+            PrimaryButton("Send") {
+                submitted = true
+                if schema.errors(in: values).isEmpty {
+                    print(values) // ["email": .text("ada@example.com"), ...]
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`MultiStepForm` avec `StepFlow` découpe un long formulaire en étapes et garde **Next** désactivé
+tant que l’étape en cours n’est pas valide.
+
+### Gestes
+
+```swift
+struct GestureDemo: View {
+    @State private var card = 1
+    @State private var zoom = TransformState.identity
+    @State private var drawing = "Draw a circle, a check mark or a star"
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Card \(card) · swipe left or right")
+                .frame(maxWidth: .infinity, minHeight: 100)
+                .background(.blue.opacity(0.15), in: .rect(cornerRadius: 16))
+                .onSwipe([.left, .right]) { direction in
+                    card += direction == .left ? 1 : -1
+                }
+
+            Image(systemName: "map")
+                .font(.system(size: 64))
+                .transformable($zoom, scaleRange: 1...5) // pinch, rotate, drag; double tap resets
+
+            ShapeDrawingPad { match in
+                drawing = match.map { "That looks like a \($0.name)" } ?? "Not sure, try again"
+            }
+            .frame(height: 200)
+            .background(.blue.opacity(0.06), in: .rect(cornerRadius: 16))
+            Text(drawing)
+        }
+        .padding()
+    }
+}
+```
+
+Chaque geste a aussi une action d’accessibilité : les utilisateurs de VoiceOver obtiennent **Swipe
+left** et **Swipe right** dans le rotor d’actions, la carte peut être zoomée avec l’action de zoom
+du système, et `ShapeDrawingPad(accessibilityAlternatives:)` ajoute des actions nommées pour les
+formes. `onEdgeSwipe`, `onSwipeSequence` et `boundedDrag` couvrent les autres cas.
+
+### Contrôle du contraste
+
+```swift
+func contrastCheck() {
+    let ratio = ColorContrast.ratio(.white, Color(red: 0, green: 0.443, blue: 0.890)) // #0071E3
+    let level = ColorContrast.level(for: ratio) // .aa: fine for body text
+    print(ratio, level)
+}
+```
+
+`ColorContrast` calcule le rapport de contraste WCAG 2 entre deux couleurs et le niveau qu’il
+atteint (AA, AA pour le grand texte ou AAA).
+
 ## Démo
 
 | Clair                                                   | Sombre                                                  |
@@ -285,9 +445,17 @@ Les captures d’écran sont rendues sur le simulateur iOS à partir de
 [`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
 par [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh).
 
+Les formulaires et les gestes de la section Utilisation, capturés depuis l’app d’exemple sur un
+simulateur d’iPhone par [`scripts/capture-example-screens.sh`](scripts/capture-example-screens.sh) :
+
+| Formulaire validé                                                 | Formulaire depuis JSON                                                      | Gestes                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------- |
+| ![Formulaire validé, clair](docs/images/example-signUp-light.png) | ![Formulaire depuis JSON, clair](docs/images/example-contactForm-light.png) | ![Gestes, clair](docs/images/example-gestures-light.png) |
+| ![Formulaire validé, sombre](docs/images/example-signUp-dark.png) | ![Formulaire depuis JSON, sombre](docs/images/example-contactForm-dark.png) | ![Gestes, sombre](docs/images/example-gestures-dark.png) |
+
 Pour essayer les composants vous-même, ouvrez `ComponentGallery.xcodeproj` dans
 [`Examples/ComponentGallery`](Examples/ComponentGallery) avec Xcode, choisissez un simulateur
-d’iPhone ou **My Mac**, puis appuyez sur **Run**. L’app a un écran par exemple ci-dessus ;
+d’iPhone ou **My Mac**, puis appuyez sur **Run**. L’app a un écran par exemple ci-dessus ;
 [Examples/README.md](Examples/README.md) donne les détails.
 
 ## Documentation
@@ -297,7 +465,7 @@ Référence de l’API et articles :
 - [Référence de l’API](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/)
   (DocC, publiée sur GitHub Pages depuis `main`)
 - Pour la générer en local, utilisez **Product › Build Documentation** dans Xcode, ou la ligne de
-  commande :
+  commande :
 
 ```sh
 xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=macOS'
@@ -311,6 +479,12 @@ xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=mac
 - [Collecting Card Details](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/collectingcarddetails)
   — un formulaire de paiement avec validation, et ce que les contrôles couvrent ou non
   ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/CollectingCardDetails.md)).
+- [Validating Forms](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/validatingforms)
+  — validateurs, erreurs au bon moment, vérifications côté serveur, formulaires depuis JSON et formulaires en plusieurs étapes
+  ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/ValidatingForms.md)).
+- [Adding Gestures](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/addinggestures)
+  — balayages, pincement-rotation-glissement et reconnaissance de formes, avec leurs actions d’accessibilité
+  ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/AddingGestures.md)).
 - [Platform Differences](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/platformdifferences)
   — ce qui change sur macOS
   ([source](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)).
@@ -331,21 +505,26 @@ développé avec Xcode 27.
 ## Architecture
 
 - `Sources/SwiftUIComponents/<Category>/` contient un fichier par famille de composants. Les
-  composants gardent leur état dans `@State` et `@Binding` ; les seuls types référence sont
-  `SnackBarManager`, `BannerManager` et `PaginatedListViewModel`, tous `@MainActor`.
+  composants gardent leur état dans `@State` et `@Binding` ; les seuls types référence sont
+  `SnackBarManager`, `BannerManager`, `PaginatedListViewModel` et `AsyncValidation`, tous
+  `@MainActor`.
+- Les décisions de validation et de gestes sont des types valeur sans code de vue (`Validator`,
+  `FormSchema`, `StepFlow`, `SwipeDirection`, `SwipeSequenceMatcher`, `TransformState`,
+  `UnistrokeRecognizer`), si bien que les modifiers restent minces et que les règles sont testées
+  unitairement.
 - `Extensions/Platform.swift` fait correspondre les quelques API propres à UIKit (couleurs
   système, retour haptique, type de clavier, majuscules automatiques, sélecteurs à molette,
   `TabView` paginée) à AppKit ou à des opérations vides, si bien que les composants eux-mêmes ne
   contiennent presque aucun `#if os(...)`.
 - La logique testable sans écran se trouve dans des fonctions statiques ou dans les classes de
   gestion, et des suites Swift Testing dans `Tests/` la couvrent. `RenderTests` et
-  `GaugeNeedleTests` dessinent des vues avec `ImageRenderer` : les pages de la galerie en mode
+  `GaugeNeedleTests` dessinent des vues avec `ImageRenderer` : les pages de la galerie en mode
   clair et sombre (ce qui détecte les vues qui plantent ou se réduisent à une taille nulle) et la
   direction de l’aiguille de la jauge. La plupart des vues n’ont pas de tests propres.
 - La CI exécute `swift test` sur macOS et `xcodebuild test` sur un simulateur d’iPhone, compile
   l’app d’exemple pour iOS et macOS et publie la documentation DocC.
 
-Lancer les tests en local :
+Lancer les tests en local :
 
 ```sh
 swift test                                    # macOS
@@ -355,8 +534,9 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## Feuille de route
 
-- Ajouter le paquet au Swift Package Index ; `.spi.yml` est déjà dans le dépôt.
+- Ajouter le paquet au Swift Package Index ; `.spi.yml` est déjà dans le dépôt.
 - Écrire des tests pour davantage de vues, en commençant par les champs de formulaire.
+- Ajouter des champs conditionnels à `FormSchema` (afficher un champ selon la valeur d’un autre).
 
 ## Contribuer
 

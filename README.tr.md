@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
+<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg" alt="SwiftUI Components: iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası."></picture></p>
@@ -25,25 +25,33 @@
 
 <!-- brand:end -->
 
-iOS 17+ ve macOS 14+ için hazır SwiftUI görünümlerinden oluşan bir Swift paketi: düğmeler,
-kartlar, grafikler, form girdileri, listeler, katmanlar, yükleme göstergeleri ve bildirimler.
-Bir bileşeni sıfırdan yazmak yerine bugün çalışan bir tanesini kullanmak isteyen uygulama
-geliştiricileri için hazırlandı. Her bileşen, başlatıcısıyla (initializer) yapılandırılan sade
-bir SwiftUI `View`'dur; bu yüzden bir tema sistemi ya da mimari benimsemeden bir veya iki
+iOS 17+ ve macOS 14+ için hazır SwiftUI görünümlerinden oluşan bir Swift paketi: düğmeler, kartlar,
+grafikler, doğrulamalı form girdileri, hareketler, listeler, katmanlar, yükleme göstergeleri ve
+bildirimler. Bir bileşeni sıfırdan yazmak yerine bugün çalışan bir tanesini kullanmak isteyen
+uygulama geliştiricileri için hazırlandı. Her bileşen, başlatıcısıyla (initializer) yapılandırılan
+sade bir SwiftUI `View`'dur; bu yüzden bir tema sistemi ya da mimari benimsemeden bir veya iki
 tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 
 ## Öne çıkanlar
 
-- **220 görünüm, 12 modifier** — kaynak koddan sayıldı ve 13 klasörde gruplandı;
-  `PrimaryButton`'dan `CreditCardInput` ve `GaugeChart`'a kadar.
+- **223 görünüm, 12 görünüm modifier'ı ve 5 hareket modifier'ı** — kaynak koddan sayıldı ve 16
+  klasörde gruplandı; `PrimaryButton`'dan `CreditCardInput`, `SchemaForm` ve `ShapeDrawingPad`'e
+  kadar.
+- **Kendini denetleyen formlar** — birleştirilebilir doğrulayıcılar (validator), ilk düzenlemeden
+  sonra beliren hatalar, geciktirmeli (debounce) sunucu denetimleri, JSON'dan oluşturulan formlar ve
+  çok adımlı akışlar. JSON şemasındaki desenler (pattern), uygulamayı dondurabilecek biçimler
+  açısından taranır.
+- **Erişilebilir hareketler** — kaydırmalar, kenardan kaydırmalar, kaydırma dizileri,
+  sıkıştır-döndür-sürükle ve şekil çizimi; her birinin VoiceOver ve Switch Control kullanıcıları
+  için bir erişilebilirlik eylemi vardır.
 - **Tek kod tabanından iOS ve macOS** — yalnızca UIKit'te olan ayrıntılar en yakın AppKit
   davranışına düşer; [platform notları](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)
   her birini listeler.
 - **Swift 6 dil modu** — paket sıkı eşzamanlılık denetimiyle ve uyarısız derlenir.
-- **Test edilen mantık** — kart numarası tanıma ve Luhn denetimi, son kullanma tarihleri,
-  telefon biçimlendirme, `FlowLayout` satır kırma, grafik geometrisi, sayfalama ve bildirim
-  kuyrukları, macOS'ta ve bir iPhone simülatöründe çalışan 56 Swift Testing testiyle
-  kapsanıyor.
+- **Test edilen mantık** — kart numarası tanıma ve Luhn denetimi, son kullanma tarihleri, telefon
+  biçimlendirme, doğrulayıcılar, JSON şemaları, adım akışları, kaydırma ve şekil tanıma, kontrast
+  oranları, `FlowLayout` satır kırma, grafik geometrisi, sayfalama ve bildirim kuyrukları, macOS'ta
+  ve bir iPhone simülatöründe çalışan 144 Swift Testing testiyle kapsanıyor.
 - **Derlenen kullanım örnekleri** — “Kullanım” bölümündeki her örnek, CI'ın iOS ve macOS
   için derlediği [örnek uygulamadan](Examples/ComponentGallery) alınmıştır.
 
@@ -54,7 +62,7 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 | Düğmeler (25)    | `PrimaryButton`, `SecondaryButton`, `LoadingButton`, `GradientButton`, `PillButton`, `FloatingActionButton`, `SplitButton`, `ToggleButtonGroup` |
 | Kartlar (27)     | `CardView`, `StatCard`, `PricingCard`, `ProfileCard`, `ProductCard`, `FlipCard`, `ExpandableCard`, `TestimonialCarousel`                        |
 | Grafikler (19)   | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `GaugeChart`, `RingChart`, `SparklineChart`                                     |
-| Formlar (21)     | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `MultiSelectField`, `SliderField`, `RangeSlider`, `OTPField`, `DateField`        |
+| Formlar (23)     | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `SliderField`, `OTPField`, `FileUploadField`, `SchemaForm`, `MultiStepForm`      |
 | Girdiler (13)    | `CreditCardInput`, `PhoneInput`, `PinInput`, `TimedPinInput`, `RatingInput`, `SearchBar`, `TagInput`                                            |
 | Listeler (18)    | `InfiniteScrollList` + `PaginatedListViewModel`, `ExpandableList`, `TreeView`, `SwipeableRow`, `ReorderableList`                                |
 | Yükleme (16)     | `ProgressRing`, `SkeletonView`, `ShimmerView`, `DotLoader`, `PulseLoader`, `StateView`, `AsyncContentView`                                      |
@@ -64,9 +72,17 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 | Bildirimler (4)  | `ToastView`, `SnackBar` + `SnackBarManager`, `Banner` + `BannerManager`                                                                         |
 | Diğer (27)       | `Avatar`, `Badge`, `Chip`, `Tag`, `Carousel`, `Accordion`, `CountdownTimer`, `Stopwatch`                                                        |
 | Boş durumlar (1) | `EmptyStateView`                                                                                                                                |
+| Hareketler (1)   | `ShapeDrawingPad`, aşağıdaki modifier'lar ve `UnistrokeRecognizer`                                                                              |
 
 Yerleşim ve modifier'lar: `FlowLayout` (satır kaydıran yerleşim), `.surface()`, `.shimmer()`,
 `.toast(isPresenting:message:)`, `.snackBarHost()`, `.bannerHost()`.
+
+Hareket modifier'ları: `.onSwipe(_:perform:)`,
+`.onEdgeSwipe(from:accessibilityActionName:perform:)`, `.onSwipeSequence(_:within:perform:)`,
+`.transformable(_:scaleRange:)` ve `.boundedDrag(offset:in:)`.
+
+Doğrulama (görünüm değil): `Validator`, `ValidatedValue`, `AsyncValidation`, `FormSchema`,
+`StepFlow` ve `ColorContrast` (WCAG kontrast oranları).
 
 ## Hızlı başlangıç
 
@@ -270,6 +286,148 @@ struct TopicPicker: View {
 }
 ```
 
+### Doğrulamalı form
+
+```swift
+struct SignUpForm: View {
+    @State private var email = ValidatedValue("", .required().and(.email()))
+    @State private var password = ValidatedValue("", .required().and(.minLength(8)))
+
+    var body: some View {
+        VStack(spacing: 16) {
+            FormField(label: "Email", errorMessage: email.visibleError) {
+                TextInputField(text: $email.value, placeholder: "you@example.com", keyboardType: .email)
+            }
+            FormField(label: "Password", errorMessage: password.visibleError) {
+                PasswordField(password: $password.value)
+            }
+            PrimaryButton("Create account") {
+                let emailIsValid = email.validate()     // shows the errors of untouched fields
+                let passwordIsValid = password.validate()
+                if emailIsValid && passwordIsValid {
+                    print("Signing up \(email.value)")
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`ValidatedValue`, bir hatayı yalnızca kullanıcı alanı düzenledikten ya da düğmeye bastıktan sonra
+gösterir; doğrulayıcılar `.and(_:)` ile birleştirilir. Metin doğrulayıcıları arasında `required`,
+`minLength`, `email`, `url`, `phone`, `digits` ve `matches` (düzenli ifade) bulunur;
+`AsyncValidation`, “bu kullanıcı adı alınmış mı” gibi bir sunucu denetimini geciktirerek (debounce)
+çalıştırır.
+
+### JSON'dan form
+
+Alanları veri olarak tanımlayın, örneğin sunucunuzdan gelen bir yanıtta:
+
+```swift
+let contactFormJSON = """
+{
+  "title": "Contact us",
+  "fields": [
+    { "id": "email", "label": "Email", "kind": "email", "required": true },
+    { "id": "topic", "label": "Topic", "kind": "choice", "options": ["Sales", "Support"], "required": true },
+    { "id": "message", "label": "Message", "kind": "multiline", "minLength": 10 }
+  ]
+}
+"""
+```
+
+Çözümleyin; bu işlem yinelenen kimlikler (id), imkânsız sınırlar ya da uygulamayı dondurabilecek bir
+düzenli ifade içeren şemayı da reddeder:
+
+```swift
+func loadContactSchema() throws -> FormSchema {
+    try FormSchema.decode(from: Data(contactFormJSON.utf8)) // throws for malformed JSON
+}
+```
+
+Sonra görüntüleyin ve değerleri kendi durumunuzda (state) tutun:
+
+```swift
+struct ContactForm: View {
+    let schema: FormSchema
+    @State private var values: [String: FormValue]
+    @State private var submitted = false
+
+    init(schema: FormSchema) {
+        self.schema = schema
+        _values = State(initialValue: schema.initialValues())
+    }
+
+    var body: some View {
+        VStack(spacing: 20) {
+            SchemaForm(schema: schema, values: $values, showsAllErrors: submitted)
+            PrimaryButton("Send") {
+                submitted = true
+                if schema.errors(in: values).isEmpty {
+                    print(values) // ["email": .text("ada@example.com"), ...]
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`StepFlow` ile `MultiStepForm`, uzun bir formu adımlara böler ve geçerli adım doğrulanana kadar
+**Next** düğmesini devre dışı tutar.
+
+### Hareketler
+
+```swift
+struct GestureDemo: View {
+    @State private var card = 1
+    @State private var zoom = TransformState.identity
+    @State private var drawing = "Draw a circle, a check mark or a star"
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Card \(card) · swipe left or right")
+                .frame(maxWidth: .infinity, minHeight: 100)
+                .background(.blue.opacity(0.15), in: .rect(cornerRadius: 16))
+                .onSwipe([.left, .right]) { direction in
+                    card += direction == .left ? 1 : -1
+                }
+
+            Image(systemName: "map")
+                .font(.system(size: 64))
+                .transformable($zoom, scaleRange: 1...5) // pinch, rotate, drag; double tap resets
+
+            ShapeDrawingPad { match in
+                drawing = match.map { "That looks like a \($0.name)" } ?? "Not sure, try again"
+            }
+            .frame(height: 200)
+            .background(.blue.opacity(0.06), in: .rect(cornerRadius: 16))
+            Text(drawing)
+        }
+        .padding()
+    }
+}
+```
+
+Her hareketin ayrıca bir erişilebilirlik eylemi vardır: VoiceOver kullanıcıları eylemler rotorunda
+**Swipe left** ve **Swipe right** eylemlerini alır, harita sistemin yakınlaştırma eylemiyle
+yakınlaştırılabilir ve `ShapeDrawingPad(accessibilityAlternatives:)` şekiller için adlandırılmış
+eylemler ekler. Kalan durumları `onEdgeSwipe`, `onSwipeSequence` ve `boundedDrag` karşılar.
+
+### Kontrast denetimi
+
+```swift
+func contrastCheck() {
+    let ratio = ColorContrast.ratio(.white, Color(red: 0, green: 0.443, blue: 0.890)) // #0071E3
+    let level = ColorContrast.level(for: ratio) // .aa: fine for body text
+    print(ratio, level)
+}
+```
+
+`ColorContrast`, iki renk arasındaki WCAG 2 kontrast oranını ve karşıladığı düzeyi (AA, büyük metin
+için AA ya da AAA) hesaplar.
+
 ## Demo
 
 | Açık                                                   | Koyu                                                  |
@@ -283,6 +441,14 @@ Ekran görüntüleri iOS simülatöründe
 [`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
 dosyasından [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh) betiğiyle
 üretilir.
+
+Kullanım bölümündeki formlar ve hareketler, örnek uygulamadan bir iPhone simülatöründe
+[`scripts/capture-example-screens.sh`](scripts/capture-example-screens.sh) betiğiyle yakalanmıştır:
+
+| Doğrulamalı form                                                | JSON'dan form                                                     | Hareketler                                                  |
+| --------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- |
+| ![Doğrulamalı form, açık](docs/images/example-signUp-light.png) | ![JSON'dan form, açık](docs/images/example-contactForm-light.png) | ![Hareketler, açık](docs/images/example-gestures-light.png) |
+| ![Doğrulamalı form, koyu](docs/images/example-signUp-dark.png)  | ![JSON'dan form, koyu](docs/images/example-contactForm-dark.png)  | ![Hareketler, koyu](docs/images/example-gestures-dark.png)  |
 
 Bileşenleri kendiniz denemek için [`Examples/ComponentGallery`](Examples/ComponentGallery)
 klasöründeki `ComponentGallery.xcodeproj` dosyasını Xcode ile açın, bir iPhone simülatörü ya da
@@ -309,6 +475,12 @@ xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=mac
 - [Collecting Card Details](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/collectingcarddetails)
   — doğrulamalı bir ödeme formu; denetimlerin neyi kapsayıp neyi kapsamadığı
   ([kaynak](Sources/SwiftUIComponents/SwiftUIComponents.docc/CollectingCardDetails.md)).
+- [Validating Forms](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/validatingforms)
+  — doğrulayıcılar, hataların doğru zamanda gösterilmesi, sunucu denetimleri, JSON'dan formlar ve çok adımlı formlar
+  ([kaynak](Sources/SwiftUIComponents/SwiftUIComponents.docc/ValidatingForms.md)).
+- [Adding Gestures](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/addinggestures)
+  — kaydırmalar, sıkıştır-döndür-sürükle ve şekil tanıma; erişilebilirlik eylemleriyle birlikte
+  ([kaynak](Sources/SwiftUIComponents/SwiftUIComponents.docc/AddingGestures.md)).
 - [Platform Differences](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/platformdifferences)
   — macOS'ta nelerin değiştiği
   ([kaynak](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)).
@@ -330,7 +502,10 @@ geliştiriliyor.
 
 - `Sources/SwiftUIComponents/<Category>/` her bileşen ailesi için bir dosya içerir. Bileşenler
   durumlarını `@State` ve `@Binding` içinde tutar; tek referans tipleri `SnackBarManager`,
-  `BannerManager` ve `PaginatedListViewModel`'dır ve üçü de `@MainActor`'dır.
+  `BannerManager`, `PaginatedListViewModel` ve `AsyncValidation`'dır ve dördü de `@MainActor`'dır.
+- Doğrulama ve hareket kararları görünüm kodu içermeyen değer tipleridir (`Validator`, `FormSchema`,
+  `StepFlow`, `SwipeDirection`, `SwipeSequenceMatcher`, `TransformState`, `UnistrokeRecognizer`);
+  böylece modifier'lar ince kalır ve kurallar birim testleriyle denenir.
 - `Extensions/Platform.swift`, yalnızca UIKit'te olan birkaç API'yi (sistem renkleri, haptik
   geri bildirim, klavye tipi, büyük harf ayarı, tekerlek seçiciler, sayfalı `TabView`)
   AppKit'e ya da hiçbir şey yapmayan karşılıklara eşler; bu sayede bileşenlerin kendisinde
@@ -355,6 +530,7 @@ xcodebuild test -scheme SwiftUIComponents \
 
 - Paketi Swift Package Index'e eklemek; `.spi.yml` depoda zaten var.
 - Form girdilerinden başlayarak tek tek görünümler için daha fazla test yazmak.
+- `FormSchema` içine koşullu alanlar eklemek (bir alanı başka bir alanın değerine göre göstermek).
 
 ## Katkıda bulunma
 
