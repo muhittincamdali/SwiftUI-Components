@@ -60,6 +60,13 @@ public struct GaugeChart: View {
         startAngle + (value / maxValue) * totalAngle * Double(animationProgress)
     }
     
+    /// Rotation for the needle so that it points at `arcAngle` (degrees, 0° = right, clockwise).
+    /// The needle shape points up, which is 270° in arc coordinates, so it turns by `arcAngle - 270`,
+    /// that is `arcAngle + 90` modulo 360.
+    nonisolated static func needleRotation(arcAngle: Double) -> Double {
+        arcAngle + 90
+    }
+    
     public var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
@@ -91,7 +98,7 @@ public struct GaugeChart: View {
                     .fill(Color.primary)
                     .frame(width: 4, height: size * 0.35)
                     .offset(y: -size * 0.15)
-                    .rotationEffect(.degrees(currentAngle - 90))
+                    .rotationEffect(.degrees(Self.needleRotation(arcAngle: currentAngle)))
                 
                 // Center circle
                 Circle()
@@ -109,7 +116,7 @@ public struct GaugeChart: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                .offset(y: style == .semicircle ? size * 0.1 : size * 0.2)
+                .offset(y: style == .semicircle ? size * 0.18 : size * 0.2)
             }
             .frame(width: size, height: size)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)

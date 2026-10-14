@@ -82,6 +82,13 @@ struct ChartGeometryTests {
         let angles = PieChart.boundaryAngles(for: [-5, 1]).map(\.degrees)
         #expect(angles == [0, 0, 360])
     }
+
+    @Test("GaugeChart needle points at the arc angle", arguments: [135.0, 180, 270, 360, 405, 450])
+    func gaugeNeedlePointsAtArcAngle(arcAngle: Double) {
+        // Unrotated, the needle points up: 270° in arc coordinates.
+        let direction = (270 + GaugeChart.needleRotation(arcAngle: arcAngle)).truncatingRemainder(dividingBy: 360)
+        #expect(direction == arcAngle.truncatingRemainder(dividingBy: 360))
+    }
 }
 
 @Suite("Indicators")
