@@ -34,7 +34,7 @@ usar um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não
 ## Destaques
 
 - **223 views, 12 modifiers de view e 5 modifiers de gestos**: contados no código-fonte e
-  organizados em 16 pastas, de `PrimaryButton` a `CreditCardInput`, `SchemaForm` e
+  organizados nas 14 categorias abaixo, de `PrimaryButton` a `CreditCardInput`, `SchemaForm` e
   `ShapeDrawingPad`.
 - **Formulários que se verificam sozinhos**: validadores combináveis, erros que aparecem só depois
   da primeira edição, verificações no servidor com debounce, formulários gerados a partir de JSON e

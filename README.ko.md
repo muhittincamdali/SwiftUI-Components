@@ -33,7 +33,7 @@ iOS 17 이상과 macOS 14 이상에서 바로 쓸 수 있는 SwiftUI 뷰를 모�
 
 ## 주요 기능
 
-- **뷰 223개, 뷰 modifier 12개, 제스처 modifier 5개** — 소스 코드에서 센 숫자이며 16개 폴더로 나뉘어
+- **뷰 223개, 뷰 modifier 12개, 제스처 modifier 5개** — 소스 코드에서 센 숫자이며 아래 14개 카테고리로 나뉘어
   있습니다. `PrimaryButton`부터 `CreditCardInput`, `SchemaForm`, `ShapeDrawingPad`까지 있습니다.
 - **스스로 검사하는 폼** — 조합할 수 있는 검증기, 처음 편집한 뒤에 나타나는 오류, 디바운스된 서버
   확인, JSON으로 그리는 폼, 여러 단계로 된 흐름. JSON 스키마의 패턴은 시간 제한 안에서 실행되므로, 느린 패턴은

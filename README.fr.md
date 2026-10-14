@@ -35,8 +35,8 @@ système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
 ## Points forts
 
 - **223 vues, 12 modifiers de vue et 5 modifiers de geste** : comptés dans le code source et
-  répartis dans 16 dossiers, de `PrimaryButton` à `CreditCardInput`, `SchemaForm` et
-  `ShapeDrawingPad`.
+  répartis dans les 14 catégories ci-dessous, de `PrimaryButton` à `CreditCardInput`,
+  `SchemaForm` et `ShapeDrawingPad`.
 - **Des formulaires qui se vérifient eux-mêmes** : validateurs composables, erreurs qui
   n’apparaissent qu’après la première modification, vérifications côté serveur avec debounce,
   formulaires générés depuis du JSON et parcours en plusieurs étapes. Les motifs d’un schéma JSON

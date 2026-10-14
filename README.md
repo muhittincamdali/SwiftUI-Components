@@ -32,7 +32,7 @@ a theme system or an architecture. The package has no dependencies.
 ## Highlights
 
 - **223 views, 12 view modifiers and 5 gesture modifiers** — counted from the sources and
-  grouped in 16 folders, from `PrimaryButton` to `CreditCardInput`, `SchemaForm` and
+  grouped in the 14 categories below, from `PrimaryButton` to `CreditCardInput`, `SchemaForm` and
   `ShapeDrawingPad`.
 - **Forms that check themselves** — composable validators, errors that appear after the first
   edit, debounced server checks, forms rendered from JSON and multi-step flows. Patterns in a

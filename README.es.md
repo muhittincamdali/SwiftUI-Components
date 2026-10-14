@@ -35,8 +35,8 @@ ni una arquitectura. El paquete no tiene dependencias.
 ## Lo más destacado
 
 - **223 vistas, 12 modifiers de vista y 5 modifiers de gestos**: contados en el código fuente y
-  repartidos en 16 carpetas, desde `PrimaryButton` hasta `CreditCardInput`, `SchemaForm` y
-  `ShapeDrawingPad`.
+  repartidos en las 14 categorías de abajo, desde `PrimaryButton` hasta `CreditCardInput`,
+  `SchemaForm` y `ShapeDrawingPad`.
 - **Formularios que se comprueban solos**: validadores componibles, errores que aparecen tras la
   primera edición, comprobaciones en el servidor con debounce, formularios generados a partir de
   JSON y flujos de varios pasos. Los patrones de un esquema JSON se ejecutan con un límite de

@@ -29,7 +29,7 @@ iOS 17 以降と macOS 14 以降向けの、すぐに使える SwiftUI ビュー
 
 ## 主な特長
 
-- **223 個のビュー、12 個のビュー modifier、5 個のジェスチャー modifier**：ソースコードから数えた数で、16 のフォルダに分かれています。`PrimaryButton` から `CreditCardInput`、`SchemaForm`、`ShapeDrawingPad` まで揃っています。
+- **223 個のビュー、12 個のビュー modifier、5 個のジェスチャー modifier**：ソースコードから数えた数で、下の 14 のカテゴリに分かれています。`PrimaryButton` から `CreditCardInput`、`SchemaForm`、`ShapeDrawingPad` まで揃っています。
 - **自分でチェックするフォーム**：組み合わせ可能なバリデータ、最初の編集のあとに表示されるエラー、デバウンスされたサーバー側のチェック、JSON から描画するフォーム、複数ステップのフロー。JSON スキーマ内のパターンは時間制限つきで実行され、遅いパターンはアプリを固まらせる代わりにその値を不合格にします。
 - **アクセシブルなジェスチャー**：スワイプ、画面端からのスワイプ、スワイプの連続操作、ピンチ・回転・ドラッグ、図形の描画に対応し、どれにも VoiceOver や Switch Control を使う人向けのアクセシビリティアクションがあります。
 - **1 つのコードベースで iOS と macOS に対応**：UIKit にしかない部分は最も近い AppKit の動作に置き換わります。[プラットフォームの違い](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)に一覧があります。

@@ -29,7 +29,7 @@
 
 ## 亮点
 
-- **223 个视图、12 个视图 modifier 和 5 个手势 modifier**：数量由源代码统计，分布在 16 个文件夹中，从 `PrimaryButton` 到 `CreditCardInput`、`SchemaForm` 和 `ShapeDrawingPad`。
+- **223 个视图、12 个视图 modifier 和 5 个手势 modifier**：数量由源代码统计，分为下面的 14 个类别，从 `PrimaryButton` 到 `CreditCardInput`、`SchemaForm` 和 `ShapeDrawingPad`。
 - **能自行校验的表单**：可组合的校验器、首次编辑后才出现的错误、带防抖的服务器检查、由 JSON 渲染的表单以及多步骤流程。JSON schema 中的正则表达式在时间限制内运行，过慢的表达式会让该值校验失败，而不会让应用卡死。
 - **无障碍手势**：滑动、边缘滑动、滑动序列、捏合旋转拖动和形状绘制，每种手势都为 VoiceOver 和 Switch Control 用户提供了辅助功能操作。
 - **一套代码同时支持 iOS 和 macOS**：仅 UIKit 提供的细节会退回到最接近的 AppKit 行为；[平台说明](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)逐项列出。

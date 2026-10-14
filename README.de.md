@@ -34,8 +34,9 @@ Du kannst also ein oder zwei davon verwenden, ohne ein Theme-System oder eine Ar
 
 ## Highlights
 
-- **223 Views, 12 View-Modifier und 5 Gesten-Modifier** – aus dem Quellcode gezählt und auf 16
-  Ordner verteilt, von `PrimaryButton` bis `CreditCardInput`, `SchemaForm` und `ShapeDrawingPad`.
+- **223 Views, 12 View-Modifier und 5 Gesten-Modifier** – aus dem Quellcode gezählt und auf die 14
+  Kategorien unten verteilt, von `PrimaryButton` bis `CreditCardInput`, `SchemaForm` und
+  `ShapeDrawingPad`.
 - **Formulare, die sich selbst prüfen** – kombinierbare Validatoren, Fehler, die erst nach der
   ersten Bearbeitung erscheinen, entprellte Serverprüfungen, aus JSON gerenderte Formulare und
   mehrstufige Abläufe. Muster in einem JSON-Schema laufen mit einem Zeitlimit; ein langsames Muster

@@ -34,8 +34,8 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 
 ## Öne çıkanlar
 
-- **223 görünüm, 12 görünüm modifier'ı ve 5 hareket modifier'ı** — kaynak koddan sayıldı ve 16
-  klasörde gruplandı; `PrimaryButton`'dan `CreditCardInput`, `SchemaForm` ve `ShapeDrawingPad`'e
+- **223 görünüm, 12 görünüm modifier'ı ve 5 hareket modifier'ı** — kaynak koddan sayıldı ve aşağıdaki
+  14 kategoride gruplandı; `PrimaryButton`'dan `CreditCardInput`, `SchemaForm` ve `ShapeDrawingPad`'e
   kadar.
 - **Kendini denetleyen formlar** — birleştirilebilir doğrulayıcılar (validator), ilk düzenlemeden
   sonra beliren hatalar, geciktirmeli (debounce) sunucu denetimleri, JSON'dan oluşturulan formlar ve
