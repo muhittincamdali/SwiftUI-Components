@@ -159,10 +159,16 @@ public struct Badge: View {
     private var displayText: String? {
         if let text {
             return text
-        } else if let count, count > 0 {
-            return count > maxCount ? "\(maxCount)+" : "\(count)"
+        } else if let count {
+            return Self.countLabel(count, maxCount: maxCount)
         }
         return nil
+    }
+
+    /// Text for a count badge: `nil` for zero or less, `"99+"` style once `count` exceeds `maxCount`.
+    nonisolated static func countLabel(_ count: Int, maxCount: Int) -> String? {
+        guard count > 0 else { return nil }
+        return count > maxCount ? "\(maxCount)+" : "\(count)"
     }
     
     // MARK: - Styling
