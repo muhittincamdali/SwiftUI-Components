@@ -238,10 +238,10 @@ public struct ProfileCard: View {
 #Preview("Profile Cards") {
     ScrollView {
         VStack(spacing: 20) {
-            ProfileCard(name: "John Doe", subtitle: "@johndoe", style: .compact)
+            ProfileCard(name: "Maya Chen", subtitle: "@mayachen", style: .compact)
 
             ProfileCard(
-                name: "Jane Smith",
+                name: "Omar Haddad",
                 subtitle: "iOS Developer",
                 stats: [
                     .init(value: "1.2K", label: "Posts"),

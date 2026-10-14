@@ -298,7 +298,7 @@ public struct SimpleMarkdownText: View {
         )
 
         MentionText(
-            "Hey @johndoe check out #SwiftUI #iOS",
+            "Hey @mayachen check out #SwiftUI #iOS",
             mentionColor: .blue,
             hashtagColor: .purple
         )
