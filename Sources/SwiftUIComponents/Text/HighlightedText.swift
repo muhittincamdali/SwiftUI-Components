@@ -124,7 +124,7 @@ public struct HighlightedText: View {
     /// Empty terms are ignored. When matches overlap, the one that starts first wins
     /// (ties go to the longer match) so no character is highlighted twice.
     /// - Returns: Matched ranges in `text` together with the index of the term that produced them.
-    public static func matchRanges(
+    public nonisolated static func matchRanges(
         in text: String,
         terms: [String],
         caseSensitive: Bool

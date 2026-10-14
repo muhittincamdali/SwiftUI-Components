@@ -188,7 +188,7 @@ public struct SnapCarousel<Item: Identifiable, Content: View>: View {
     }
 
     /// An item is focused while its vertical midpoint lies in the middle half of the viewport.
-    static func isFocused(itemFrame: CGRect, viewportHeight: CGFloat) -> Bool {
+    nonisolated static func isFocused(itemFrame: CGRect, viewportHeight: CGFloat) -> Bool {
         let midY = itemFrame.midY
         return midY >= viewportHeight * 0.25 && midY <= viewportHeight * 0.75
     }

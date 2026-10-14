@@ -225,7 +225,7 @@ public struct ScrollingPageIndicator: View {
     }
 
     /// The window of page indices to draw, centred on `currentPage` and clamped to the page count.
-    static func visibleRange(currentPage: Int, totalPages: Int, visibleDots: Int) -> Range<Int> {
+    nonisolated static func visibleRange(currentPage: Int, totalPages: Int, visibleDots: Int) -> Range<Int> {
         let half = visibleDots / 2
         var start = max(0, currentPage - half)
         let end = min(totalPages, start + visibleDots)
