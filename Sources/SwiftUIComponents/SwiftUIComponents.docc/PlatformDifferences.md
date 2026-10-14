@@ -12,10 +12,10 @@ equivalent or skipped:
 | -------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
 | System background and gray colors                              | `UIColor.systemBackground`, `systemGray2`…`systemGray6` | `NSColor.windowBackgroundColor` and translucent `systemGray` |
 | Haptic feedback (segmented control, tab bar, reorderable list) | `UIImpactFeedbackGenerator`                             | none                                                         |
-| Software keyboard type (``KeyboardKind``)                        | `keyboardType(_:)`                                      | ignored                                                      |
+| Software keyboard type (``KeyboardKind``)                      | `keyboardType(_:)`                                      | ignored                                                      |
 | Auto-capitalization                                            | `textInputAutocapitalization(_:)`                       | ignored                                                      |
-| Wheel pickers in ``DateField`` and ``DurationPicker``              | `.wheel`                                                | stepper field / pop-up menu                                  |
-| ``TestimonialCarousel`` paging                                   | page-style `TabView`                                    | one card at a time, dots select the page                     |
+| Wheel pickers in ``DateField`` and ``DurationPicker``          | `.wheel`                                                | stepper field / pop-up menu                                  |
+| ``TestimonialCarousel`` paging                                 | page-style `TabView`                                    | one card at a time, dots select the page                     |
 
 The README screenshots are rendered on the iOS simulator.
 
