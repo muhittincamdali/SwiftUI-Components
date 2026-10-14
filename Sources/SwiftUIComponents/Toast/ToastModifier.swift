@@ -26,11 +26,13 @@ public struct ToastModifier: ViewModifier {
                     ToastView(message: message, style: style)
                         .transition(.move(edge: position.edge).combined(with: .opacity))
                         .zIndex(999)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isPresenting = false
-                                }
+                        .task {
+                            // Cancelled when the toast disappears, so an earlier toast's timer
+                            // cannot hide a toast that was presented again in the meantime.
+                            try? await Task.sleep(for: .seconds(duration))
+                            guard !Task.isCancelled else { return }
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isPresenting = false
                             }
                         }
                 }
