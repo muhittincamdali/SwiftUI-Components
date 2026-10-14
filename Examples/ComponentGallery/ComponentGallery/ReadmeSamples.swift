@@ -229,6 +229,10 @@ struct ReadmeExamples: View {
             WeeklyStats()
             TopicPicker()
             SignUpForm()
+            if let schema = try? loadContactSchema() {
+                ContactForm(schema: schema)
+            }
+            GestureDemo()
         }
     }
 }

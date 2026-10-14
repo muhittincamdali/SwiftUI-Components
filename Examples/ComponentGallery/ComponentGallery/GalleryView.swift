@@ -16,6 +16,11 @@ struct GalleryView: View {
 
         var id: Self { self }
 
+        /// The sample whose case name is `name`, such as `"signUp"`.
+        static func named(_ name: String) -> Sample? {
+            allCases.first { String(describing: $0) == name }
+        }
+
         var systemImage: String {
             switch self {
             case .quickStart: "star"
@@ -55,8 +60,14 @@ struct GalleryView: View {
         }
     }
 
+    /// `-sample <case name>` on the command line opens that screen, for example
+    /// `-sample signUp`. `scripts/capture-example-screens.sh` uses it for the README screenshots.
+    @State private var path: [Sample] = UserDefaults.standard.string(forKey: "sample")
+        .flatMap(Sample.named)
+        .map { [$0] } ?? []
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List(Sample.allCases) { sample in
                 NavigationLink(value: sample) {
                     Label(sample.rawValue, systemImage: sample.systemImage)
