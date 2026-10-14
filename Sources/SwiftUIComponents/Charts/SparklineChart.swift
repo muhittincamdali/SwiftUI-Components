@@ -156,18 +156,25 @@ public struct SparklineChart: View {
     }
     
     private func normalizedPoints(in size: CGSize) -> [CGPoint] {
-        guard let minValue = data.min(), let maxValue = data.max(), maxValue > minValue else {
-            return data.enumerated().map { index, _ in
-                CGPoint(x: CGFloat(index) / CGFloat(data.count - 1) * size.width, y: size.height / 2)
-            }
+        Self.normalizedPoints(data, in: size)
+    }
+
+    /// Maps values into `size`: the first value sits at x = 0, the last at x = width,
+    /// the minimum at the bottom and the maximum at the top. A flat series is centred
+    /// vertically; a single value is placed in the horizontal centre.
+    nonisolated static func normalizedPoints(_ data: [Double], in size: CGSize) -> [CGPoint] {
+        guard data.count > 1 else {
+            return data.map { _ in CGPoint(x: size.width / 2, y: size.height / 2) }
         }
-        
+        let step = size.width / CGFloat(data.count - 1)
+
+        guard let minValue = data.min(), let maxValue = data.max(), maxValue > minValue else {
+            return data.indices.map { CGPoint(x: CGFloat($0) * step, y: size.height / 2) }
+        }
+
         let range = maxValue - minValue
-        
         return data.enumerated().map { index, value in
-            let x = CGFloat(index) / CGFloat(data.count - 1) * size.width
-            let y = (1 - (value - minValue) / range) * size.height
-            return CGPoint(x: x, y: y)
+            CGPoint(x: CGFloat(index) * step, y: (1 - (value - minValue) / range) * size.height)
         }
     }
     

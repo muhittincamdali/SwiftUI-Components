@@ -73,7 +73,7 @@ public struct PieChart: View {
                             let x = center.x + labelRadius * CGFloat(cos(midAngle.radians - .pi / 2))
                             let y = center.y + labelRadius * CGFloat(sin(midAngle.radians - .pi / 2))
                             
-                            let percentage = slice.value / total * 100
+                            let percentage = total > 0 ? slice.value / total * 100 : 0
                             
                             Text(String(format: "%.0f%%", percentage))
                                 .font(.system(size: 12, weight: .bold))
@@ -141,8 +141,23 @@ public struct PieChart: View {
     }
     
     private func angleFor(index: Int) -> Angle {
-        let sum = slices.prefix(index).reduce(0) { $0 + $1.value }
-        return Angle(degrees: sum / total * 360)
+        Self.boundaryAngles(for: slices.map(\.value))[index]
+    }
+
+    /// Cumulative slice boundaries, starting at 0° and ending at 360°.
+    ///
+    /// Returns `values.count + 1` angles. Negative values count as zero; if nothing is
+    /// positive every boundary is 0° so no slice is drawn.
+    nonisolated static func boundaryAngles(for values: [Double]) -> [Angle] {
+        let clamped = values.map { max(0, $0) }
+        let total = clamped.reduce(0, +)
+        var running = 0.0
+        var angles = [Angle.zero]
+        for value in clamped {
+            running += value
+            angles.append(.degrees(total > 0 ? running / total * 360 : 0))
+        }
+        return angles
     }
 }
 
