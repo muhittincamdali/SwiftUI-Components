@@ -32,6 +32,7 @@ by the package's unit tests.
 ### Essentials
 
 - <doc:GettingStarted>
+- <doc:CollectingCardDetails>
 - <doc:PlatformDifferences>
 
 ### Buttons
