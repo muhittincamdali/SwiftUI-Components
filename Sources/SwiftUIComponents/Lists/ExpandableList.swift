@@ -340,7 +340,7 @@ struct ExpandableListPreview: View {
     @State private var faqItems: [FAQList.FAQItem] = [
         .init(question: "What is SwiftUI?", answer: "SwiftUI is Apple's modern declarative UI framework."),
         .init(question: "How do I get started?", answer: "Start by importing SwiftUI and creating your first View."),
-        .init(question: "Is SwiftUI production ready?", answer: "Yes, SwiftUI is mature and used in many production apps.")
+        .init(question: "Which platforms does SwiftUI support?", answer: "iOS, iPadOS, macOS, tvOS, watchOS and visionOS.")
     ]
 
     var body: some View {

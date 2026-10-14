@@ -280,7 +280,7 @@ public struct ShowcaseCard: View {
 
             FeatureCard(
                 title: "Secure by Default",
-                description: "Enterprise-grade encryption for all your data.",
+                description: "Your data is encrypted on the device.",
                 icon: "lock.fill",
                 color: .green,
                 style: .horizontal
