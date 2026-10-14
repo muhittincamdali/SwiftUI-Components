@@ -10,6 +10,9 @@ struct GalleryView: View {
         case paymentForm = "Payment form"
         case snackbars = "Snackbars"
         case flowLayout = "Flow layout"
+        case signUp = "Validated form"
+        case contactForm = "Form from JSON"
+        case gestures = "Gestures"
 
         var id: Self { self }
 
@@ -21,11 +24,15 @@ struct GalleryView: View {
             case .paymentForm: "creditcard"
             case .snackbars: "text.bubble"
             case .flowLayout: "square.grid.3x2"
+            case .signUp: "checkmark.shield"
+            case .contactForm: "doc.text"
+            case .gestures: "hand.draw"
             }
         }
 
-        /// InboxScreen is a List, which has no height of its own inside a ScrollView.
-        var scrolls: Bool { self != .snackbars }
+        /// InboxScreen is a List, which has no height of its own inside a ScrollView, and the
+        /// gesture screen needs drags for itself rather than for scrolling.
+        var scrolls: Bool { self != .snackbars && self != .gestures }
 
         @MainActor @ViewBuilder
         var screen: some View {
@@ -36,6 +43,14 @@ struct GalleryView: View {
             case .paymentForm: PaymentForm()
             case .snackbars: InboxScreen()
             case .flowLayout: TopicPicker().padding()
+            case .signUp: SignUpForm()
+            case .contactForm:
+                if let schema = try? loadContactSchema() {
+                    ContactForm(schema: schema)
+                } else {
+                    Text("The form description could not be read.")
+                }
+            case .gestures: GestureDemo()
             }
         }
     }
