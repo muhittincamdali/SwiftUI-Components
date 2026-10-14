@@ -272,20 +272,6 @@ private struct FABButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - AnyShape Helper
-
-private struct AnyShape: Shape {
-    private let _path: (CGRect) -> Path
-    
-    init<S: Shape>(_ shape: S) {
-        _path = { rect in shape.path(in: rect) }
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        _path(rect)
-    }
-}
-
 // MARK: - View Modifier
 
 /// Positions a FAB at the bottom trailing corner.

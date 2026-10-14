@@ -118,7 +118,7 @@ public struct NotificationCard: View {
         )
         .onTapGesture { onTap?() }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(type) notification: \(title). \(message)")
+        .accessibilityLabel("\(String(describing: type)) notification: \(title). \(message)")
     }
 }
 

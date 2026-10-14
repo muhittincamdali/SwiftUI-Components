@@ -146,7 +146,7 @@ public struct RippleButton: View {
     }
     
     private func addRipple() {
-        var ripple = Ripple()
+        let ripple = Ripple()
         ripples.append(ripple)
         
         withAnimation(.easeOut(duration: 0.6)) {

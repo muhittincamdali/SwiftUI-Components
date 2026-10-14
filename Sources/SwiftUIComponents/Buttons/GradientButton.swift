@@ -18,7 +18,7 @@ public struct GradientButton: View {
     // MARK: - Types
     
     /// The type of gradient to apply.
-    public enum GradientType {
+    public enum GradientType: Sendable {
         case linear(colors: [Color], startPoint: UnitPoint, endPoint: UnitPoint)
         case radial(colors: [Color], center: UnitPoint, startRadius: CGFloat, endRadius: CGFloat)
         case angular(colors: [Color], center: UnitPoint, angle: Angle)

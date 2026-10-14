@@ -156,8 +156,6 @@ public struct PageIndicator: View {
     private var wormIndicator: some View {
         GeometryReader { geometry in
             let dotWidth = dotSize
-            let totalWidth = CGFloat(totalPages) * dotWidth + CGFloat(totalPages - 1) * spacing
-            let startX = (geometry.size.width - totalWidth) / 2
             
             ZStack(alignment: .leading) {
                 // Background dots
@@ -223,14 +221,19 @@ public struct ScrollingPageIndicator: View {
     }
     
     private var visibleRange: Range<Int> {
+        Self.visibleRange(currentPage: currentPage, totalPages: totalPages, visibleDots: visibleDots)
+    }
+
+    /// The window of page indices to draw, centred on `currentPage` and clamped to the page count.
+    static func visibleRange(currentPage: Int, totalPages: Int, visibleDots: Int) -> Range<Int> {
         let half = visibleDots / 2
         var start = max(0, currentPage - half)
-        var end = min(totalPages, start + visibleDots)
-        
+        let end = min(totalPages, start + visibleDots)
+
         if end - start < visibleDots {
             start = max(0, end - visibleDots)
         }
-        
+
         return start..<end
     }
     

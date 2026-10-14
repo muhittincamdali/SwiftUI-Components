@@ -206,20 +206,6 @@ public struct Badge: View {
     }
 }
 
-// MARK: - AnyShape Helper
-
-private struct AnyShape: Shape {
-    private let _path: (CGRect) -> Path
-    
-    init<S: Shape>(_ shape: S) {
-        _path = { rect in shape.path(in: rect) }
-    }
-    
-    func path(in rect: CGRect) -> Path {
-        _path(rect)
-    }
-}
-
 // MARK: - Badge Modifier
 
 /// A modifier that adds a badge to any view.

@@ -64,7 +64,7 @@ public struct MediaCard: View {
         }
         .onTapGesture { onTap?() }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(mediaType) \(title)")
+        .accessibilityLabel("\(String(describing: mediaType)) \(title)")
     }
     
     private var mediaIcon: String {

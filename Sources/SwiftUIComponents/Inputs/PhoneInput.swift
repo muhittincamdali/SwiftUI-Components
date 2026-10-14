@@ -12,7 +12,7 @@ public struct PhoneInput: View {
     // MARK: - Types
     
     /// Country information for phone codes.
-    public struct Country: Identifiable, Hashable {
+    public struct Country: Identifiable, Hashable, Sendable {
         public let id: String
         public let name: String
         public let dialCode: String
