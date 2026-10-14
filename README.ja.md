@@ -72,7 +72,7 @@ Xcode で **File › Add Package Dependencies…** を選び、リポジトリ�
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-URL はウィンドウ右上の検索フィールドに貼り付けます。**Dependency Rule** は **Up to Next Major Version**、バージョンは `2.0.0` のままにして **Add Package** をクリックします。次のウィンドウで **SwiftUIComponents** の横にあるアプリのターゲットを選び、もう一度 **Add Package** をクリックします。
+URL はウィンドウ右上の検索フィールドに貼り付けます。**Dependency Rule** は **Up to Next Major Version**、バージョンは `2.1.0` のままにして **Add Package** をクリックします。次のウィンドウで **SwiftUIComponents** の横にあるアプリのターゲットを選び、もう一度 **Add Package** をクリックします。
 
 **2. モジュールをインポートする**
 
@@ -123,7 +123,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [

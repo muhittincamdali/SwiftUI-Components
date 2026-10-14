@@ -96,7 +96,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 Вставьте адрес в поле поиска в правом верхнем углу окна. Оставьте для **Dependency Rule**
-значение **Up to Next Major Version** с версии `2.0.0` и нажмите **Add Package**. В следующем окне
+значение **Up to Next Major Version** с версии `2.1.0` и нажмите **Add Package**. В следующем окне
 выберите target своего приложения рядом с **SwiftUIComponents** и снова нажмите **Add Package**.
 
 **2. Импортируйте модуль**
@@ -150,7 +150,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [

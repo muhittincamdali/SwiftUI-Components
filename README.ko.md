@@ -89,7 +89,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 URL을 창 오른쪽 위의 검색 필드에 붙여 넣습니다. **Dependency Rule**은 **Up to Next Major Version**,
-버전은 `2.0.0`으로 그대로 두고 **Add Package**를 클릭합니다. 다음 창에서 **SwiftUIComponents**
+버전은 `2.1.0`으로 그대로 두고 **Add Package**를 클릭합니다. 다음 창에서 **SwiftUIComponents**
 옆에 있는 앱 타깃을 선택하고 **Add Package**를 한 번 더 클릭합니다.
 
 **2. 모듈 가져오기**
@@ -143,7 +143,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [

@@ -96,7 +96,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 Füge sie in das Suchfeld oben rechts im Fenster ein. Lass **Dependency Rule** auf
-**Up to Next Major Version** ab `2.0.0` und klicke auf **Add Package**. Wähle im nächsten Fenster
+**Up to Next Major Version** ab `2.1.0` und klicke auf **Add Package**. Wähle im nächsten Fenster
 neben **SwiftUIComponents** dein App-Target aus und klicke noch einmal auf **Add Package**.
 
 **2. Modul importieren**
@@ -151,7 +151,7 @@ Oder füge es zu den `dependencies` in deiner `Package.swift` hinzu:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [

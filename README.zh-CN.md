@@ -72,7 +72,7 @@
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-把地址粘贴到窗口右上角的搜索框中。保持 **Dependency Rule** 为 **Up to Next Major Version**，起始版本为 `2.0.0`，然后点击 **Add Package**。在下一个窗口中，在 **SwiftUIComponents** 旁边选择你的应用 target，再次点击 **Add Package**。
+把地址粘贴到窗口右上角的搜索框中。保持 **Dependency Rule** 为 **Up to Next Major Version**，起始版本为 `2.1.0`，然后点击 **Add Package**。在下一个窗口中，在 **SwiftUIComponents** 旁边选择你的应用 target，再次点击 **Add Package**。
 
 **2. 导入模块**
 
@@ -123,7 +123,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [

@@ -95,7 +95,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 Adresi pencerenin sağ üstündeki arama alanına yapıştırın. **Dependency Rule** ayarını
-**Up to Next Major Version** ve `2.0.0` olarak bırakıp **Add Package**'a tıklayın. Sonraki
+**Up to Next Major Version** ve `2.1.0` olarak bırakıp **Add Package**'a tıklayın. Sonraki
 pencerede **SwiftUIComponents** satırının yanından uygulama hedefinizi (target) seçin ve yeniden
 **Add Package**'a tıklayın.
 
@@ -151,7 +151,7 @@ Ya da `Package.swift` dosyanızdaki `dependencies` listesine ekleyin:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
