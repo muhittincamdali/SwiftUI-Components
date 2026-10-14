@@ -1,0 +1,106 @@
+{
+  "name": "SwiftUI Components",
+  "repository": "muhittincamdali/SwiftUI-Components",
+  "tagline": {
+    "en": "Ready-made SwiftUI views for iOS and macOS: buttons, cards, charts, forms and more.",
+    "tr": "iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası.",
+    "zh-CN": "适用于 iOS 和 macOS 的现成 SwiftUI 视图：按钮、卡片、图表、表单等。",
+    "ja": "iOS と macOS 向けの既製 SwiftUI ビュー。ボタン、カード、チャート、フォームなど。",
+    "ko": "iOS와 macOS용 기성 SwiftUI 뷰: 버튼, 카드, 차트, 폼 등.",
+    "es": "Vistas de SwiftUI listas para usar en iOS y macOS: botones, tarjetas, gráficos, formularios y más.",
+    "de": "Fertige SwiftUI-Views für iOS und macOS: Buttons, Karten, Diagramme, Formulare und mehr.",
+    "fr": "Des vues SwiftUI prêtes à l’emploi pour iOS et macOS : boutons, cartes, graphiques, formulaires et plus.",
+    "pt-BR": "Views SwiftUI prontas para iOS e macOS: botões, cards, gráficos, formulários e mais.",
+    "ru": "Готовые SwiftUI-представления для iOS и macOS: кнопки, карточки, графики, формы и не только."
+  },
+  "tags": {
+    "en": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "No dependencies"
+    ],
+    "tr": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Bağımlılık yok"
+    ],
+    "zh-CN": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "无依赖"
+    ],
+    "ja": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "依存関係なし"
+    ],
+    "ko": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "의존성 없음"
+    ],
+    "es": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Sin dependencias"
+    ],
+    "de": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Keine Abhängigkeiten"
+    ],
+    "fr": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Sans dépendance"
+    ],
+    "pt-BR": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Sem dependências"
+    ],
+    "ru": [
+      "SwiftUI",
+      "Swift 6",
+      "iOS · macOS",
+      "Без зависимостей"
+    ]
+  },
+  "motif": "components",
+  "buttons": [
+    "start",
+    "docs",
+    "examples"
+  ],
+  "links": {
+    "docs": "https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/",
+    "examples": "Examples/"
+  },
+  "languages": [
+    "en",
+    "tr",
+    "zh-CN",
+    "ja",
+    "ko",
+    "es",
+    "de",
+    "fr",
+    "pt-BR",
+    "ru"
+  ],
+  "docc": {
+    "targets": [
+      "SwiftUIComponents"
+    ]
+  },
+  "socialTheme": "dark"
+}
