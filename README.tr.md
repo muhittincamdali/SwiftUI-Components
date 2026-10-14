@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg" alt="SwiftUI Components: iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası."></picture></p>
@@ -39,8 +39,8 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
   kadar.
 - **Kendini denetleyen formlar** — birleştirilebilir doğrulayıcılar (validator), ilk düzenlemeden
   sonra beliren hatalar, geciktirmeli (debounce) sunucu denetimleri, JSON'dan oluşturulan formlar ve
-  çok adımlı akışlar. JSON şemasındaki desenler (pattern), uygulamayı dondurabilecek biçimler
-  açısından taranır.
+  çok adımlı akışlar. JSON şemasındaki desenler (pattern) bir süre sınırıyla çalışır;
+  yavaş bir desen uygulamayı dondurmak yerine değeri geçersiz sayar.
 - **Erişilebilir hareketler** — kaydırmalar, kenardan kaydırmalar, kaydırma dizileri,
   sıkıştır-döndür-sürükle ve şekil çizimi; her birinin VoiceOver ve Switch Control kullanıcıları
   için bir erişilebilirlik eylemi vardır.
@@ -51,7 +51,7 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 - **Test edilen mantık** — kart numarası tanıma ve Luhn denetimi, son kullanma tarihleri, telefon
   biçimlendirme, doğrulayıcılar, JSON şemaları, adım akışları, kaydırma ve şekil tanıma, kontrast
   oranları, `FlowLayout` satır kırma, grafik geometrisi, sayfalama ve bildirim kuyrukları, macOS'ta
-  ve bir iPhone simülatöründe çalışan 144 Swift Testing testiyle kapsanıyor.
+  ve bir iPhone simülatöründe çalışan 150 Swift Testing testiyle kapsanıyor.
 - **Derlenen kullanım örnekleri** — “Kullanım” bölümündeki her örnek, CI'ın iOS ve macOS
   için derlediği [örnek uygulamadan](Examples/ComponentGallery) alınmıştır.
 
@@ -337,8 +337,8 @@ let contactFormJSON = """
 """
 ```
 
-Çözümleyin; bu işlem yinelenen kimlikler (id), imkânsız sınırlar ya da uygulamayı dondurabilecek bir
-düzenli ifade içeren şemayı da reddeder:
+Çözümleyin; bu işlem yinelenen kimlikler (id), imkânsız sınırlar, geçersiz bir düzenli ifade ya da
+boyut sınırlarının izin verdiğinden fazla alan, desen veya seçenek içeren şemayı da reddeder:
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -373,6 +373,11 @@ struct ContactForm: View {
     }
 }
 ```
+
+Desenler `NSRegularExpression` söz dizimini kullanır. 20 ms'den uzun süren bir eşleştirme durdurulur
+ve değer geçersiz sayılır; 1.000 UTF-16 kod biriminden uzun metin eşleştirilmeden geçersiz sayılır;
+tek bir `errors(in:)` çağrısı desenlere en fazla 100 ms harcar. Böylece sunucudan gelen yavaş bir
+desen formu donduramaz.
 
 `StepFlow` ile `MultiStepForm`, uzun bir formu adımlara böler ve geçerli adım doğrulanana kadar
 **Next** düğmesini devre dışı tutar.

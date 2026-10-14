@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg" alt="SwiftUI Components: 适用于 iOS 和 macOS 的现成 SwiftUI 视图：按钮、卡片、图表、表单等。"></picture></p>
@@ -30,11 +30,11 @@
 ## 亮点
 
 - **223 个视图、12 个视图 modifier 和 5 个手势 modifier**：数量由源代码统计，分布在 16 个文件夹中，从 `PrimaryButton` 到 `CreditCardInput`、`SchemaForm` 和 `ShapeDrawingPad`。
-- **能自行校验的表单**：可组合的校验器、首次编辑后才出现的错误、带防抖的服务器检查、由 JSON 渲染的表单以及多步骤流程。JSON schema 中的正则表达式会经过筛查，排除可能让应用卡死的写法。
+- **能自行校验的表单**：可组合的校验器、首次编辑后才出现的错误、带防抖的服务器检查、由 JSON 渲染的表单以及多步骤流程。JSON schema 中的正则表达式在时间限制内运行，过慢的表达式会让该值校验失败，而不会让应用卡死。
 - **无障碍手势**：滑动、边缘滑动、滑动序列、捏合旋转拖动和形状绘制，每种手势都为 VoiceOver 和 Switch Control 用户提供了辅助功能操作。
 - **一套代码同时支持 iOS 和 macOS**：仅 UIKit 提供的细节会退回到最接近的 AppKit 行为；[平台说明](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)逐项列出。
 - **Swift 6 语言模式**：软件包在严格并发检查下编译，且没有警告。
-- **经过测试的逻辑**：卡号识别与 Luhn 校验、有效期、电话号码格式化、校验器、JSON schema、分步流程、滑动与形状识别、对比度、`FlowLayout` 换行、图表几何、分页以及提示队列，由 144 个 Swift Testing 测试覆盖，在 macOS 和 iPhone 模拟器上运行。
+- **经过测试的逻辑**：卡号识别与 Luhn 校验、有效期、电话号码格式化、校验器、JSON schema、分步流程、滑动与形状识别、对比度、`FlowLayout` 换行、图表几何、分页以及提示队列，由 150 个 Swift Testing 测试覆盖，在 macOS 和 iPhone 模拟器上运行。
 - **可编译的用法示例**：“使用方法”一节中的每段示例代码都来自[示例应用](Examples/ComponentGallery)，CI 会为 iOS 和 macOS 构建它。
 
 ### 包含的内容
@@ -297,7 +297,7 @@ let contactFormJSON = """
 """
 ```
 
-对其解码；解码时还会拒绝含有重复 id、无法满足的限制，或可能使应用卡死的正则表达式的 schema：
+对其解码；解码时还会拒绝含有重复 id、无法满足的限制、无效正则表达式，或字段、正则表达式、选项数量超出大小限制的 schema：
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -332,6 +332,8 @@ struct ContactForm: View {
     }
 }
 ```
+
+正则表达式使用 `NSRegularExpression` 语法。匹配超过 20 ms 会被中止，该值校验失败；超过 1,000 个 UTF-16 码元的文本不经匹配直接失败；一次 `errors(in:)` 调用在正则表达式上最多花费 100 ms。因此服务器发来的慢速表达式无法让表单卡死。
 
 `MultiStepForm` 配合 `StepFlow` 可以把较长的表单拆分为多个步骤，并在当前步骤通过校验之前保持 **Next** 按钮禁用。
 

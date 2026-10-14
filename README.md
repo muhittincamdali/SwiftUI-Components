@@ -36,7 +36,7 @@ a theme system or an architecture. The package has no dependencies.
   `ShapeDrawingPad`.
 - **Forms that check themselves** — composable validators, errors that appear after the first
   edit, debounced server checks, forms rendered from JSON and multi-step flows. Patterns in a
-  JSON schema are screened for shapes that would freeze the app.
+  JSON schema run with a time limit, so a slow one fails the value instead of freezing the app.
 - **Accessible gestures** — swipes, edge swipes, swipe sequences, pinch-rotate-drag and shape
   drawing, each with an accessibility action for VoiceOver and Switch Control users.
 - **iOS and macOS from one code base** — UIKit-only details fall back to the closest AppKit
@@ -47,7 +47,7 @@ a theme system or an architecture. The package has no dependencies.
 - **Tested logic** — card-number detection and the Luhn check, expiry dates, phone formatting,
   validators, JSON schemas, step flows, swipe and shape recognition, contrast ratios,
   `FlowLayout` line breaking, chart geometry, pagination and the toast queues are covered by
-  144 Swift Testing tests that run on macOS and an iPhone simulator.
+  150 Swift Testing tests that run on macOS and an iPhone simulator.
 - **Usage samples that compile** — every sample in the Usage section comes from the
   [example app](Examples/ComponentGallery), which CI builds for iOS and macOS.
 
@@ -330,8 +330,8 @@ let contactFormJSON = """
 """
 ```
 
-Decode it, which also rejects a schema with duplicate ids, impossible limits or a regular
-expression that could freeze the app:
+Decode it, which also rejects a schema with duplicate ids, impossible limits, an invalid regular
+expression, or more fields, patterns or options than its size limits allow:
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -366,6 +366,11 @@ struct ContactForm: View {
     }
 }
 ```
+
+Patterns use `NSRegularExpression` syntax. A match that runs longer than 20 ms stops and fails
+the value, text longer than 1,000 UTF-16 code units fails without being matched, and one
+`errors(in:)` call spends at most 100 ms on patterns, so a slow pattern from a server cannot
+freeze the form.
 
 `MultiStepForm` with `StepFlow` splits a long form into steps and keeps **Next** disabled until
 the current step is valid.

@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-light.svg" alt="SwiftUI Components: iOS와 macOS용 기성 SwiftUI 뷰: 버튼, 카드, 차트, 폼 등."></picture></p>
@@ -36,8 +36,8 @@ iOS 17 이상과 macOS 14 이상에서 바로 쓸 수 있는 SwiftUI 뷰를 모�
 - **뷰 223개, 뷰 modifier 12개, 제스처 modifier 5개** — 소스 코드에서 센 숫자이며 16개 폴더로 나뉘어
   있습니다. `PrimaryButton`부터 `CreditCardInput`, `SchemaForm`, `ShapeDrawingPad`까지 있습니다.
 - **스스로 검사하는 폼** — 조합할 수 있는 검증기, 처음 편집한 뒤에 나타나는 오류, 디바운스된 서버
-  확인, JSON으로 그리는 폼, 여러 단계로 된 흐름. JSON 스키마의 패턴은 앱을 멈추게 할 수 있는 형태가
-  있는지 검사합니다.
+  확인, JSON으로 그리는 폼, 여러 단계로 된 흐름. JSON 스키마의 패턴은 시간 제한 안에서 실행되므로, 느린 패턴은
+  앱을 멈추게 하는 대신 해당 값을 실패로 처리합니다.
 - **손쉬운 사용을 지원하는 제스처** — 스와이프, 가장자리 스와이프, 스와이프 순서, 핀치·회전·드래그,
   도형 그리기를 지원하며, 각각 VoiceOver와 Switch Control 사용자를 위한 손쉬운 사용 동작이 있습니다.
 - **하나의 코드로 iOS와 macOS 지원** — UIKit에만 있는 세부 기능은 가장 가까운 AppKit 동작으로
@@ -46,7 +46,7 @@ iOS 17 이상과 macOS 14 이상에서 바로 쓸 수 있는 SwiftUI 뷰를 모�
 - **Swift 6 언어 모드** — 엄격한 동시성 검사 아래에서 경고 없이 빌드됩니다.
 - **테스트된 로직** — 카드 번호 판별과 Luhn 검사, 유효 기간, 전화번호 형식, 검증기, JSON 스키마,
   단계 흐름, 스와이프와 도형 인식, 명암비, `FlowLayout` 줄바꿈, 차트 기하 계산, 페이지네이션, 토스트
-  대기열을 macOS와 iPhone 시뮬레이터에서 실행되는 Swift Testing 테스트 144개로 확인합니다.
+  대기열을 macOS와 iPhone 시뮬레이터에서 실행되는 Swift Testing 테스트 150개로 확인합니다.
 - **컴파일되는 사용 예제** — ‘사용법’ 섹션의 모든 예제는 CI가 iOS와 macOS용으로 빌드하는
   [예제 앱](Examples/ComponentGallery)에서 가져왔습니다.
 
@@ -328,8 +328,8 @@ let contactFormJSON = """
 """
 ```
 
-디코딩합니다. 이때 ID가 중복되었거나, 불가능한 제한이 있거나, 앱을 멈추게 할 수 있는 정규 표현식이
-들어 있는 스키마는 거부됩니다.
+디코딩합니다. 이때 ID가 중복되었거나, 불가능한 제한이 있거나, 잘못된 정규 표현식이 들어 있거나,
+필드·패턴·옵션 수가 크기 제한을 넘는 스키마는 거부됩니다.
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -364,6 +364,10 @@ struct ContactForm: View {
     }
 }
 ```
+
+패턴은 `NSRegularExpression` 문법을 씁니다. 20 ms보다 오래 걸리는 매칭은 중단되고 값은 실패로
+처리되며, UTF-16 코드 단위로 1,000개를 넘는 텍스트는 매칭 없이 실패합니다. 또 `errors(in:)` 한 번이
+패턴에 쓰는 시간은 최대 100 ms이므로, 서버에서 온 느린 패턴도 폼을 멈추게 할 수 없습니다.
 
 `StepFlow`와 함께 쓰는 `MultiStepForm`은 긴 폼을 여러 단계로 나누고, 현재 단계가 유효해질 때까지
 **Next**를 비활성 상태로 유지합니다.

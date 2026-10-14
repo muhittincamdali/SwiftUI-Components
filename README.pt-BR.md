@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-pt-BR-light.svg" alt="SwiftUI Components: Views SwiftUI prontas para iOS e macOS: botões, cards, gráficos, formulários e mais."></picture></p>
@@ -38,8 +38,8 @@ usar um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não
   `ShapeDrawingPad`.
 - **Formulários que se verificam sozinhos**: validadores combináveis, erros que aparecem só depois
   da primeira edição, verificações no servidor com debounce, formulários gerados a partir de JSON e
-  fluxos em várias etapas. Os padrões de um esquema JSON são examinados para barrar formas que
-  travariam o app.
+  fluxos em várias etapas. Os padrões de um esquema JSON rodam com limite de tempo: um padrão
+  lento reprova o valor em vez de travar o app.
 - **Gestos acessíveis**: deslizes, deslizes a partir da borda, sequências de deslizes,
   pinçar-girar-arrastar e desenho de formas, cada um com uma ação de acessibilidade para usuários do
   VoiceOver e do Switch Control.
@@ -52,7 +52,7 @@ usar um ou dois sem adotar um sistema de temas ou uma arquitetura. O pacote não
 - **Lógica testada**: detecção do número do cartão e verificação de Luhn, datas de validade,
   formatação de telefone, validadores, esquemas JSON, fluxos em etapas, reconhecimento de deslizes e
   formas, taxas de contraste, quebra de linha do `FlowLayout`, geometria dos gráficos, paginação e
-  as filas de avisos são cobertas por 144 testes do Swift Testing que rodam no macOS e em um
+  as filas de avisos são cobertas por 150 testes do Swift Testing que rodam no macOS e em um
   simulador de iPhone.
 - **Exemplos de uso que compilam**: todo exemplo da seção “Uso” vem do
   [app de exemplo](Examples/ComponentGallery), que a CI compila para iOS e macOS.
@@ -336,8 +336,9 @@ let contactFormJSON = """
 """
 ```
 
-Decodifique-o; isso também rejeita um esquema com ids duplicados, limites impossíveis ou uma
-expressão regular que poderia travar o app:
+Decodifique-o; isso também rejeita um esquema com ids duplicados, limites impossíveis, uma
+expressão regular inválida ou mais campos, padrões ou opções do que seus limites de tamanho
+permitem:
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -372,6 +373,11 @@ struct ContactForm: View {
     }
 }
 ```
+
+Os padrões usam a sintaxe de `NSRegularExpression`. Uma comparação que passa de 20 ms é
+interrompida e reprova o valor, um texto com mais de 1.000 unidades de código UTF-16 é reprovado
+sem ser comparado, e uma chamada a `errors(in:)` gasta no máximo 100 ms com padrões; assim, um
+padrão lento vindo de um servidor não consegue travar o formulário.
 
 `MultiStepForm` com `StepFlow` divide um formulário longo em etapas e mantém **Next** desativado até
 que a etapa atual seja válida.

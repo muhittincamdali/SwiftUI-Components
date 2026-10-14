@@ -104,17 +104,29 @@ Keep the values in your own state, start them with `FormSchema/initialValues()`,
 ### Treat a schema from the network as untrusted
 
 `FormSchema/decode(from:)` runs `FormSchema/check()`, which rejects duplicate ids, choice
-fields without options, impossible limits and invalid regular expressions. It also rejects
-patterns that could freeze the app: Swift's `Regex` backtracks and cannot be interrupted, so a
-pattern such as `(a|a)+` takes minutes on a 30-character value. `check()` throws
-`FormSchema/SchemaError/unsafePattern(_:)` for a group that can repeat and match the same
-text in more than one way, for long chains of open-ended repetitions, and for syntax it does
-not model (`\Q…\E`, `(?#…)`, the `x` option). Some harmless patterns, such as `(cat|dog)+`, are
-rejected too.
+fields without options, impossible limits and invalid regular expressions. It also enforces
+size limits: JSON over 1 MB, more than 200 fields, more than 50 fields with a pattern and more
+than 500 options in a choice field each throw their own `FormSchema/SchemaError`.
 
-If a schema reaches the form without `check()`, for example through `JSONDecoder` directly, an
-unsafe pattern fails every non-empty value instead of running, and values longer than 256
-characters never reach a pattern.
+A schema pattern could still be slow: a backtracking engine needs exponential time for a
+pattern such as `(a|a)+` on a value like `"aaaa…!"`, and no check of the pattern text can tell
+every slow pattern from a fast one. So the package does not judge patterns; it bounds the
+engine that runs them. Every pattern, from a schema or from `Validator/matches(_:message:)`,
+is compiled and run by `NSRegularExpression`, so patterns use ICU syntax and what `check()`
+accepts is exactly what runs. Then:
+
+- a pattern longer than 500 UTF-16 code units is invalid;
+- text longer than 1,000 UTF-16 code units, the unit the engine works in, fails without being
+  matched;
+- a match that runs longer than 20 milliseconds is stopped and fails the value, and that
+  pattern fails later values without running again;
+- one `FormSchema/errors(in:)` call spends at most `FormSchema/patternTimeBudget` (100
+  milliseconds) on all its patterns; a pattern that has not finished by then fails. `SchemaForm`
+  calls it once per render.
+
+These limits also hold for a schema that reaches the form without `check()`, for example
+through `JSONDecoder` directly. A legitimate pattern finishes in microseconds on such short
+text, so in practice only a pathological pattern reaches the time limit.
 
 ## Split a form into steps
 

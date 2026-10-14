@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-fr-light.svg" alt="SwiftUI Components: Des vues SwiftUI prêtes à l’emploi pour iOS et macOS : boutons, cartes, graphiques, formulaires et plus."></picture></p>
@@ -40,7 +40,8 @@ système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
 - **Des formulaires qui se vérifient eux-mêmes** : validateurs composables, erreurs qui
   n’apparaissent qu’après la première modification, vérifications côté serveur avec debounce,
   formulaires générés depuis du JSON et parcours en plusieurs étapes. Les motifs d’un schéma JSON
-  sont contrôlés pour écarter ceux qui figeraient l’app.
+  s’exécutent avec une limite de temps : un motif lent fait échouer la valeur au lieu de
+  figer l’app.
 - **Des gestes accessibles** : balayages, balayages depuis le bord, séquences de balayages,
   pincement-rotation-glissement et tracé de formes, chacun avec une action d’accessibilité pour les
   utilisateurs de VoiceOver et de Switch Control.
@@ -54,7 +55,7 @@ système de thèmes ni d’architecture. Le paquet n’a aucune dépendance.
   d’expiration, le formatage des numéros de téléphone, les validateurs, les schémas JSON, les
   parcours par étapes, la reconnaissance des balayages et des formes, les rapports de contraste, le
   retour à la ligne de `FlowLayout`, la géométrie des graphiques, la pagination et les files de
-  notifications sont couverts par 144 tests Swift Testing exécutés sur macOS et sur un simulateur
+  notifications sont couverts par 150 tests Swift Testing exécutés sur macOS et sur un simulateur
   d’iPhone.
 - **Des exemples d’utilisation qui compilent** : chaque exemple de la section « Utilisation »
   provient de l’[app d’exemple](Examples/ComponentGallery), que la CI compile pour iOS et macOS.
@@ -342,7 +343,8 @@ let contactFormJSON = """
 ```
 
 Décodez-le ; cela rejette aussi un schéma contenant des identifiants en double, des limites
-impossibles ou une expression régulière capable de figer l’app :
+impossibles, une expression régulière invalide, ou plus de champs, de motifs ou d’options que
+ses limites de taille ne l’autorisent :
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -377,6 +379,11 @@ struct ContactForm: View {
     }
 }
 ```
+
+Les motifs utilisent la syntaxe de `NSRegularExpression`. Une correspondance qui dure plus de
+20 ms est interrompue et fait échouer la valeur, un texte de plus de 1 000 unités de code
+UTF-16 échoue sans être comparé, et un appel à `errors(in:)` consacre au plus 100 ms aux
+motifs : un motif lent envoyé par un serveur ne peut donc pas figer le formulaire.
 
 `MultiStepForm` avec `StepFlow` découpe un long formulaire en étapes et garde **Next** désactivé
 tant que l’étape en cours n’est pas valide.

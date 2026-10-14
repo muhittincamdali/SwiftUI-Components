@@ -22,8 +22,11 @@ changed in a breaking way.
   an error only after an edit or a submit; `AsyncValidation`, a debounced check that ignores
   answers for outdated values.
 - `FormSchema`, `FormValue` and `SchemaForm`: forms described in JSON, checked on decoding
-  (duplicate ids, choices without options, impossible limits, invalid or unsafe regular
-  expressions) and rendered with the package's fields.
+  (duplicate ids, choices without options, impossible limits, invalid regular expressions,
+  more fields, patterns or options than the size limits allow) and rendered with the package's
+  fields. Every regular expression, in a schema or in `Validator.matches`, runs on
+  `NSRegularExpression` with a 20 ms limit per match, a 1,000 UTF-16 code unit input limit and a
+  100 ms budget per `errors(in:)` call.
 - `StepFlow` and `MultiStepForm` for forms split into steps.
 - Gestures: `.onSwipe`, `.onSwipeSequence`, `.onEdgeSwipe`, `.transformable` (pinch, rotate,
   drag and double-tap reset), `.boundedDrag`, `ShapeDrawingPad` and `UnistrokeRecognizer`

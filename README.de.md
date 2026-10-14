@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f707893db46c93fd968c826bb5f99d6011472a06 status=reviewed -->
+<!-- i18n-source: README.md@170490313adf5a011360b370574d4b810b0fe1ff status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg" alt="SwiftUI Components: Fertige SwiftUI-Views für iOS und macOS: Buttons, Karten, Diagramme, Formulare und mehr."></picture></p>
@@ -38,8 +38,8 @@ Du kannst also ein oder zwei davon verwenden, ohne ein Theme-System oder eine Ar
   Ordner verteilt, von `PrimaryButton` bis `CreditCardInput`, `SchemaForm` und `ShapeDrawingPad`.
 - **Formulare, die sich selbst prüfen** – kombinierbare Validatoren, Fehler, die erst nach der
   ersten Bearbeitung erscheinen, entprellte Serverprüfungen, aus JSON gerenderte Formulare und
-  mehrstufige Abläufe. Muster in einem JSON-Schema werden auf Formen geprüft, die die App einfrieren
-  würden.
+  mehrstufige Abläufe. Muster in einem JSON-Schema laufen mit einem Zeitlimit; ein langsames Muster
+  lässt den Wert durchfallen, statt die App einzufrieren.
 - **Barrierefreie Gesten** – Wischen, Wischen vom Rand, Wischsequenzen, Zoomen-Drehen-Ziehen und
   Formzeichnen, jeweils mit einer Bedienungshilfen-Aktion für VoiceOver- und Switch-Control-Nutzer.
 - **iOS und macOS aus einer Codebasis** – Details, die es nur in UIKit gibt, fallen auf das
@@ -50,7 +50,7 @@ Du kannst also ein oder zwei davon verwenden, ohne ein Theme-System oder eine Ar
 - **Getestete Logik** – Kartennummernerkennung und Luhn-Prüfung, Ablaufdaten,
   Telefonnummernformatierung, Validatoren, JSON-Schemas, Schrittfolgen, Wisch- und Formerkennung,
   Kontrastverhältnisse, der Zeilenumbruch von `FlowLayout`, Diagrammgeometrie, Paginierung und die
-  Toast-Warteschlangen sind durch 144 Swift-Testing-Tests abgedeckt, die auf macOS und einem
+  Toast-Warteschlangen sind durch 150 Swift-Testing-Tests abgedeckt, die auf macOS und einem
   iPhone-Simulator laufen.
 - **Verwendungsbeispiele, die kompilieren** – jedes Beispiel im Abschnitt „Verwendung“
   stammt aus der [Beispiel-App](Examples/ComponentGallery), die die CI für iOS und macOS baut.
@@ -335,8 +335,9 @@ let contactFormJSON = """
 """
 ```
 
-Dekodiere es; dabei wird auch ein Schema abgelehnt, das doppelte IDs, unmögliche Grenzen oder einen
-regulären Ausdruck enthält, der die App einfrieren könnte:
+Dekodiere es; dabei wird auch ein Schema abgelehnt, das doppelte IDs, unmögliche Grenzen, einen
+ungültigen regulären Ausdruck oder mehr Felder, Muster oder Optionen enthält, als seine
+Größengrenzen erlauben:
 
 ```swift
 func loadContactSchema() throws -> FormSchema {
@@ -371,6 +372,11 @@ struct ContactForm: View {
     }
 }
 ```
+
+Muster verwenden die Syntax von `NSRegularExpression`. Ein Abgleich, der länger als 20 ms läuft,
+wird abgebrochen und lässt den Wert durchfallen; Text mit mehr als 1.000 UTF-16-Codeeinheiten
+fällt durch, ohne abgeglichen zu werden; und ein Aufruf von `errors(in:)` verbraucht höchstens
+100 ms für Muster. So kann ein langsames Muster vom Server das Formular nicht einfrieren.
 
 `MultiStepForm` mit `StepFlow` teilt ein langes Formular in Schritte auf und lässt **Next**
 deaktiviert, bis der aktuelle Schritt gültig ist.
