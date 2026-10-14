@@ -4,11 +4,8 @@ import PackageDescription
 let package = Package(
     name: "SwiftUIComponents",
     platforms: [
-        .iOS(.v16),
-        .macOS(.v13),
-        .tvOS(.v16),
-        .watchOS(.v9),
-        .visionOS(.v1)
+        .iOS(.v17),
+        .macOS(.v14)
     ],
     products: [
         .library(name: "SwiftUIComponents", targets: ["SwiftUIComponents"]),
