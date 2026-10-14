@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@32c9a3e0b7d98fdff756d5ac98cf73c83cb0c76c status=reviewed -->
+<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-zh-CN-light.svg" alt="SwiftUI Components: 适用于 iOS 和 macOS 的现成 SwiftUI 视图：按钮、卡片、图表、表单等。"></picture></p>
@@ -9,7 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI 状态"></a>
-<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="最新版本: v1.0.0 · predates main"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="最新版本: v2.0.0"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="支持的平台: iOS 17+ · macOS 14+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="语言版本: Swift 6.2+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="许可证: MIT"></picture></a>
@@ -65,7 +65,7 @@
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-把地址粘贴到窗口右上角的搜索框中。将 **Dependency Rule** 设为 **Branch** 并输入 `main`，然后点击 **Add Package**。在下一个窗口中，在 **SwiftUIComponents** 旁边选择你的应用 target，再次点击 **Add Package**。
+把地址粘贴到窗口右上角的搜索框中。保持 **Dependency Rule** 为 **Up to Next Major Version**，起始版本为 `2.0.0`，然后点击 **Add Package**。在下一个窗口中，在 **SwiftUIComponents** 旁边选择你的应用 target，再次点击 **Add Package**。
 
 **2. 导入模块**
 
@@ -116,7 +116,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -125,7 +125,7 @@ targets: [
 ]
 ```
 
-目前请使用 `main` 分支。唯一的版本 1.0.0（2026 年 2 月）早于现在的组件：2026 年 6 月这些组件曾被占位代码替换，2026 年 10 月又被恢复，改为在 Swift 6 语言模式下为 iOS 和 macOS 编译，并修复了新测试发现的缺陷。详情见 [CHANGELOG.md](CHANGELOG.md)。
+2.0.0 版本（2026 年 10 月）是包含现在这些组件的第一个版本。之前的版本 1.0.0（2026 年 2 月）早于这些组件：2026 年 6 月这些组件曾被占位代码替换，2026 年 10 月又被恢复，改为在 Swift 6 语言模式下为 iOS 和 macOS 编译，并修复了新测试发现的缺陷。包括不兼容变更在内的详情见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 使用方法
 
@@ -302,7 +302,6 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## 路线图
 
-- 为恢复后的组件打一个版本标签，这样添加软件包时就可以使用版本规则，而不是 `main` 分支。
 - 将软件包加入 Swift Package Index；仓库中已经有 `.spi.yml`。
 - 为更多单个视图编写测试，从表单输入开始。
 

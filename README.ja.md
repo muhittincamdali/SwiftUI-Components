@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@32c9a3e0b7d98fdff756d5ac98cf73c83cb0c76c status=reviewed -->
+<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ja-light.svg" alt="SwiftUI Components: iOS と macOS 向けの既製 SwiftUI ビュー。ボタン、カード、チャート、フォームなど。"></picture></p>
@@ -9,7 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI ステータス"></a>
-<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="最新バージョン: v1.0.0 · predates main"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="最新バージョン: v2.0.0"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="対応プラットフォーム: iOS 17+ · macOS 14+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="言語バージョン: Swift 6.2+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="ライセンス: MIT"></picture></a>
@@ -65,7 +65,7 @@ Xcode で **File › Add Package Dependencies…** を選び、リポジトリ�
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-URL はウィンドウ右上の検索フィールドに貼り付けます。**Dependency Rule** を **Branch** にして `main` と入力し、**Add Package** をクリックします。次のウィンドウで **SwiftUIComponents** の横にあるアプリのターゲットを選び、もう一度 **Add Package** をクリックします。
+URL はウィンドウ右上の検索フィールドに貼り付けます。**Dependency Rule** は **Up to Next Major Version**、バージョンは `2.0.0` のままにして **Add Package** をクリックします。次のウィンドウで **SwiftUIComponents** の横にあるアプリのターゲットを選び、もう一度 **Add Package** をクリックします。
 
 **2. モジュールをインポートする**
 
@@ -116,7 +116,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -125,7 +125,7 @@ targets: [
 ]
 ```
 
-当面は `main` ブランチを使ってください。唯一のリリースである 1.0.0（2026 年 2 月）は現在のコンポーネントより前のものです。2026 年 6 月にコンポーネントはプレースホルダーのコードに置き換えられ、2026 年 10 月に復元されました。その際、Swift 6 言語モードで iOS と macOS 向けにビルドできるようにし、新しいテストで見つかった不具合を修正しています。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
+バージョン 2.0.0（2026 年 10 月）は、現在のコンポーネントを含む最初のリリースです。それ以前のリリースである 1.0.0（2026 年 2 月）は現在のコンポーネントより前のものです。2026 年 6 月にコンポーネントはプレースホルダーのコードに置き換えられ、2026 年 10 月に復元されました。その際、Swift 6 言語モードで iOS と macOS 向けにビルドできるようにし、新しいテストで見つかった不具合を修正しています。互換性のない変更を含む詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## 使い方
 
@@ -302,7 +302,6 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## ロードマップ
 
-- 復元したコンポーネントのリリースにタグを付け、`main` ブランチではなくバージョンルールで追加できるようにする。
 - パッケージを Swift Package Index に登録する。`.spi.yml` はすでにリポジトリにあります。
 - フォーム入力から始めて、個々のビューのテストを増やす。
 

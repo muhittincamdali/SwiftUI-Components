@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@32c9a3e0b7d98fdff756d5ac98cf73c83cb0c76c status=reviewed -->
+<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg" alt="SwiftUI Components: iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası."></picture></p>
@@ -9,7 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI durumu"></a>
-<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="Son sürüm: v1.0.0 · predates main"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="Son sürüm: v2.0.0"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="Desteklenen platformlar: iOS 17+ · macOS 14+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="Dil sürümü: Swift 6.2+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="Lisans: MIT"></picture></a>
@@ -79,8 +79,8 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 Adresi pencerenin sağ üstündeki arama alanına yapıştırın. **Dependency Rule** ayarını
-**Branch** yapıp `main` yazın, ardından **Add Package**'a tıklayın. Sonraki pencerede
-**SwiftUIComponents** satırının yanından uygulama hedefinizi (target) seçin ve yeniden
+**Up to Next Major Version** ve `2.0.0` olarak bırakıp **Add Package**'a tıklayın. Sonraki
+pencerede **SwiftUIComponents** satırının yanından uygulama hedefinizi (target) seçin ve yeniden
 **Add Package**'a tıklayın.
 
 **2. Modülü içe aktarın**
@@ -135,7 +135,7 @@ Ya da `Package.swift` dosyanızdaki `dependencies` listesine ekleyin:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -144,10 +144,11 @@ targets: [
 ]
 ```
 
-Şimdilik `main` dalını kullanın. Tek sürüm olan 1.0.0 (Şubat 2026) bugünkü bileşenlerden
-öncesine ait: Haziran 2026'da bileşenlerin yerine yer tutucu kod konmuş, Ekim 2026'da geri
-getirilip Swift 6 dil modunda iOS ve macOS için derlenir hale getirilmiş ve yeni testlerin
-bulduğu hatalar düzeltilmiştir. Ayrıntılar [CHANGELOG.md](CHANGELOG.md) dosyasında.
+2.0.0 sürümü (Ekim 2026) bugünkü bileşenleri içeren ilk sürümdür. Önceki sürüm olan 1.0.0
+(Şubat 2026) bu bileşenlerden öncesine ait: Haziran 2026'da bileşenlerin yerine yer tutucu kod
+konmuş, Ekim 2026'da geri getirilip Swift 6 dil modunda iOS ve macOS için derlenir hale
+getirilmiş ve yeni testlerin bulduğu hatalar düzeltilmiştir. Uyumsuz değişiklikler dahil tüm
+ayrıntılar [CHANGELOG.md](CHANGELOG.md) dosyasında.
 
 ## Kullanım
 
@@ -352,8 +353,6 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## Yol haritası
 
-- Geri getirilen bileşenlerin bir sürümünü etiketlemek; böylece paket `main` dalı yerine bir
-  sürüm kuralıyla eklenebilir.
 - Paketi Swift Package Index'e eklemek; `.spi.yml` depoda zaten var.
 - Form girdilerinden başlayarak tek tek görünümler için daha fazla test yazmak.
 

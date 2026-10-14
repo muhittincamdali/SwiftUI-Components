@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@32c9a3e0b7d98fdff756d5ac98cf73c83cb0c76c status=reviewed -->
+<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ko-light.svg" alt="SwiftUI Components: iOS와 macOS용 기성 SwiftUI 뷰: 버튼, 카드, 차트, 폼 등."></picture></p>
@@ -9,7 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI 상태"></a>
-<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="최신 버전: v1.0.0 · predates main"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="최신 버전: v2.0.0"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="지원 플랫폼: iOS 17+ · macOS 14+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="언어 버전: Swift 6.2+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="라이선스: MIT"></picture></a>
@@ -76,9 +76,9 @@ Xcode에서 **File › Add Package Dependencies…**를 선택하고 저장소 U
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-URL을 창 오른쪽 위의 검색 필드에 붙여 넣습니다. **Dependency Rule**을 **Branch**로 바꾸고
-`main`을 입력한 다음 **Add Package**를 클릭합니다. 다음 창에서 **SwiftUIComponents** 옆에 있는
-앱 타깃을 선택하고 **Add Package**를 한 번 더 클릭합니다.
+URL을 창 오른쪽 위의 검색 필드에 붙여 넣습니다. **Dependency Rule**은 **Up to Next Major Version**,
+버전은 `2.0.0`으로 그대로 두고 **Add Package**를 클릭합니다. 다음 창에서 **SwiftUIComponents**
+옆에 있는 앱 타깃을 선택하고 **Add Package**를 한 번 더 클릭합니다.
 
 **2. 모듈 가져오기**
 
@@ -131,7 +131,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -140,10 +140,11 @@ targets: [
 ]
 ```
 
-지금은 `main` 브랜치를 사용하세요. 유일한 릴리스인 1.0.0(2026년 2월)은 현재 컴포넌트보다 이전
-버전입니다. 2026년 6월에 컴포넌트가 플레이스홀더 코드로 바뀌었고, 2026년 10월에 복원되면서
-Swift 6 언어 모드에서 iOS와 macOS용으로 빌드되도록 고쳤고 새 테스트가 찾아낸 버그도
-수정했습니다. 자세한 내용은 [CHANGELOG.md](CHANGELOG.md)를 참고하세요.
+버전 2.0.0(2026년 10월)은 현재 컴포넌트가 들어 있는 첫 릴리스입니다. 이전 릴리스인
+1.0.0(2026년 2월)은 현재 컴포넌트보다 이전 버전입니다. 2026년 6월에 컴포넌트가 플레이스홀더
+코드로 바뀌었고, 2026년 10월에 복원되면서 Swift 6 언어 모드에서 iOS와 macOS용으로 빌드되도록
+고쳤고 새 테스트가 찾아낸 버그도 수정했습니다. 호환되지 않는 변경을 포함한 자세한 내용은
+[CHANGELOG.md](CHANGELOG.md)를 참고하세요.
 
 ## 사용법
 
@@ -346,8 +347,6 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## 로드맵
 
-- 복원된 컴포넌트로 릴리스 태그를 만들어, `main` 브랜치 대신 버전 규칙으로 패키지를 추가할 수
-  있게 하기.
 - 패키지를 Swift Package Index에 등록하기. `.spi.yml`은 이미 저장소에 있습니다.
 - 폼 입력부터 시작해 개별 뷰의 테스트 늘리기.
 

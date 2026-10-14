@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@32c9a3e0b7d98fdff756d5ac98cf73c83cb0c76c status=reviewed -->
+<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg" alt="SwiftUI Components: Fertige SwiftUI-Views für iOS und macOS: Buttons, Karten, Diagramme, Formulare und mehr."></picture></p>
@@ -9,7 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml"><img src="https://github.com/muhittincamdali/SwiftUI-Components/actions/workflows/ci.yml/badge.svg" alt="CI-Status"></a>
-<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="Aktuelle Version: v1.0.0 · predates main"></picture></a>
+<a href="https://github.com/muhittincamdali/SwiftUI-Components/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-version-light.svg" alt="Aktuelle Version: v2.0.0"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-platforms-light.svg" alt="Unterstützte Plattformen: iOS 17+ · macOS 14+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/Package.swift"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-language-light.svg" alt="Sprachversion: Swift 6.2+"></picture></a>
 <a href="https://github.com/muhittincamdali/SwiftUI-Components/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/badge-license-light.svg" alt="Lizenz: MIT"></picture></a>
@@ -79,9 +79,9 @@ Wähle in Xcode **File › Add Package Dependencies…** und gib die Repository-
 https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
-Füge sie in das Suchfeld oben rechts im Fenster ein. Stelle **Dependency Rule** auf **Branch**,
-gib `main` ein und klicke auf **Add Package**. Wähle im nächsten Fenster neben
-**SwiftUIComponents** dein App-Target aus und klicke noch einmal auf **Add Package**.
+Füge sie in das Suchfeld oben rechts im Fenster ein. Lass **Dependency Rule** auf
+**Up to Next Major Version** ab `2.0.0` und klicke auf **Add Package**. Wähle im nächsten Fenster
+neben **SwiftUIComponents** dein App-Target aus und klicke noch einmal auf **Add Package**.
 
 **2. Modul importieren**
 
@@ -135,7 +135,7 @@ Oder füge es zu den `dependencies` in deiner `Package.swift` hinzu:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", branch: "main")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -144,10 +144,11 @@ targets: [
 ]
 ```
 
-Verwende vorerst den Branch `main`. Das einzige Release, 1.0.0 (Februar 2026), ist älter als die
-heutigen Komponenten: Im Juni 2026 wurden sie durch Platzhaltercode ersetzt, im Oktober 2026
-wiederhergestellt, für iOS und macOS im Swift-6-Sprachmodus baubar gemacht und dort korrigiert,
-wo die neuen Tests Fehler gefunden haben. Details stehen in [CHANGELOG.md](CHANGELOG.md).
+Version 2.0.0 (Oktober 2026) ist das erste Release mit den heutigen Komponenten. Das frühere
+Release 1.0.0 (Februar 2026) ist älter als sie: Im Juni 2026 wurden die Komponenten durch
+Platzhaltercode ersetzt, im Oktober 2026 wiederhergestellt, für iOS und macOS im
+Swift-6-Sprachmodus baubar gemacht und dort korrigiert, wo die neuen Tests Fehler gefunden haben.
+[CHANGELOG.md](CHANGELOG.md) listet die Änderungen auf, auch die inkompatiblen.
 
 ## Verwendung
 
@@ -350,8 +351,6 @@ xcodebuild test -scheme SwiftUIComponents \
 
 ## Roadmap
 
-- Ein Release der wiederhergestellten Komponenten taggen, damit sich das Paket mit einer
-  Versionsregel statt über den Branch `main` hinzufügen lässt.
 - Das Paket im Swift Package Index eintragen; `.spi.yml` liegt bereits im Repository.
 - Tests für weitere einzelne Views schreiben, angefangen bei den Formulareingaben.
 
