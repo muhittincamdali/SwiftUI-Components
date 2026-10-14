@@ -2,42 +2,57 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build & Test
-    runs-on: macos-14
-    timeout-minutes: 15
-    
+  macos:
+    name: macOS - swift build & test
+    runs-on: macos-26
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Cache SPM
-        uses: actions/cache@v4
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
-          restore-keys: ${{ runner.os }}-spm-
-      
-      - name: Build
-        run: swift build -c release
-      
-      - name: Test
-        run: swift test --enable-code-coverage
-        continue-on-error: true
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-  lint:
-    name: SwiftLint
-    runs-on: ubuntu-latest
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Build
+        run: swift build
+
+      - name: Test
+        run: swift test
+
+  ios:
+    name: iOS Simulator - xcodebuild test
+    runs-on: macos-26
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - name: SwiftLint
-        uses: norio-nomura/action-swiftlint@3.2.1
-        continue-on-error: true
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Pick an iPhone simulator
+        id: simulator
+        run: |
+          udid="$(xcrun simctl list devices available --json \
+            | jq -r '[.devices[][] | select(.name | startswith("iPhone"))][0].udid')"
+          if [ -z "$udid" ] || [ "$udid" = "null" ]; then
+            echo "No iPhone simulator available" >&2
+            exit 1
+          fi
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme SwiftUIComponents \
+            -destination "id=${{ steps.simulator.outputs.udid }}" \
+            -quiet
