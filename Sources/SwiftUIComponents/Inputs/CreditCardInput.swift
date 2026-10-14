@@ -17,7 +17,7 @@ public struct CreditCardInput: View {
     // MARK: - Types
     
     /// Detected card type based on number prefix.
-    public enum CardType: String, CaseIterable {
+    public enum CardType: String, CaseIterable, Sendable {
         case visa
         case mastercard
         case amex
@@ -77,7 +77,8 @@ public struct CreditCardInput: View {
             if digits.hasPrefix("6011") || digits.hasPrefix("65") {
                 return .discover
             }
-            if digits.hasPrefix("36") || digits.hasPrefix("38") {
+            if ["36", "38", "39"].contains(where: digits.hasPrefix)
+                || ["300", "301", "302", "303", "304", "305"].contains(where: digits.hasPrefix) {
                 return .dinersClub
             }
             if digits.hasPrefix("35") {
