@@ -56,7 +56,7 @@ public struct SliderField: View {
             Group {
                 switch style {
                 case .standard:
-                    if let step = step {
+                    if let step = range.sliderStep(step) {
                         Slider(value: $value, in: range, step: step)
                     } else {
                         Slider(value: $value, in: range)
@@ -96,11 +96,11 @@ public struct SliderField: View {
                             .onChanged { gesture in
                                 let newProgress = gesture.location.x / geometry.size.width
                                 let clampedProgress = min(max(newProgress, 0), 1)
-                                value = range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress
-
-                                if let step = step {
-                                    value = (value / step).rounded() * step
-                                }
+                                value = Self.snapped(
+                                    range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress,
+                                    in: range,
+                                    step: step
+                                )
                             }
                     )
             }
@@ -138,11 +138,11 @@ public struct SliderField: View {
                             .onChanged { gesture in
                                 let newProgress = gesture.location.x / geometry.size.width
                                 let clampedProgress = min(max(newProgress, 0), 1)
-                                value = range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress
-
-                                if let step = step {
-                                    value = (value / step).rounded() * step
-                                }
+                                value = Self.snapped(
+                                    range.lowerBound + (range.upperBound - range.lowerBound) * clampedProgress,
+                                    in: range,
+                                    step: step
+                                )
                             }
                     )
             }
@@ -152,6 +152,14 @@ public struct SliderField: View {
 
     private var progress: Double {
         (value - range.lowerBound) / (range.upperBound - range.lowerBound)
+    }
+
+    /// `rawValue` moved to the nearest step counted from the lower bound, as `Slider` does, and
+    /// kept inside `range`. Without a usable step the value is returned unchanged.
+    nonisolated static func snapped(_ rawValue: Double, in range: ClosedRange<Double>, step: Double?) -> Double {
+        guard let step = range.sliderStep(step) else { return rawValue }
+        let stepped = range.lowerBound + ((rawValue - range.lowerBound) / step).rounded() * step
+        return min(max(stepped, range.lowerBound), range.upperBound)
     }
 }
 

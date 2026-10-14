@@ -52,6 +52,8 @@ public struct DotLoader: View {
     ) {
         self.style = style
         self.color = color
+        // At least one dot: a negative count would trap and zero would divide by zero.
+        let dotCount = max(1, dotCount)
         self.dotCount = dotCount
         self.dotSize = dotSize
         self.spacing = spacing

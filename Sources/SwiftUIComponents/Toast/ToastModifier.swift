@@ -29,7 +29,7 @@ public struct ToastModifier: ViewModifier {
                         .task {
                             // Cancelled when the toast disappears, so an earlier toast's timer
                             // cannot hide a toast that was presented again in the meantime.
-                            try? await Task.sleep(for: .seconds(duration))
+                            try? await Task.sleep(for: .clampedSeconds(duration))
                             guard !Task.isCancelled else { return }
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isPresenting = false

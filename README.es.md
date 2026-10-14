@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@ea7eb6e66990f12ec343077a5d32ea6ec3326af0 status=reviewed -->
+<!-- i18n-source: README.md@81a0529e2214c577e9e6fdc13d1be417a380b8f6 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-es-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-es-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-es-light.svg" alt="SwiftUI Components: Vistas de SwiftUI listas para usar en iOS y macOS: botones, tarjetas, gráficos, formularios y más."></picture></p>
@@ -26,16 +26,24 @@
 <!-- brand:end -->
 
 Un paquete de Swift con vistas de SwiftUI listas para usar en iOS 17+ y macOS 14+: botones,
-tarjetas, gráficos, campos de formulario, listas, superposiciones, indicadores de carga y avisos.
-Está pensado para desarrolladores de apps que quieren un componente que funcione hoy en lugar de
-escribirlo desde cero. Cada componente es una `View` de SwiftUI normal que se configura con su
-inicializador, así que puedes usar uno o dos sin adoptar un sistema de temas ni una arquitectura.
-El paquete no tiene dependencias.
+tarjetas, gráficos, campos de formulario con validación, gestos, listas, superposiciones,
+indicadores de carga y avisos. Está pensado para desarrolladores de apps que quieren un componente
+que funcione hoy en lugar de escribirlo desde cero. Cada componente es una `View` de SwiftUI normal
+que se configura con su inicializador, así que puedes usar uno o dos sin adoptar un sistema de temas
+ni una arquitectura. El paquete no tiene dependencias.
 
 ## Lo más destacado
 
-- **220 vistas y 12 modifiers**: contados en el código fuente y repartidos en 13 carpetas, desde
-  `PrimaryButton` hasta `CreditCardInput` y `GaugeChart`.
+- **223 vistas, 12 modifiers de vista y 5 modifiers de gestos**: contados en el código fuente y
+  repartidos en las 14 categorías de abajo, desde `PrimaryButton` hasta `CreditCardInput`,
+  `SchemaForm` y `ShapeDrawingPad`.
+- **Formularios que se comprueban solos**: validadores componibles, errores que aparecen tras la
+  primera edición, comprobaciones en el servidor con debounce, formularios generados a partir de
+  JSON y flujos de varios pasos. Los patrones de un esquema JSON se ejecutan con un límite de
+  tiempo: uno lento hace fallar el valor en lugar de bloquear la app.
+- **Gestos accesibles**: deslizamientos, deslizamientos desde el borde, secuencias de
+  deslizamientos, pellizcar-girar-arrastrar y dibujo de formas, cada uno con una acción de
+  accesibilidad para usuarios de VoiceOver y Switch Control.
 - **iOS y macOS con el mismo código**: los detalles que solo existen en UIKit recurren al
   comportamiento más parecido de AppKit; las
   [notas de plataforma](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)
@@ -43,9 +51,10 @@ El paquete no tiene dependencias.
 - **Modo de lenguaje Swift 6**: el paquete compila con la comprobación estricta de concurrencia y
   sin advertencias.
 - **Lógica con pruebas**: la detección del número de tarjeta y la comprobación de Luhn, las fechas
-  de caducidad, el formato de teléfonos, el salto de línea de `FlowLayout`, la geometría de los
-  gráficos, la paginación y las colas de avisos están cubiertos por 56 pruebas de Swift Testing que
-  se ejecutan en macOS y en un simulador de iPhone.
+  de caducidad, el formato de teléfonos, los validadores, los esquemas JSON, los flujos por pasos,
+  el reconocimiento de deslizamientos y formas, las relaciones de contraste, el salto de línea de
+  `FlowLayout`, la geometría de los gráficos, la paginación y las colas de avisos están cubiertos
+  por 163 pruebas de Swift Testing que se ejecutan en macOS y en un simulador de iPhone.
 - **Ejemplos de uso que compilan**: cada ejemplo de la sección «Uso» procede de la
   [app de ejemplo](Examples/ComponentGallery), que la CI compila para iOS y macOS.
 
@@ -56,7 +65,7 @@ El paquete no tiene dependencias.
 | Botones (25)         | `PrimaryButton`, `SecondaryButton`, `LoadingButton`, `GradientButton`, `PillButton`, `FloatingActionButton`, `SplitButton`, `ToggleButtonGroup` |
 | Tarjetas (27)        | `CardView`, `StatCard`, `PricingCard`, `ProfileCard`, `ProductCard`, `FlipCard`, `ExpandableCard`, `TestimonialCarousel`                        |
 | Gráficos (19)        | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `GaugeChart`, `RingChart`, `SparklineChart`                                     |
-| Formularios (21)     | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `MultiSelectField`, `SliderField`, `RangeSlider`, `OTPField`, `DateField`        |
+| Formularios (23)     | `FormField`, `TextInputField`, `PasswordField`, `SelectField`, `SliderField`, `OTPField`, `FileUploadField`, `SchemaForm`, `MultiStepForm`      |
 | Entradas (13)        | `CreditCardInput`, `PhoneInput`, `PinInput`, `TimedPinInput`, `RatingInput`, `SearchBar`, `TagInput`                                            |
 | Listas (18)          | `InfiniteScrollList` + `PaginatedListViewModel`, `ExpandableList`, `TreeView`, `SwipeableRow`, `ReorderableList`                                |
 | Carga (16)           | `ProgressRing`, `SkeletonView`, `ShimmerView`, `DotLoader`, `PulseLoader`, `StateView`, `AsyncContentView`                                      |
@@ -66,9 +75,16 @@ El paquete no tiene dependencias.
 | Avisos (4)           | `ToastView`, `SnackBar` + `SnackBarManager`, `Banner` + `BannerManager`                                                                         |
 | Varios (27)          | `Avatar`, `Badge`, `Chip`, `Tag`, `Carousel`, `Accordion`, `CountdownTimer`, `Stopwatch`                                                        |
 | Estados vacíos (1)   | `EmptyStateView`                                                                                                                                |
+| Gestos (1)           | `ShapeDrawingPad`, más los modifiers de abajo y `UnistrokeRecognizer`                                                                           |
 
 Disposición y modifiers: `FlowLayout` (disposición que salta de línea), `.surface()`,
 `.shimmer()`, `.toast(isPresenting:message:)`, `.snackBarHost()`, `.bannerHost()`.
+
+Modifiers de gestos: `.onSwipe(_:perform:)`, `.onEdgeSwipe(from:accessibilityActionName:perform:)`,
+`.onSwipeSequence(_:within:perform:)`, `.transformable(_:scaleRange:)` y `.boundedDrag(offset:in:)`.
+
+Validación (no son vistas): `Validator`, `ValidatedValue`, `AsyncValidation`, `FormSchema`,
+`StepFlow` y `ColorContrast` (relaciones de contraste WCAG).
 
 ## Inicio rápido
 
@@ -81,7 +97,7 @@ https://github.com/muhittincamdali/SwiftUI-Components.git
 ```
 
 Pégala en el campo de búsqueda de la esquina superior derecha de la ventana. Deja
-**Dependency Rule** en **Up to Next Major Version** desde `2.0.0` y haz clic en **Add Package**.
+**Dependency Rule** en **Up to Next Major Version** desde `2.1.0` y haz clic en **Add Package**.
 En la siguiente ventana, elige el target de tu app junto a **SwiftUIComponents** y vuelve a hacer
 clic en **Add Package**.
 
@@ -137,7 +153,7 @@ O añádelo a las `dependencies` de tu `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftUI-Components.git", from: "2.1.0")
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -272,6 +288,154 @@ struct TopicPicker: View {
 }
 ```
 
+### Formulario validado
+
+```swift
+struct SignUpForm: View {
+    @State private var email = ValidatedValue("", .required().and(.email()))
+    @State private var password = ValidatedValue("", .required().and(.minLength(8)))
+
+    var body: some View {
+        VStack(spacing: 16) {
+            FormField(label: "Email", errorMessage: email.visibleError) {
+                TextInputField(text: $email.value, placeholder: "you@example.com", keyboardType: .email)
+            }
+            FormField(label: "Password", errorMessage: password.visibleError) {
+                PasswordField(password: $password.value)
+            }
+            PrimaryButton("Create account") {
+                let emailIsValid = email.validate()     // shows the errors of untouched fields
+                let passwordIsValid = password.validate()
+                if emailIsValid && passwordIsValid {
+                    print("Signing up \(email.value)")
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+`ValidatedValue` muestra un error solo después de que el usuario edita el campo o pulsa el botón, y
+los validadores se combinan con `.and(_:)`. Los validadores de texto incluyen `required`,
+`minLength`, `email`, `url`, `phone`, `digits` y `matches` (una expresión regular);
+`AsyncValidation` aplica debounce a una comprobación en el servidor, como “¿ya está en uso este
+nombre de usuario?”.
+
+### Formulario desde JSON
+
+Describe los campos como datos, por ejemplo en una respuesta de tu servidor:
+
+```swift
+let contactFormJSON = """
+{
+  "title": "Contact us",
+  "fields": [
+    { "id": "email", "label": "Email", "kind": "email", "required": true },
+    { "id": "topic", "label": "Topic", "kind": "choice", "options": ["Sales", "Support"], "required": true },
+    { "id": "message", "label": "Message", "kind": "multiline", "minLength": 10 }
+  ]
+}
+"""
+```
+
+Decodifícalo; así también se rechaza un esquema con ids duplicados, límites imposibles, una
+expresión regular no válida o más campos, patrones u opciones de los que permiten sus límites de
+tamaño:
+
+```swift
+func loadContactSchema() throws -> FormSchema {
+    try FormSchema.decode(from: Data(contactFormJSON.utf8)) // throws for malformed JSON
+}
+```
+
+Después muéstralo y guarda los valores en tu propio estado:
+
+```swift
+struct ContactForm: View {
+    let schema: FormSchema
+    @State private var values: [String: FormValue]
+    @State private var submitted = false
+
+    init(schema: FormSchema) {
+        self.schema = schema
+        _values = State(initialValue: schema.initialValues())
+    }
+
+    var body: some View {
+        VStack(spacing: 20) {
+            SchemaForm(schema: schema, values: $values, showsAllErrors: submitted)
+            PrimaryButton("Send") {
+                submitted = true
+                if schema.errors(in: values).isEmpty {
+                    print(values) // ["email": .text("ada@example.com"), ...]
+                }
+            }
+        }
+        .padding()
+    }
+}
+```
+
+Los patrones usan la sintaxis de `NSRegularExpression`. Una comparación que dura más de 20 ms se
+detiene y hace fallar el valor, el texto de más de 1000 unidades de código UTF-16 falla sin
+compararse y una llamada a `errors(in:)` dedica como máximo 100 ms a los patrones, así que un
+patrón lento enviado por un servidor no puede bloquear el formulario.
+
+`MultiStepForm` con `StepFlow` divide un formulario largo en pasos y mantiene desactivado **Next**
+hasta que el paso actual es válido.
+
+### Gestos
+
+```swift
+struct GestureDemo: View {
+    @State private var card = 1
+    @State private var zoom = TransformState.identity
+    @State private var drawing = "Draw a circle, a check mark or a star"
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Card \(card) · swipe left or right")
+                .frame(maxWidth: .infinity, minHeight: 100)
+                .background(.blue.opacity(0.15), in: .rect(cornerRadius: 16))
+                .onSwipe([.left, .right]) { direction in
+                    card += direction == .left ? 1 : -1
+                }
+
+            Image(systemName: "map")
+                .font(.system(size: 64))
+                .transformable($zoom, scaleRange: 1...5) // pinch, rotate, drag; double tap resets
+
+            ShapeDrawingPad { match in
+                drawing = match.map { "That looks like a \($0.name)" } ?? "Not sure, try again"
+            }
+            .frame(height: 200)
+            .background(.blue.opacity(0.06), in: .rect(cornerRadius: 16))
+            Text(drawing)
+        }
+        .padding()
+    }
+}
+```
+
+Cada gesto tiene también una acción de accesibilidad: los usuarios de VoiceOver obtienen **Swipe
+left** y **Swipe right** en el rotor de acciones, el mapa se puede ampliar con la acción de zoom del
+sistema y `ShapeDrawingPad(accessibilityAlternatives:)` añade acciones con nombre para las formas.
+`onEdgeSwipe`, `onSwipeSequence` y `boundedDrag` cubren el resto de los casos.
+
+### Comprobación de contraste
+
+```swift
+func contrastCheck() {
+    let ratio = ColorContrast.ratio(.white, Color(red: 0, green: 0.443, blue: 0.890)) // #0071E3
+    let level = ColorContrast.level(for: ratio) // .aa: fine for body text
+    print(ratio, level)
+}
+```
+
+`ColorContrast` calcula la relación de contraste WCAG 2 entre dos colores y el nivel que cumple (AA,
+AA para texto grande o AAA).
+
 ## Demo
 
 | Claro                                                   | Oscuro                                                  |
@@ -284,6 +448,14 @@ struct TopicPicker: View {
 Las capturas se renderizan en el simulador de iOS a partir de
 [`Tests/SwiftUIComponentsTests/Gallery.swift`](Tests/SwiftUIComponentsTests/Gallery.swift)
 con [`scripts/generate-screenshots.sh`](scripts/generate-screenshots.sh).
+
+Los formularios y gestos de la sección Uso, capturados desde la app de ejemplo en un simulador de
+iPhone con [`scripts/capture-example-screens.sh`](scripts/capture-example-screens.sh):
+
+| Formulario validado                                                 | Formulario desde JSON                                                      | Gestos                                                   |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------- |
+| ![Formulario validado, claro](docs/images/example-signUp-light.png) | ![Formulario desde JSON, claro](docs/images/example-contactForm-light.png) | ![Gestos, claro](docs/images/example-gestures-light.png) |
+| ![Formulario validado, oscuro](docs/images/example-signUp-dark.png) | ![Formulario desde JSON, oscuro](docs/images/example-contactForm-dark.png) | ![Gestos, oscuro](docs/images/example-gestures-dark.png) |
 
 Para probar los componentes tú mismo, abre `ComponentGallery.xcodeproj` en
 [`Examples/ComponentGallery`](Examples/ComponentGallery) con Xcode, elige un simulador de iPhone
@@ -310,6 +482,12 @@ xcodebuild docbuild -scheme SwiftUIComponents -destination 'generic/platform=mac
 - [Collecting Card Details](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/collectingcarddetails)
   — un formulario de pago con validación, y qué cubren y qué no cubren las comprobaciones
   ([fuente](Sources/SwiftUIComponents/SwiftUIComponents.docc/CollectingCardDetails.md)).
+- [Validating Forms](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/validatingforms)
+  — validadores, errores en el momento adecuado, comprobaciones en el servidor, formularios desde JSON y formularios de varios pasos
+  ([fuente](Sources/SwiftUIComponents/SwiftUIComponents.docc/ValidatingForms.md)).
+- [Adding Gestures](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/addinggestures)
+  — deslizamientos, pellizcar-girar-arrastrar y reconocimiento de formas, con sus acciones de accesibilidad
+  ([fuente](Sources/SwiftUIComponents/SwiftUIComponents.docc/AddingGestures.md)).
 - [Platform Differences](https://muhittincamdali.github.io/SwiftUI-Components/documentation/swiftuicomponents/platformdifferences)
   — qué cambia en macOS
   ([fuente](Sources/SwiftUIComponents/SwiftUIComponents.docc/PlatformDifferences.md)).
@@ -331,7 +509,12 @@ paquete se desarrolla con Xcode 27.
 
 - `Sources/SwiftUIComponents/<Category>/` contiene un archivo por familia de componentes. Los
   componentes guardan su estado en `@State` y `@Binding`; los únicos tipos por referencia son
-  `SnackBarManager`, `BannerManager` y `PaginatedListViewModel`, todos `@MainActor`.
+  `SnackBarManager`, `BannerManager`, `PaginatedListViewModel` y `AsyncValidation`, todos
+  `@MainActor`.
+- Las decisiones de validación y de gestos son tipos por valor sin código de vista (`Validator`,
+  `FormSchema`, `StepFlow`, `SwipeDirection`, `SwipeSequenceMatcher`, `TransformState`,
+  `UnistrokeRecognizer`), de modo que los modifiers se mantienen delgados y las reglas tienen
+  pruebas unitarias.
 - `Extensions/Platform.swift` traslada las pocas API exclusivas de UIKit (colores del sistema,
   respuesta háptica, tipo de teclado, mayúsculas automáticas, selectores de rueda, `TabView`
   paginada) a AppKit o a operaciones vacías, de modo que los componentes casi no contienen
@@ -356,6 +539,7 @@ xcodebuild test -scheme SwiftUIComponents \
 
 - Añadir el paquete al Swift Package Index; `.spi.yml` ya está en el repositorio.
 - Escribir pruebas para más vistas concretas, empezando por los campos de formulario.
+- Añadir campos condicionales a `FormSchema` (mostrar un campo según el valor de otro).
 
 ## Contribuir
 

@@ -357,16 +357,17 @@ public struct VerticalMarqueeText: View {
     }
 
     private func rotateTexts() async {
-        guard texts.count > 1 else { return }
+        // Without a positive display time the loop below would spin without ever waiting.
+        guard texts.count > 1, displayDuration > 0 else { return }
 
         while !Task.isCancelled {
             do {
-                try await Task.sleep(for: .seconds(displayDuration))
+                try await Task.sleep(for: .clampedSeconds(displayDuration))
                 withAnimation(.easeInOut(duration: transitionDuration)) {
                     offset = -20
                     opacity = 0
                 }
-                try await Task.sleep(for: .seconds(transitionDuration))
+                try await Task.sleep(for: .clampedSeconds(transitionDuration))
             } catch {
                 return
             }

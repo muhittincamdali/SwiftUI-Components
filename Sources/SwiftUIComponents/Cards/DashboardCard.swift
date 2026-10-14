@@ -138,7 +138,7 @@ public struct ProgressCard: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
                 Spacer()
-                Text("\(Int(progress * 100))%")
+                Text("\(Int(saturating: progress * 100))%")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(color)
             }

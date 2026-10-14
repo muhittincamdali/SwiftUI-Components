@@ -45,7 +45,7 @@ public struct PageIndicator: View {
         interactive: Bool = true
     ) {
         self._currentPage = currentPage
-        self.totalPages = totalPages
+        self.totalPages = max(0, totalPages)
         self.style = style
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
@@ -118,7 +118,7 @@ public struct PageIndicator: View {
 
     private var numbersIndicator: some View {
         HStack(spacing: 4) {
-            Text("\(currentPage + 1)")
+            Text("\(Self.pageNumber(currentPage: currentPage, totalPages: totalPages))")
                 .font(.subheadline.monospacedDigit())
                 .fontWeight(.bold)
                 .foregroundStyle(activeColor)
@@ -143,12 +143,24 @@ public struct PageIndicator: View {
 
                 Capsule()
                     .fill(activeColor)
-                    .frame(width: geometry.size.width * CGFloat(currentPage + 1) / CGFloat(totalPages))
+                    .frame(width: geometry.size.width * progressFraction)
                     .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentPage)
             }
         }
         .frame(height: dotSize / 2)
         .frame(width: CGFloat(totalPages) * (dotSize + spacing) * 2)
+    }
+
+    /// The share of the track the progress style fills, 0 when there are no pages.
+    private var progressFraction: CGFloat {
+        guard totalPages > 0 else { return 0 }
+        return CGFloat(Self.pageNumber(currentPage: currentPage, totalPages: totalPages)) / CGFloat(totalPages)
+    }
+
+    /// The one-based number of `currentPage`, kept in `0...totalPages`. The page comes from the
+    /// app, and `currentPage + 1` stops the process when it is `Int.max`.
+    nonisolated static func pageNumber(currentPage: Int, totalPages: Int) -> Int {
+        min(max(currentPage, -1), totalPages - 1) + 1
     }
 
     // MARK: - Worm Indicator
@@ -200,7 +212,7 @@ public struct ScrollingPageIndicator: View {
         dotSize: CGFloat = 8
     ) {
         self._currentPage = currentPage
-        self.totalPages = totalPages
+        self.totalPages = max(0, totalPages)
         self.visibleDots = visibleDots
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
@@ -226,15 +238,13 @@ public struct ScrollingPageIndicator: View {
 
     /// The window of page indices to draw, centred on `currentPage` and clamped to the page count.
     nonisolated static func visibleRange(currentPage: Int, totalPages: Int, visibleDots: Int) -> Range<Int> {
-        let half = visibleDots / 2
-        var start = max(0, currentPage - half)
-        let end = min(totalPages, start + visibleDots)
-
-        if end - start < visibleDots {
-            start = max(0, end - visibleDots)
-        }
-
-        return start..<end
+        guard totalPages > 0 else { return 0..<0 }
+        let dots = min(max(visibleDots, 1), totalPages)
+        let current = min(max(currentPage, 0), totalPages - 1)
+        // Centre the window on the current page, then slide it back inside the page range.
+        // Every value stays within 0...totalPages, so no sum can overflow.
+        let start = min(max(0, current - dots / 2), totalPages - dots)
+        return start..<(start + dots)
     }
 
     private func scaleForIndex(_ index: Int) -> CGFloat {

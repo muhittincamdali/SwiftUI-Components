@@ -224,7 +224,7 @@ public struct TextAreaField: View {
             }
 
             FormField(label: "Username", errorMessage: "Username already taken") {
-                TextInputField(text: .constant("johndoe"), placeholder: "Enter username", icon: "person", style: .outlined)
+                TextInputField(text: .constant("mayachen"), placeholder: "Enter username", icon: "person", style: .outlined)
             }
 
             FormField(label: "Password", isRequired: true) {

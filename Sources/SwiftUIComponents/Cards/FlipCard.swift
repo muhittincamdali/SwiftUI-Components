@@ -334,7 +334,7 @@ struct FlipCardPreview: View {
             CreditCardFlipCard(
                 isFlipped: $isFlipped2,
                 cardNumber: "4242424242424242",
-                cardHolder: "John Doe",
+                cardHolder: "Maya Chen",
                 expiryDate: "12/28",
                 cvv: "123"
             )

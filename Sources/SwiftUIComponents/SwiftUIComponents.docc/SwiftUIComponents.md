@@ -1,6 +1,6 @@
 # ``SwiftUIComponents``
 
-Ready-made SwiftUI views for buttons, cards, charts, forms, lists, overlays and feedback, for iOS 17 and macOS 14.
+Ready-made SwiftUI views for buttons, cards, charts, forms, lists, overlays and feedback, with form validation and gestures, for iOS 17 and macOS 14.
 
 ## Overview
 
@@ -33,6 +33,8 @@ by the package's unit tests.
 
 - <doc:GettingStarted>
 - <doc:CollectingCardDetails>
+- <doc:ValidatingForms>
+- <doc:AddingGestures>
 - <doc:PlatformDifferences>
 
 ### Buttons
@@ -83,7 +85,34 @@ by the package's unit tests.
 - ``SliderField``
 - ``CheckboxGroup``
 - ``RadioGroup``
+- ``FileUploadField``
 - ``KeyboardKind``
+
+### Validation
+
+- ``Validator``
+- ``ValidationResult``
+- ``ValidatedValue``
+- ``AsyncValidation``
+- ``FormSchema``
+- ``FormValue``
+- ``SchemaForm``
+- ``StepFlow``
+- ``MultiStepForm``
+
+### Gestures
+
+- ``SwipeDirection``
+- ``SwipeSequenceMatcher``
+- ``EdgeSwipe``
+- ``TransformState``
+- ``DragBounds``
+- ``ShapeDrawingPad``
+- ``UnistrokeRecognizer``
+
+### Accessibility
+
+- ``ColorContrast``
 
 ### Lists
 

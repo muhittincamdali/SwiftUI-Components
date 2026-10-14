@@ -141,11 +141,14 @@ extension View {
 /// Repeats work on the main actor inside a SwiftUI `.task`, so it stops when the view disappears.
 enum Ticker {
     /// Calls `tick` every `interval` seconds until it returns `false` or the task is cancelled.
+    ///
+    /// An interval that is not positive (including NaN) never ticks, instead of spinning.
     @MainActor
     static func run(every interval: TimeInterval, _ tick: @MainActor () -> Bool) async {
+        guard interval > 0 else { return }
         while true {
             do {
-                try await Task.sleep(for: .seconds(interval))
+                try await Task.sleep(for: .clampedSeconds(interval))
             } catch {
                 return
             }

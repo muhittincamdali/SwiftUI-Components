@@ -132,10 +132,13 @@ public struct ReorderableList<Item: Identifiable, RowContent: View>: View {
         guard draggingItem != nil else { return }
 
         let totalRowHeight = rowHeight + spacing
+        // A zero or negative row height would divide the drag into infinitely many rows.
+        guard totalRowHeight > 0 else { return }
         let moveThreshold = totalRowHeight / 2
-        let offsetInRows = Int((dragOffset.height + (dragOffset.height > 0 ? moveThreshold : -moveThreshold)) / totalRowHeight)
+        let offsetInRows = Int(saturating: (dragOffset.height + (dragOffset.height > 0 ? moveThreshold : -moveThreshold)) / totalRowHeight)
 
-        let newIndex = max(0, min(items.count - 1, originalIndex + offsetInRows))
+        let rowsMoved = min(max(offsetInRows, -items.count), items.count)
+        let newIndex = max(0, min(items.count - 1, originalIndex + rowsMoved))
 
         if newIndex != draggingIndex {
             withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {

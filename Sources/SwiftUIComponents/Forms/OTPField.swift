@@ -22,7 +22,7 @@ public struct OTPField: View {
         onComplete: ((String) -> Void)? = nil
     ) {
         self._code = code
-        self.length = length
+        self.length = CodeEntry.cellCount(length)
         self.style = style
         self.onComplete = onComplete
     }
@@ -36,15 +36,14 @@ public struct OTPField: View {
                 .focused($isFocused)
                 .opacity(0)
                 .onChange(of: code) { _, newValue in
-                    // Limit to length
-                    if newValue.count > length {
-                        code = String(newValue.prefix(length))
+                    let digits = CodeEntry.sanitize(newValue, length: length, allowing: .digits)
+                    // Writing the cleaned text runs this closure again, which then completes.
+                    guard digits == newValue else {
+                        code = digits
+                        return
                     }
-                    // Filter non-digits
-                    code = code.filter { $0.isNumber }
-                    // Trigger completion
-                    if code.count == length {
-                        onComplete?(code)
+                    if digits.count == length {
+                        onComplete?(digits)
                     }
                 }
 
@@ -144,7 +143,7 @@ public struct SecurePINField: View {
         onComplete: ((String) -> Void)? = nil
     ) {
         self._pin = pin
-        self.length = length
+        self.length = CodeEntry.cellCount(length)
         self.onComplete = onComplete
     }
 
@@ -156,12 +155,14 @@ public struct SecurePINField: View {
                 .focused($isFocused)
                 .opacity(0)
                 .onChange(of: pin) { _, newValue in
-                    if newValue.count > length {
-                        pin = String(newValue.prefix(length))
+                    let digits = CodeEntry.sanitize(newValue, length: length, allowing: .digits)
+                    // Writing the cleaned text runs this closure again, which then completes.
+                    guard digits == newValue else {
+                        pin = digits
+                        return
                     }
-                    pin = pin.filter { $0.isNumber }
-                    if pin.count == length {
-                        onComplete?(pin)
+                    if digits.count == length {
+                        onComplete?(digits)
                     }
                 }
 

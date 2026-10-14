@@ -100,7 +100,7 @@ public struct CheckboxGroup<T: Hashable>: View {
                     checkboxes
                 }
             case .grid(let columns):
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: columns), spacing: 12) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: max(1, columns)), spacing: 12) {
                     checkboxes
                 }
             }

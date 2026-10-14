@@ -338,7 +338,7 @@ struct SwipeableRowPreview: View {
                         .frame(width: 40, height: 40)
 
                     VStack(alignment: .leading) {
-                        Text("John Doe")
+                        Text("Maya Chen")
                             .font(.headline)
                         Text("Hello, how are you?")
                             .font(.subheadline)
@@ -362,7 +362,7 @@ struct SwipeableRowPreview: View {
                         .frame(width: 40, height: 40)
 
                     VStack(alignment: .leading) {
-                        Text("Jane Smith")
+                        Text("Omar Haddad")
                             .font(.headline)
                         Text("See you tomorrow!")
                             .font(.subheadline)

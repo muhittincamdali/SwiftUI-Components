@@ -78,7 +78,7 @@ public struct SkeletonView: View {
 
     private func textSkeleton(lines: Int, lastLineWidth: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(0..<lines, id: \.self) { index in
+            ForEach(0..<max(lines, 0), id: \.self) { index in
                 SkeletonShape(cornerRadius: cornerRadius)
                     .frame(height: 12)
                     .frame(maxWidth: index == lines - 1 ? .infinity : nil)

@@ -74,7 +74,7 @@ public struct RatingInput: View {
     /// Creates a new rating input.
     /// - Parameters:
     ///   - rating: Binding to the current rating value.
-    ///   - maxRating: Maximum rating value. Defaults to `5`.
+    ///   - maxRating: Maximum rating value, at least `1`. Defaults to `5`.
     ///   - precision: Rating precision. Defaults to `.full`.
     ///   - symbolStyle: The symbol style. Defaults to `.star`.
     ///   - filledColor: Color for filled symbols. Defaults to `.yellow`.
@@ -98,7 +98,8 @@ public struct RatingInput: View {
         onRatingChanged: ((Double) -> Void)? = nil
     ) {
         self._rating = rating
-        self.maxRating = maxRating
+        // The symbols are drawn for 1...maxRating, which traps below 1.
+        self.maxRating = max(1, maxRating)
         self.precision = precision
         self.symbolStyle = symbolStyle
         self.filledColor = filledColor
@@ -350,8 +351,14 @@ public struct SliderRatingInput: View {
 
     public var body: some View {
         VStack(spacing: 8) {
-            Slider(value: $rating, in: range, step: step)
-                .tint(filledColor)
+            Group {
+                if let step = range.sliderStep(step) {
+                    Slider(value: $rating, in: range, step: step)
+                } else {
+                    Slider(value: $rating, in: range)
+                }
+            }
+            .tint(filledColor)
 
             if showValue {
                 HStack {

@@ -32,6 +32,14 @@ public struct PinInput: View {
             case .alphanumeric: return .ascii
             }
         }
+
+        /// Pasted text keeps only these characters: ASCII digits, or ASCII letters and digits.
+        var allowedCharacters: CodeEntry.Characters {
+            switch self {
+            case .numeric: return .digits
+            case .alphanumeric: return .lettersAndDigits
+            }
+        }
     }
 
     // MARK: - Properties
@@ -95,7 +103,7 @@ public struct PinInput: View {
         onComplete: ((String) -> Void)? = nil
     ) {
         self._code = code
-        self.length = length
+        self.length = CodeEntry.cellCount(length)
         self.boxStyle = boxStyle
         self.inputType = inputType
         self.boxSize = boxSize
@@ -146,31 +154,34 @@ public struct PinInput: View {
     // MARK: - Hidden Text Field
 
     private var hiddenTextField: some View {
-        TextField("", text: $code)
-            .keyboard(inputType.keyboardKind)
-            .textContentType(.oneTimeCode)
-            .focused($isFocused)
-            .frame(width: 1, height: 1)
-            .opacity(0.01)
-            .onChange(of: code) { _, newValue in
-                // Limit to max length
-                if newValue.count > length {
-                    code = String(newValue.prefix(length))
-                }
-
-                // Filter based on input type
-                if inputType == .numeric {
-                    code = newValue.filter { $0.isNumber }
-                }
-
-                // Check completion
-                if code.count == length {
-                    onComplete?(code)
-                }
+        Group {
+            if isSecure {
+                // A plain text field would hand the PIN to keyboard suggestions and let
+                // VoiceOver read it aloud, even though the boxes mask it.
+                SecureField("", text: $code)
+            } else {
+                TextField("", text: $code)
+                    .textContentType(.oneTimeCode)
             }
-            .onAppear {
-                isFocused = true
+        }
+        .keyboard(inputType.keyboardKind)
+        .focused($isFocused)
+        .frame(width: 1, height: 1)
+        .opacity(0.01)
+        .onChange(of: code) { _, newValue in
+            let cleaned = CodeEntry.sanitize(newValue, length: length, allowing: inputType.allowedCharacters)
+            // Writing the cleaned text runs this closure again, which then completes.
+            guard cleaned == newValue else {
+                code = cleaned
+                return
             }
+            if cleaned.count == length {
+                onComplete?(cleaned)
+            }
+        }
+        .onAppear {
+            isFocused = true
+        }
     }
 
     // MARK: - PIN Box
@@ -289,7 +300,7 @@ public struct TimedPinInput: View {
         onResend: @escaping () -> Void
     ) {
         self._code = code
-        self.length = length
+        self.length = CodeEntry.cellCount(length)
         self.resendInterval = resendInterval
         self._remainingTime = State(initialValue: resendInterval)
         self.onComplete = onComplete
@@ -354,7 +365,7 @@ public struct PasscodeInput: View {
         onComplete: @escaping (String) -> Void
     ) {
         self._passcode = passcode
-        self.length = length
+        self.length = CodeEntry.cellCount(length)
         self.onComplete = onComplete
     }
 

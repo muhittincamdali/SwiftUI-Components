@@ -3,7 +3,8 @@
 ## ComponentGallery
 
 A small iOS and macOS app with one screen per README sample: the quick start, buttons, charts,
-the payment form, snackbars and the flow layout. It uses the package from this checkout (a
+the payment form, snackbars, the flow layout, a validated sign-up form, a form built from
+JSON and the gestures. It uses the package from this checkout (a
 local package reference to `../..`), so it always shows the current code.
 
 Run it:

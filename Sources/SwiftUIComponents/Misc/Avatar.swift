@@ -253,7 +253,7 @@ public struct AvatarGroup: View {
     ) {
         self.avatars = avatars
         self.size = size
-        self.maxVisible = maxVisible
+        self.maxVisible = max(0, maxVisible)
         self.overlapAmount = overlapAmount
     }
 

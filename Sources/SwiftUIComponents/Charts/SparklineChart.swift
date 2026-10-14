@@ -209,7 +209,7 @@ public struct LiveSparklineChart: View {
         lineWidth: CGFloat = 2
     ) {
         self._data = data
-        self.maxPoints = maxPoints
+        self.maxPoints = max(0, maxPoints)
         self.lineColor = lineColor
         self.lineWidth = lineWidth
     }

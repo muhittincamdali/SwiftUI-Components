@@ -110,7 +110,7 @@ public struct LoadingButton: View {
                 withAnimation(.spring(response: 0.3)) {
                     state = success ? .success : .failure
                 }
-                try? await Task.sleep(nanoseconds: UInt64(resetDelay * 1_000_000_000))
+                try? await Task.sleep(for: .clampedSeconds(resetDelay))
                 withAnimation(.spring(response: 0.3)) {
                     state = .idle
                 }

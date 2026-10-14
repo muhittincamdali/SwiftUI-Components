@@ -209,7 +209,7 @@ public struct ProgressRingChart: View {
 
                 // Percentage
                 if showPercentage {
-                    Text("\(Int((animated ? animatedProgress : progress) * 100))%")
+                    Text("\(Int(saturating: (animated ? animatedProgress : progress) * 100))%")
                         .font(.system(size: size * 0.2, weight: .bold, design: .rounded))
                         .foregroundStyle(progressColor)
                 }
