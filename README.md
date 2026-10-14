@@ -47,7 +47,7 @@ a theme system or an architecture. The package has no dependencies.
 - **Tested logic** — card-number detection and the Luhn check, expiry dates, phone formatting,
   validators, JSON schemas, step flows, swipe and shape recognition, contrast ratios,
   `FlowLayout` line breaking, chart geometry, pagination and the toast queues are covered by
-  155 Swift Testing tests that run on macOS and an iPhone simulator.
+  158 Swift Testing tests that run on macOS and an iPhone simulator.
 - **Usage samples that compile** — every sample in the Usage section comes from the
   [example app](Examples/ComponentGallery), which CI builds for iOS and macOS.
 

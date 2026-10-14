@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f9ea8cfd6c57a4c3a58efdefc90078b858041d3f status=reviewed -->
+<!-- i18n-source: README.md@1c867e74d41d7dd0e85e44e3b06a9c1bfcae625c status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-de-light.svg" alt="SwiftUI Components: Fertige SwiftUI-Views für iOS und macOS: Buttons, Karten, Diagramme, Formulare und mehr."></picture></p>
@@ -51,7 +51,7 @@ Du kannst also ein oder zwei davon verwenden, ohne ein Theme-System oder eine Ar
 - **Getestete Logik** – Kartennummernerkennung und Luhn-Prüfung, Ablaufdaten,
   Telefonnummernformatierung, Validatoren, JSON-Schemas, Schrittfolgen, Wisch- und Formerkennung,
   Kontrastverhältnisse, der Zeilenumbruch von `FlowLayout`, Diagrammgeometrie, Paginierung und die
-  Toast-Warteschlangen sind durch 155 Swift-Testing-Tests abgedeckt, die auf macOS und einem
+  Toast-Warteschlangen sind durch 158 Swift-Testing-Tests abgedeckt, die auf macOS und einem
   iPhone-Simulator laufen.
 - **Verwendungsbeispiele, die kompilieren** – jedes Beispiel im Abschnitt „Verwendung“
   stammt aus der [Beispiel-App](Examples/ComponentGallery), die die CI für iOS und macOS baut.

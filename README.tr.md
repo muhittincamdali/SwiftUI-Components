@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f9ea8cfd6c57a4c3a58efdefc90078b858041d3f status=reviewed -->
+<!-- i18n-source: README.md@1c867e74d41d7dd0e85e44e3b06a9c1bfcae625c status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-tr-light.svg" alt="SwiftUI Components: iOS ve macOS için hazır SwiftUI görünümleri: düğmeler, kartlar, grafikler, formlar ve daha fazlası."></picture></p>
@@ -51,7 +51,7 @@ tanesini kullanabilirsiniz. Paketin hiçbir bağımlılığı yoktur.
 - **Test edilen mantık** — kart numarası tanıma ve Luhn denetimi, son kullanma tarihleri, telefon
   biçimlendirme, doğrulayıcılar, JSON şemaları, adım akışları, kaydırma ve şekil tanıma, kontrast
   oranları, `FlowLayout` satır kırma, grafik geometrisi, sayfalama ve bildirim kuyrukları, macOS'ta
-  ve bir iPhone simülatöründe çalışan 155 Swift Testing testiyle kapsanıyor.
+  ve bir iPhone simülatöründe çalışan 158 Swift Testing testiyle kapsanıyor.
 - **Derlenen kullanım örnekleri** — “Kullanım” bölümündeki her örnek, CI'ın iOS ve macOS
   için derlediği [örnek uygulamadan](Examples/ComponentGallery) alınmıştır.
 

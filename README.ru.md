@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@f9ea8cfd6c57a4c3a58efdefc90078b858041d3f status=reviewed -->
+<!-- i18n-source: README.md@1c867e74d41d7dd0e85e44e3b06a9c1bfcae625c status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftUI-Components/main/.github/brand/banner-ru-light.svg" alt="SwiftUI Components: Готовые SwiftUI-представления для iOS и macOS: кнопки, карточки, графики, формы и не только."></picture></p>
@@ -52,7 +52,7 @@ Swift-пакет с готовыми SwiftUI-представлениями дл
 - **Протестированная логика** — определение номера карты и проверка Луна, сроки действия,
   форматирование телефонных номеров, валидаторы, JSON-схемы, пошаговые сценарии, распознавание
   свайпов и фигур, коэффициенты контраста, перенос строк в `FlowLayout`, геометрия графиков,
-  постраничная загрузка и очереди уведомлений покрыты 155 тестами Swift Testing, которые запускаются
+  постраничная загрузка и очереди уведомлений покрыты 158 тестами Swift Testing, которые запускаются
   на macOS и в симуляторе iPhone.
 - **Примеры использования, которые компилируются** — каждый пример из раздела
   «Использование» взят из [примера приложения](Examples/ComponentGallery), который CI собирает для iOS и macOS.
