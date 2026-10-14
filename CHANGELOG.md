@@ -37,9 +37,9 @@ for iOS 17 and macOS 14 in the Swift 6 language mode, with real tests and CI.
 ### Changed
 
 - **Breaking:** minimum platforms are now iOS 17 and macOS 14 (was iOS 16 / macOS 13 in 1.0.0).
-- `swift-tools-version` 6.0 and Swift 6 language mode; the restored code uses iOS 17 APIs
-  such as `onChange(of:initial:_:)`. tvOS, watchOS and visionOS were removed
-  from the manifest because the package was never built for them.
+- `swift-tools-version` 6.2 (Xcode 26, the version CI builds with) and Swift 6 language
+  mode; the restored code uses iOS 17 APIs such as `onChange(of:initial:_:)`. tvOS, watchOS
+  and visionOS were removed from the manifest because the package was never built for them.
 - `TextInputField(keyboardType:)` now takes a `KeyboardKind` instead of `UIKeyboardType`.
 - `FlowLayout` is a single public type in `Layout/FlowLayout.swift` (three copies existed).
 - `HighlightedText` builds an `AttributedString`, so highlight backgrounds actually render.
