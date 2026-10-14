@@ -11,6 +11,9 @@ import AppKit
 
 // MARK: - System Colors
 
+// @usableFromInline because public initializers use these colors as default argument values
+// (for example SkeletonView, ShimmerView, ProgressRing and CustomDivider); a default argument of a
+// public function may only reference public or @usableFromInline declarations.
 extension Color {
     #if canImport(UIKit)
     @usableFromInline static let platformBackground = Color(uiColor: .systemBackground)
