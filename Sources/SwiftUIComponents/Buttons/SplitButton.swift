@@ -163,16 +163,30 @@ public struct StepperButton: View {
     ) {
         self._value = value
         self.range = range
-        self.step = step
+        // A negative step would swap what the two buttons do; Int.min has no positive
+        // counterpart, so its size is clamped to Int.max.
+        self.step = Int(clamping: step.magnitude)
         self.color = color
+    }
+
+    /// `value` plus `step`, or nil when that passes `range.upperBound` or overflows `Int`.
+    nonisolated static func incremented(_ value: Int, by step: Int, in range: ClosedRange<Int>) -> Int? {
+        let (next, overflow) = value.addingReportingOverflow(step)
+        guard !overflow, next <= range.upperBound else { return nil }
+        return next
+    }
+
+    /// `value` minus `step`, or nil when that passes `range.lowerBound` or overflows `Int`.
+    nonisolated static func decremented(_ value: Int, by step: Int, in range: ClosedRange<Int>) -> Int? {
+        let (next, overflow) = value.subtractingReportingOverflow(step)
+        guard !overflow, next >= range.lowerBound else { return nil }
+        return next
     }
 
     public var body: some View {
         HStack(spacing: 0) {
             Button {
-                if value - step >= range.lowerBound {
-                    value -= step
-                }
+                if let next = Self.decremented(value, by: step, in: range) { value = next }
             } label: {
                 Image(systemName: "minus")
                     .font(.system(size: 14, weight: .bold))
@@ -187,9 +201,7 @@ public struct StepperButton: View {
                 .frame(minWidth: 50)
 
             Button {
-                if value + step <= range.upperBound {
-                    value += step
-                }
+                if let next = Self.incremented(value, by: step, in: range) { value = next }
             } label: {
                 Image(systemName: "plus")
                     .font(.system(size: 14, weight: .bold))
@@ -208,9 +220,9 @@ public struct StepperButton: View {
         .accessibilityAdjustableAction { direction in
             switch direction {
             case .increment:
-                if value + step <= range.upperBound { value += step }
+                if let next = Self.incremented(value, by: step, in: range) { value = next }
             case .decrement:
-                if value - step >= range.lowerBound { value -= step }
+                if let next = Self.decremented(value, by: step, in: range) { value = next }
             @unknown default:
                 break
             }

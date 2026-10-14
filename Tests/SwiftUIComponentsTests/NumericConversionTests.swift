@@ -54,6 +54,23 @@ struct NumericConversionTests {
         #expect(SliderField.snapped(rawValue, in: range, step: step) == expected)
     }
 
+    @Test("stepper moves a whole step inside the range without overflowing", arguments: [
+        (5, 2, 0...10, 7 as Int?, 3 as Int?), (9, 2, 0...10, nil, 7), (1, 2, 0...10, 3, nil),
+        (Int.max, 1, 0...Int.max, nil, Int.max - 1), (Int.min, 1, Int.min...0, Int.min + 1, nil),
+        (1, Int.max, Int.min...Int.max, nil, Int.min + 2), (-2, Int.max, Int.min...Int.max, Int.max - 2, nil),
+    ])
+    func stepperSteps(value: Int, step: Int, range: ClosedRange<Int>, up: Int?, down: Int?) {
+        #expect(StepperButton.incremented(value, by: step, in: range) == up)
+        #expect(StepperButton.decremented(value, by: step, in: range) == down)
+    }
+
+    /// A negative step used to make the plus button subtract and the minus button add.
+    @MainActor
+    @Test("stepper uses the size of a negative step", arguments: [(-3, 3), (3, 3), (0, 0), (Int.min, Int.max)])
+    func stepperStepSize(step: Int, expected: Int) {
+        #expect(StepperButton(value: .constant(0), step: step).step == expected)
+    }
+
     @Test("noise texture draws a bounded number of dots", arguments: [
         (CGSize(width: 100, height: 100), 1_000),
         (CGSize(width: 10_000, height: 10_000), 4_000),
