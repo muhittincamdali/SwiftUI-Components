@@ -26,8 +26,20 @@ Open an issue with:
    test in `Tests/SwiftUIComponentsTests`. Prefer moving that logic into a static function so it
    can be tested without rendering a view.
 5. If you change a README code sample, change the copy in
-   `Tests/SwiftUIComponentsTests/ReadmeExamples.swift` as well; that file is what gets compiled.
+   `Examples/ComponentGallery/ComponentGallery/ReadmeSamples.swift` as well. That file is what
+   gets compiled: by the example app, and by `swift test` through the symlink
+   `Tests/SwiftUIComponentsTests/ReadmeExamples.swift`. Build the app with:
+
+    ```sh
+    cd Examples/ComponentGallery
+    xcodebuild build -scheme ComponentGallery -destination 'generic/platform=iOS Simulator'
+    ```
+
 6. If a change affects the screenshots, regenerate them with `scripts/generate-screenshots.sh`.
+7. `README.md` has translations (`README.<language>.md`). Each one records the version of
+   `README.md` it follows, and CI fails while a translation is behind. If you change `README.md`
+   and cannot update the translations, say so in the pull request and they will be updated
+   before it is merged.
 
 ## Code style
 
