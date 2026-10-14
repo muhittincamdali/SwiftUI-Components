@@ -55,6 +55,9 @@ changed in a breaking way.
 - `PinInput` with `.numeric` input undid its own length limit, so pasted text longer than
   `length` stayed in the binding and `onComplete` never ran; `OTPField` and `SecurePINField`
   could call `onComplete` twice for one paste.
+- `PinInput(isSecure: true)` masked the boxes but kept the PIN in a plain text field, where
+  keyboard suggestions and VoiceOver could still reach it. It now uses a secure field, as
+  `SecurePINField` does.
 - NaN, infinite or very large values no longer stop the app in `ProgressCard`,
   `ProgressRingChart`, `CountdownTimer`, `Stopwatch`, `ProgressTimer`, `DurationPicker`,
   `ReorderableList`, the toast, snackbar and banner durations, `LoadingButton` and

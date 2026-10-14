@@ -154,26 +154,34 @@ public struct PinInput: View {
     // MARK: - Hidden Text Field
 
     private var hiddenTextField: some View {
-        TextField("", text: $code)
-            .keyboard(inputType.keyboardKind)
-            .textContentType(.oneTimeCode)
-            .focused($isFocused)
-            .frame(width: 1, height: 1)
-            .opacity(0.01)
-            .onChange(of: code) { _, newValue in
-                let cleaned = CodeEntry.sanitize(newValue, length: length, allowing: inputType.allowedCharacters)
-                // Writing the cleaned text runs this closure again, which then completes.
-                guard cleaned == newValue else {
-                    code = cleaned
-                    return
-                }
-                if cleaned.count == length {
-                    onComplete?(cleaned)
-                }
+        Group {
+            if isSecure {
+                // A plain text field would hand the PIN to keyboard suggestions and let
+                // VoiceOver read it aloud, even though the boxes mask it.
+                SecureField("", text: $code)
+            } else {
+                TextField("", text: $code)
+                    .textContentType(.oneTimeCode)
             }
-            .onAppear {
-                isFocused = true
+        }
+        .keyboard(inputType.keyboardKind)
+        .focused($isFocused)
+        .frame(width: 1, height: 1)
+        .opacity(0.01)
+        .onChange(of: code) { _, newValue in
+            let cleaned = CodeEntry.sanitize(newValue, length: length, allowing: inputType.allowedCharacters)
+            // Writing the cleaned text runs this closure again, which then completes.
+            guard cleaned == newValue else {
+                code = cleaned
+                return
             }
+            if cleaned.count == length {
+                onComplete?(cleaned)
+            }
+        }
+        .onAppear {
+            isFocused = true
+        }
     }
 
     // MARK: - PIN Box
