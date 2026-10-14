@@ -1,0 +1,7 @@
+version: 1
+builder:
+  configs:
+    - platform: ios
+      scheme: SwiftUIComponents
+      documentation_targets: [SwiftUIComponents]
+    - platform: macos-spm
