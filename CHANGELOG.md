@@ -69,6 +69,8 @@ changed in a breaking way.
 - A `maxRating` below 1 in `RatingInput` and `RatingDisplay`, and a `maxItems` or `maxVisible`
   below 3 in `BreadcrumbView` and `DropdownBreadcrumb`, no longer stop the app; they are raised
   to those minimums.
+- A negative `maxVisible` in `AvatarGroup` or `maxPoints` in `LiveSparklineChart` no longer
+  stops the app; it is treated as 0.
 - `TexturedGlassCard` drew one noise dot per ten square points without limit; it now draws at
   most 4,000.
 
