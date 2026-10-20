@@ -143,12 +143,20 @@ enum Ticker {
     /// Calls `tick` every `interval` seconds until it returns `false` or the task is cancelled.
     ///
     /// An interval that is not positive (including NaN) never ticks, instead of spinning.
+    ///
+    /// `sleep` waits between ticks and should throw once the task is cancelled. Tests pass one
+    /// that returns at once: it stays on the main actor, so the loop never waits for a timer or
+    /// for a busy main actor to pick it up again.
     @MainActor
-    static func run(every interval: TimeInterval, _ tick: @MainActor () -> Bool) async {
+    static func run(
+        every interval: TimeInterval,
+        sleep: @MainActor (Duration) async throws -> Void = { try await Task.sleep(for: $0) },
+        _ tick: @MainActor () -> Bool
+    ) async {
         guard interval > 0 else { return }
         while true {
             do {
-                try await Task.sleep(for: .clampedSeconds(interval))
+                try await sleep(.clampedSeconds(interval))
             } catch {
                 return
             }

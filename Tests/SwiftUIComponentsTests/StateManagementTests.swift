@@ -214,13 +214,28 @@ struct ToastManagerTests {
 @MainActor
 @Suite("Ticker", .timeLimit(.minutes(1)))
 struct TickerTests {
+    /// Sleeps through the main actor instead of a timer, so the whole loop runs in one main-actor
+    /// turn and cannot be delayed by other tests holding the main actor on a slow simulator.
     @Test func stopsWhenTickReturnsFalse() async {
         var ticks = 0
-        await Ticker.run(every: 0.001) {
+        var sleeps: [Duration] = []
+        await Ticker.run(every: 0.25, sleep: { sleeps.append($0) }) {
             ticks += 1
             return ticks < 3
         }
         #expect(ticks == 3)
+        #expect(sleeps == Array(repeating: .milliseconds(250), count: 3))
+    }
+
+    @Test func stopsWhenSleepThrows() async {
+        var ticks = 0
+        await Ticker.run(every: 0.25, sleep: { _ in
+            if ticks == 2 { throw CancellationError() }
+        }) {
+            ticks += 1
+            return true
+        }
+        #expect(ticks == 2)
     }
 
     @Test func stopsWhenItsTaskIsCancelled() async throws {
