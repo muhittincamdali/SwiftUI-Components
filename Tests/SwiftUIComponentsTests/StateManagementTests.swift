@@ -211,11 +211,18 @@ struct ToastManagerTests {
 
 /// `Ticker` drives the repeating animations in the loaders, text effects, PIN countdown and
 /// carousel. These views rely on it returning once their `.task` is cancelled.
+///
+/// No time limit: these tests run on the main actor, and Swift Testing counts the time a test
+/// waits for it. The rendering suites keep the main actor busy for 30 seconds or more on a CI
+/// simulator, so a one-minute limit failed tests that never got to run. Each test below ends on
+/// its own instead, even when `Ticker` is broken.
 @MainActor
-@Suite("Ticker", .timeLimit(.minutes(1)))
+@Suite("Ticker")
 struct TickerTests {
-    /// Sleeps through the main actor instead of a timer, so the whole loop runs in one main-actor
-    /// turn and cannot be delayed by other tests holding the main actor on a slow simulator.
+    /// Ends the loop in tests that would otherwise tick forever if `Ticker` failed to stop.
+    private static let tickLimit = 100
+
+    /// Sleeps without leaving the main actor, so the loop does not wait for a timer.
     @Test func stopsWhenTickReturnsFalse() async {
         var ticks = 0
         var sleeps: [Duration] = []
@@ -233,27 +240,25 @@ struct TickerTests {
             if ticks == 2 { throw CancellationError() }
         }) {
             ticks += 1
-            return true
+            return ticks < Self.tickLimit
         }
         #expect(ticks == 2)
     }
 
-    @Test func stopsWhenItsTaskIsCancelled() async throws {
+    /// Uses the real `Task.sleep`. The task cancels itself on the second tick; a `Ticker` that
+    /// ignored the cancellation would keep going until the tick limit and fail the expectation.
+    @Test func stopsWhenItsTaskIsCancelled() async {
         var ticks = 0
         let task = Task { @MainActor in
             await Ticker.run(every: 0.001) {
                 ticks += 1
-                return true
+                if ticks == 2 {
+                    withUnsafeCurrentTask { $0?.cancel() }
+                }
+                return ticks < Self.tickLimit
             }
         }
-        while ticks == 0 {
-            try await Task.sleep(for: .milliseconds(1))
-        }
-        task.cancel()
         await task.value
-
-        let ticksAtCancel = ticks
-        try await Task.sleep(for: .milliseconds(20))
-        #expect(ticks == ticksAtCancel)
+        #expect(ticks == 2)
     }
 }
