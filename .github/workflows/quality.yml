@@ -15,17 +15,17 @@ jobs:
   links:
     permissions:
       contents: read
-    uses: muhittincamdali/.github/.github/workflows/links.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    uses: muhittincamdali/.github/.github/workflows/links.yml@59e72703c617cfab0c12482c477e706c485ed683 # v1.1.1
 
   hygiene:
     permissions:
       contents: read
-    uses: muhittincamdali/.github/.github/workflows/hygiene.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    uses: muhittincamdali/.github/.github/workflows/hygiene.yml@59e72703c617cfab0c12482c477e706c485ed683 # v1.1.1
 
   translations:
     permissions:
       contents: read
-    uses: muhittincamdali/.github/.github/workflows/readme-i18n-sync.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    uses: muhittincamdali/.github/.github/workflows/readme-i18n-sync.yml@59e72703c617cfab0c12482c477e706c485ed683 # v1.1.1
     with:
       languages: tr zh-CN ja ko es de fr pt-BR ru
       strict: true
